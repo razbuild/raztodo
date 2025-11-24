@@ -2,9 +2,6 @@
     <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="500">
 </p>
 
-
-https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&logoSize=auto&label=license&labelColor=000000&color=0002c8&cacheSeconds=3600
-
 ---
 
 ## Table of Contents
