@@ -1,6 +1,6 @@
-import sys
 import argparse
-from typing import Any, List
+import sys
+from typing import Any
 
 from raztodo.presentation.cli.ansi import Colorizer
 from raztodo.presentation.cli.formatters import CLIHelpFormatter

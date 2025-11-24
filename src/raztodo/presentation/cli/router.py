@@ -1,4 +1,5 @@
-from typing import Any, Callable, ClassVar, Type
+from collections.abc import Callable
+from typing import Any, ClassVar
 
 from raztodo.application.use_cases.create_task import CreateTaskUseCase
 from raztodo.application.use_cases.delete_task import DeleteTaskUseCase
@@ -22,7 +23,7 @@ from raztodo.presentation.cli.commands.update_task_cmd import UpdateTaskCMD
 
 class TaskRouter:
 
-    COMMANDS: ClassVar[dict[str, Type[Callable[..., int]]]] = {
+    COMMANDS: ClassVar[dict[str, type[Callable[..., int]]]] = {
         "add": CreateTaskCMD,
         "remove": DeleteTaskCMD,
         "list": ListTasksCMD,
@@ -62,7 +63,7 @@ class TaskRouter:
             "migrate": lambda: MigrateUseCase(connection_factory),
         }
 
-    def get_command_class(self, command_name: str) -> Type[Callable[..., int]]:
+    def get_command_class(self, command_name: str) -> type[Callable[..., int]]:
         cls = self.COMMANDS.get(command_name)
         if not cls:
             raise ValueError(f"Unknown command: {command_name}")

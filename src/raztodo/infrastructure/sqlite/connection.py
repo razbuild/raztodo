@@ -1,7 +1,7 @@
 import os
 import sqlite3
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 
 def default_data_dir(app_name: str = "raztodo") -> Path:

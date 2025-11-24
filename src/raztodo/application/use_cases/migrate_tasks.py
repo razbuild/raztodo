@@ -1,4 +1,4 @@
-from typing import Callable, Dict
+from collections.abc import Callable
 from sqlite3 import Connection
 
 from raztodo.infrastructure.sqlite.migrations import (
@@ -15,7 +15,7 @@ class MigrateUseCase:
     def __init__(self, connection_factory: Callable[[], Connection]) -> None:
         self._connection_factory: Callable[[], Connection] = connection_factory
 
-    def execute(self) -> Dict[str, object]:
+    def execute(self) -> dict[str, object]:
         """
         Perform migration: fix duplicate task titles and create unique title index.
 

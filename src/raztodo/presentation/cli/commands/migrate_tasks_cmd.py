@@ -1,5 +1,5 @@
 import argparse
-from typing import Any, Dict
+from typing import Any
 
 from raztodo.presentation.cli.formatters import CLIHelpFormatter
 
@@ -30,7 +30,7 @@ class MigrateCMD:
         self.uc = uc
 
     def __call__(self, args: argparse.Namespace) -> int:
-        result: Dict[str, int] = self.uc.execute()
+        result: dict[str, int] = self.uc.execute()
         print(
             f"Migration completed: fixed={result.get('duplicates_fixed', 0)}, "
             f"unique_index={result.get('unique_index', 0)}"

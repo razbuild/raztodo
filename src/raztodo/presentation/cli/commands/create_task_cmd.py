@@ -1,5 +1,5 @@
 import argparse
-from typing import Optional, Any
+from typing import Any
 
 from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import (
@@ -75,7 +75,7 @@ class CreateTaskCMD:
 
         try:
             tags: list[str] = parse_tags(getattr(args, "tags", None)) or []
-            due_date: Optional[str] = getattr(args, "due", None)
+            due_date: str | None = getattr(args, "due", None)
 
             task_id: int = self.uc.execute(
                 args.title,

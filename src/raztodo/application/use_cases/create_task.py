@@ -1,4 +1,4 @@
-from typing import Optional, List
+
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_repository import TaskRepository
 
@@ -18,9 +18,9 @@ class CreateTaskUseCase:
         title: str,
         description: str = "",
         priority: str = "",
-        due_date: Optional[str] = None,
-        tags: Optional[List[str]] = None,
-        project: Optional[str] = None,
+        due_date: str | None = None,
+        tags: list[str] | None = None,
+        project: str | None = None,
     ) -> int:
         """
         Create a task after validating title and length.
@@ -50,7 +50,7 @@ class CreateTaskUseCase:
                 f"provided {len(title_stripped)}"
             )
 
-        task_id: Optional[int] = self.repo.add_task(
+        task_id: int | None = self.repo.add_task(
             title_stripped, description, priority, due_date, tags, project
         )
         if not task_id:

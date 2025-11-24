@@ -1,4 +1,5 @@
 import json
+
 import pytest
 
 from raztodo.application.use_cases.import_task import ImportTasksUseCase

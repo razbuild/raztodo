@@ -1,4 +1,4 @@
-from typing import Optional, List
+
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_repository import TaskRepository
 
@@ -14,12 +14,12 @@ class UpdateTaskUseCase:
     def execute(
         self,
         task_id: int,
-        title: Optional[str] = None,
-        description: Optional[str] = None,
-        priority: Optional[str] = None,
-        due_date: Optional[str] = None,
-        tags: Optional[List[str]] = None,
-        project: Optional[str] = None,
+        title: str | None = None,
+        description: str | None = None,
+        priority: str | None = None,
+        due_date: str | None = None,
+        tags: list[str] | None = None,
+        project: str | None = None,
     ) -> bool:
         """
         Update task fields by ID.

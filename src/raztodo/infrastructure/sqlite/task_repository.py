@@ -4,15 +4,14 @@ import sqlite3
 from collections.abc import Callable
 from pathlib import Path
 from sqlite3 import Connection
-from typing import Optional, List, Type, Any
 from types import TracebackType
 
 from raztodo.domain.exceptions import RazTodoException
+from raztodo.domain.task_entity import TaskEntity
 from raztodo.domain.task_repository import TaskRepository
 from raztodo.infrastructure.logger import get_logger
 from raztodo.infrastructure.sqlite.task_dao import TaskDAO
 from raztodo.infrastructure.sqlite.task_mapper import row_to_task
-from raztodo.domain.task_entity import TaskEntity
 
 logger = get_logger("SQLiteTaskRepository")
 
@@ -65,7 +64,7 @@ def ensure_writable_path(filepath: str) -> Path:
 class SQLiteTaskRepository(TaskRepository):
     def __init__(self, connection_factory: Callable[[], Connection]):
         self._connection_factory = connection_factory
-        self._conn: Optional[Connection] = self._connection_factory()
+        self._conn: Connection | None = self._connection_factory()
         self._dao = TaskDAO(self._conn)
 
     def __enter__(self) -> "SQLiteTaskRepository":
@@ -73,9 +72,9 @@ class SQLiteTaskRepository(TaskRepository):
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc: Optional[BaseException],
-        tb: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
     ) -> None:
         self.close()
 
@@ -111,14 +110,14 @@ class SQLiteTaskRepository(TaskRepository):
 
     def get_tasks(
         self,
-        limit: Optional[int] = None,
-        offset: Optional[int] = None,
-        priority: Optional[str] = None,
-        project: Optional[str] = None,
-        done: Optional[bool] = None,
-        tags: Optional[List[str]] = None,
-        due_before: Optional[str] = None,
-        due_after: Optional[str] = None,
+        limit: int | None = None,
+        offset: int | None = None,
+        priority: str | None = None,
+        project: str | None = None,
+        done: bool | None = None,
+        tags: list[str] | None = None,
+        due_before: str | None = None,
+        due_after: str | None = None,
     ) -> list[TaskEntity]:
         # Pass arguments explicitly to avoid mypy errors with **kwargs unpacking
         rows = self._dao.fetch_all(
@@ -136,12 +135,12 @@ class SQLiteTaskRepository(TaskRepository):
     def update_task(
         self,
         task_id: int,
-        title: Optional[str] = None,
-        description: Optional[str] = None,
-        priority: Optional[str] = None,
-        due_date: Optional[str] = None,
-        tags: Optional[List[str]] = None,
-        project: Optional[str] = None,
+        title: str | None = None,
+        description: str | None = None,
+        priority: str | None = None,
+        due_date: str | None = None,
+        tags: list[str] | None = None,
+        project: str | None = None,
     ) -> int:
         if title is not None:
             title = validate_length("title", title, MAX_TITLE_LENGTH)
@@ -179,9 +178,9 @@ class SQLiteTaskRepository(TaskRepository):
     def search_tasks(
         self,
         keyword: str,
-        priority: Optional[str] = None,
-        project: Optional[str] = None,
-        tags: Optional[List[str]] = None,
+        priority: str | None = None,
+        project: str | None = None,
+        tags: list[str] | None = None,
     ) -> list[TaskEntity]:
         if not keyword or not keyword.strip():
             return []

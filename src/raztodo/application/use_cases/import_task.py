@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Union, Any, List, Optional
+from typing import Any
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
@@ -17,7 +17,7 @@ class ImportTasksUseCase:
 
     def execute(
         self, filepath: str, upsert: bool = False
-    ) -> Union[int, dict[str, int]]:
+    ) -> int | dict[str, int]:
         """
         Import tasks from a file, optionally updating existing tasks.
 
@@ -62,12 +62,12 @@ class ImportTasksUseCase:
 
                 desc: str = item.get("description", "")
                 priority: str = item.get("priority") or ""
-                due_date: Optional[str] = item.get("due_date")
-                tags: List[str] = item.get("tags") or []
-                project: Optional[str] = item.get("project")
+                due_date: str | None = item.get("due_date")
+                tags: list[str] = item.get("tags") or []
+                project: str | None = item.get("project")
 
                 try:
-                    inserted_id: Optional[int] = self.repo.add_task(
+                    inserted_id: int | None = self.repo.add_task(
                         title, desc, priority, due_date, tags, project
                     )
                     if inserted_id:
@@ -78,7 +78,7 @@ class ImportTasksUseCase:
                 except RazTodoException:
                     pass
 
-                matches: List[TaskEntity] = [
+                matches: list[TaskEntity] = [
                     t for t in self.repo.search_tasks(title) if t.title == title
                 ]
                 if matches:

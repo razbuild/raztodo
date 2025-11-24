@@ -1,4 +1,4 @@
-from typing import Optional, List
+
 from raztodo.domain.task_entity import TaskEntity
 from raztodo.domain.task_repository import TaskRepository
 
@@ -14,10 +14,10 @@ class SearchTasksUseCase:
     def execute(
         self,
         keyword: str,
-        priority: Optional[str] = None,
-        project: Optional[str] = None,
-        tags: Optional[List[str]] = None,
-    ) -> List[TaskEntity]:
+        priority: str | None = None,
+        project: str | None = None,
+        tags: list[str] | None = None,
+    ) -> list[TaskEntity]:
         """
         Search tasks matching a keyword and optional filters.
 

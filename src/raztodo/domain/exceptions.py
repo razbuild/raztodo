@@ -1,4 +1,3 @@
-from typing import Optional, Dict, Type
 
 
 class RazTodoException(Exception):
@@ -7,7 +6,7 @@ class RazTodoException(Exception):
     pass
 
 
-def default_message(base: str, **kwargs: Optional[str]) -> str:
+def default_message(base: str, **kwargs: str | None) -> str:
     """
     Builds a formatted message by appending keyword arguments to a base message.
 
@@ -32,7 +31,7 @@ class TaskNotFoundError(RazTodoException):
         message (Optional[str]): Custom message override.
     """
 
-    def __init__(self, task_id: int, message: Optional[str] = None) -> None:
+    def __init__(self, task_id: int, message: str | None = None) -> None:
         self.task_id = task_id
         super().__init__(message or f"No task found with id {task_id}")
 
@@ -49,9 +48,9 @@ class TaskValidationError(RazTodoException):
 
     def __init__(
         self,
-        field: Optional[str] = None,
-        value: Optional[str] = None,
-        message: Optional[str] = None,
+        field: str | None = None,
+        value: str | None = None,
+        message: str | None = None,
     ) -> None:
         self.field = field
         self.value = value
@@ -76,7 +75,7 @@ class DuplicateTaskError(RazTodoException):
         message (Optional[str]): Custom message override.
     """
 
-    def __init__(self, title: str, message: Optional[str] = None) -> None:
+    def __init__(self, title: str, message: str | None = None) -> None:
         self.title = title
         super().__init__(message or default_message("Task already exists", title=title))
 
@@ -91,7 +90,7 @@ class FileOperationError(RazTodoException):
     """
 
     def __init__(
-        self, filepath: Optional[str] = None, message: Optional[str] = None
+        self, filepath: str | None = None, message: str | None = None
     ) -> None:
         self.filepath = filepath
         super().__init__(
@@ -139,9 +138,9 @@ class InvalidFileFormatError(FileOperationError):
 
     def __init__(
         self,
-        filepath: Optional[str] = None,
-        format_type: Optional[str] = None,
-        message: Optional[str] = None,
+        filepath: str | None = None,
+        format_type: str | None = None,
+        message: str | None = None,
     ) -> None:
 
         self.format_type = format_type
@@ -169,7 +168,7 @@ class DatabaseError(RazTodoException):
     """
 
     def __init__(
-        self, operation: Optional[str] = None, message: Optional[str] = None
+        self, operation: str | None = None, message: str | None = None
     ) -> None:
         self.operation = operation
         super().__init__(
@@ -185,14 +184,14 @@ class DatabaseConnectionError(DatabaseError):
         message (Optional[str]): Custom message override.
     """
 
-    def __init__(self, message: Optional[str] = None) -> None:
+    def __init__(self, message: str | None = None) -> None:
         super().__init__(
             operation="connection",
             message=message or "Failed to connect to database",
         )
 
 
-ERROR_TYPE_MAP: Dict[str, Type[RazTodoException]] = {
+ERROR_TYPE_MAP: dict[str, type[RazTodoException]] = {
     """Mapping of string error identifiers to their corresponding exception types."""
     "not_found": TaskNotFoundError,
     "validation": TaskValidationError,

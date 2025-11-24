@@ -1,15 +1,17 @@
 import ctypes
 import os
 import sys
-from typing import ClassVar, Callable, Dict
+from collections.abc import Callable
+from typing import ClassVar
+
 
 class Colorizer:
-    COLORS: ClassVar[Dict[str, str]] = {
+    COLORS: ClassVar[dict[str, str]] = {
         "BLACK": "30", "RED": "31", "GREEN": "32", "YELLOW": "33",
         "BLUE": "34", "MAGENTA": "35", "CYAN": "36", "WHITE": "37", "GRAY": "90",
     }
 
-    ICONS: ClassVar[Dict[str, Dict[str, str]]] = {
+    ICONS: ClassVar[dict[str, dict[str, str]]] = {
         "ok":   {"nerd": "", "std": "✓", "ascii": "[OK]",   "color": "GREEN"},
         "err":  {"nerd": "", "std": "✗", "ascii": "[ERR]",  "color": "RED"},
         "warn": {"nerd": "", "std": "!", "ascii": "[WARN]", "color": "YELLOW"},
@@ -50,7 +52,7 @@ class Colorizer:
     def _make_color_func(self, code: str) -> Callable[[str], str]:
         return lambda text: self.color(text, code)
 
-    def _make_icon_func(self, data: Dict[str, str], code: str) -> Callable[[], str]:
+    def _make_icon_func(self, data: dict[str, str], code: str) -> Callable[[], str]:
         def fn() -> str:
             if self.icon_mode == "nerd":
                 symbol = data["nerd"]
@@ -104,7 +106,7 @@ class Colorizer:
 
     def _enable_windows_vt_mode(self) -> bool:
         try:
-            kernel32 = getattr(ctypes, "windll").kernel32
+            kernel32 = ctypes.windll.kernel32
         except Exception:
             return False
         handle = kernel32.GetStdHandle(-11)

@@ -1,6 +1,7 @@
 import json
+from collections.abc import Callable
 from sqlite3 import Connection, Row
-from typing import Any, Callable
+from typing import Any
 
 from raztodo.infrastructure.sqlite.task_schema import ensure_schema
 

@@ -63,11 +63,10 @@ class TestColorizer:
         """Test RAZTODO_FORCE_COLOR with valid truthy values."""
         for val in ["1", "true", "True", "yes", "on"]:
             with mock.patch.dict(os.environ, {"RAZTODO_FORCE_COLOR": val}):
-                with mock.patch.dict(os.environ):
-                    if "NO_COLOR" in os.environ:
-                        del os.environ["NO_COLOR"]
-                    colorizer = Colorizer()
-                    assert colorizer.use_color is True, f"Failed for value: {val}"
+                if "NO_COLOR" in os.environ:
+                    del os.environ["NO_COLOR"]
+                colorizer = Colorizer()
+                assert colorizer.use_color is True, f"Failed for value: {val}"
 
     def test_env_force_color_invalid(self):
         """Test RAZTODO_FORCE_COLOR with falsy values (Bug fix test)."""

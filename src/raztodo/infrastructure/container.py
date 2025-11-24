@@ -1,4 +1,6 @@
-from typing import Optional, Callable, Any
+from collections.abc import Callable
+from typing import Any
+
 from raztodo.infrastructure.logger import get_logger
 from raztodo.infrastructure.settings import Settings
 from raztodo.infrastructure.sqlite.connection import sqlite_connection_factory
@@ -7,10 +9,10 @@ from raztodo.presentation.cli.router import TaskRouter
 
 
 class AppContainer:
-    _repo_singleton: Optional[SQLiteTaskRepository]
+    _repo_singleton: SQLiteTaskRepository | None
     _connection_factory: Callable[..., Any]
 
-    def __init__(self, db_name: Optional[str] = None) -> None:
+    def __init__(self, db_name: str | None = None) -> None:
         self.config = Settings()
         self.logger = get_logger("raztodo")
         self._connection_factory = sqlite_connection_factory(

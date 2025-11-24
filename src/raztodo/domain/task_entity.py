@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List, Optional
 
 
 @dataclass
@@ -26,9 +25,9 @@ class TaskEntity:
     done: bool = False
     created_at: str = ""
     priority: str = ""
-    due_date: Optional[str] = None
-    tags: Optional[List[str]] = None
-    project: Optional[str] = None
+    due_date: str | None = None
+    tags: list[str] | None = None
+    project: str | None = None
 
     def __post_init__(self) -> None:
         """

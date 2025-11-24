@@ -1,4 +1,4 @@
-from typing import Optional, List
+
 from raztodo.domain.task_entity import TaskEntity
 from raztodo.domain.task_repository import TaskRepository
 
@@ -13,15 +13,15 @@ class ListTasksUseCase:
 
     def execute(
         self,
-        limit: Optional[int] = None,
-        offset: Optional[int] = None,
-        priority: Optional[str] = None,
-        project: Optional[str] = None,
-        done: Optional[bool] = None,
-        tags: Optional[List[str]] = None,
-        due_before: Optional[str] = None,
-        due_after: Optional[str] = None,
-    ) -> List[TaskEntity]:
+        limit: int | None = None,
+        offset: int | None = None,
+        priority: str | None = None,
+        project: str | None = None,
+        done: bool | None = None,
+        tags: list[str] | None = None,
+        due_before: str | None = None,
+        due_after: str | None = None,
+    ) -> list[TaskEntity]:
         """
         List tasks with optional filters.
 

@@ -1,5 +1,5 @@
 import argparse
-from typing import Any, Optional, List
+from typing import Any
 
 from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import (
@@ -71,8 +71,8 @@ class UpdateTaskCMD:
     def __call__(self, args: argparse.Namespace) -> int:
         try:
             tags: list[str] = parse_tags(getattr(args, "tags", None)) or []
-            due_date: Optional[str] = getattr(args, "due", None)
-            project: Optional[str] = getattr(args, "project", None)
+            due_date: str | None = getattr(args, "due", None)
+            project: str | None = getattr(args, "project", None)
 
             success: bool = self.uc.execute(
                 args.id,

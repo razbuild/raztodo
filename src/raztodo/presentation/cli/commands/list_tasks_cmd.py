@@ -1,6 +1,6 @@
-import sys
 import argparse
-from typing import Any, Optional, List
+import sys
+from typing import Any
 
 from raztodo.presentation.cli.ansi import Colorizer
 from raztodo.presentation.cli.formatters import CLIHelpFormatter
@@ -96,7 +96,7 @@ class ListTasksCMD:
     def __call__(self, args: argparse.Namespace) -> int:
         tags: list[str] = parse_tags(getattr(args, "tags", None)) or []
 
-        done: Optional[bool] = None
+        done: bool | None = None
         if getattr(args, "done", False) and getattr(args, "pending", False):
             print(
                 f"{color.warn()} Both --done and --pending specified; showing all tasks",
