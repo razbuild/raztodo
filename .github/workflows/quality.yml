@@ -52,11 +52,28 @@ jobs:
           coverage xml -o coverage.xml
           coverage report -m
 
+      # <<-- مراحل دیباگ قبل از آپلود
+      - name: Show coverage.xml (debug)
+        run: |
+          echo "PWD: $(pwd)"
+          ls -la || true
+          if [ -f coverage.xml ]; then
+            echo "coverage.xml exists, printing head:"
+            sed -n '1,60p' coverage.xml || true
+          else
+            echo "coverage.xml not found!"
+            exit 0
+          fi
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: coverage.xml
-          flags: unittests
+          # اگر ریپوی شما private است این خط را از secrets ست کنید:
+          # token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: unittests-${{ matrix.os }}
+          # verbose کمک می‌کند لاگ مفصل‌تری ببینید
+          verbose: true
           fail_ci_if_error: false
 
       - name: Build sdist & wheel (only on ubuntu)
