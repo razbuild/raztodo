@@ -1,4 +1,4 @@
-name: QUALITY
+name: CI
 
 on:
   push:
@@ -48,16 +48,14 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run -m pytest
+          coverage run --source=src/raztodo -m pytest
           coverage xml -o coverage.xml
           coverage report -m
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          files: coverage.xml
-          flags: unittests
-          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Build sdist & wheel (only on ubuntu)
         if: matrix.os == 'ubuntu-latest'
