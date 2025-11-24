@@ -2,6 +2,8 @@
     <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="500">
 </p>
 
+![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoColor=ffffff&logoSize=auto&label=Version&labelColor=healthiness&color=abcdef&cacheSeconds=3600)
+
 **Raztodo** is a minimal, fast, and **dependency-free** CLI Todo manager built with **Python** and **SQLite**.
 
 
