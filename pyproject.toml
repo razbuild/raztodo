@@ -90,6 +90,3 @@ precision = 2
 show_missing = true
 skip_covered = false
 skip_empty = true
-
-[tool.pytest.ini_options]
-addopts = "--cov --verbose --cov-report=term-missing:skip-covered --durations=10 --numprocesses=auto"
