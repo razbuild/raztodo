@@ -96,3 +96,5 @@ show_missing = true
 skip_covered = false
 skip_empty = true
 
+[tool.coverage.run]
+disable_warnings = ["no-data-collected"]
