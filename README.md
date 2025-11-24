@@ -7,7 +7,7 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&labelColor=444444&cacheSeconds=3600)
 
 
-[![codecov](https://codecov.io/github/razbuild/raztodo/branch/master/graph/badge.svg?token=UQVHZ61MGR)](https://codecov.io/github/razbuild/raztodo)
+![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&labelColor=444444&cacheSeconds=3600)
 
 ---
 
