@@ -40,11 +40,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install .[test,lint] || echo "Skipping optional install"
-          pip install coverage build codecov
+          pip install .[test,lint]
+          pip install coverage codecov
 
       - name: Run Ruff (lint)
-        run: ruff check src || echo "Skipping lint if Ruff fails"
+        run: ruff check src
 
       - name: Run tests with coverage
         run: |
@@ -57,7 +57,7 @@ jobs:
         with:
           files: ./coverage.xml
           flags: unittests
-          fail_ci_if_error: true
+          fail_ci_if_error: false
 
       - name: Build sdist & wheel
         run: python -m build --sdist --wheel --outdir dist/
