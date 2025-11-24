@@ -4,7 +4,6 @@
 
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&logoSize=auto&label=license&labelColor=444444&color=blue&cacheSeconds=3600)
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ci&labelColor=444444&cacheSeconds=3600)
 
 ---
 
