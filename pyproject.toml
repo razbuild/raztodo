@@ -62,6 +62,7 @@ filterwarnings = ["error"]
 [tool.coverage.run]
 branch = true
 source = ["src"]
+disable_warnings = ["no-data-collected"]
 omit = [
     "*/tests/*",
     "*/__pycache__/*",
@@ -89,6 +90,3 @@ precision = 2
 show_missing = true
 skip_covered = false
 skip_empty = true
-
-[tool.coverage.run]
-disable_warnings = ["no-data-collected"]
