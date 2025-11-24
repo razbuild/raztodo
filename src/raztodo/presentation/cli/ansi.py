@@ -105,19 +105,24 @@ class Colorizer:
             return "std"
 
     def _enable_windows_vt_mode(self) -> bool:
-        try:
-            kernel32 = ctypes.windll.kernel32
-        except Exception:
+        windll = getattr(ctypes, "windll", None)
+        if windll is None:
             return False
+
+        kernel32 = getattr(windll, "kernel32", None)
+        if kernel32 is None:
+            return False
+
         handle = kernel32.GetStdHandle(-11)
         if handle in (0, -1):
             return False
+
         mode = ctypes.c_uint32()
         if not kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
             return False
+
         enable_virtual_terminal_processing = 0x0004
-        return bool(
-            kernel32.SetConsoleMode(
-                handle, mode.value | enable_virtual_terminal_processing
-            )
+        success = kernel32.SetConsoleMode(
+            handle, mode.value | enable_virtual_terminal_processing
         )
+        return bool(success)

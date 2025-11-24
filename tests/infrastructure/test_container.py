@@ -1,5 +1,3 @@
-"""Tests for AppContainer."""
-
 import os
 
 from raztodo.infrastructure.container import AppContainer
