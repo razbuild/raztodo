@@ -1,19 +1,20 @@
 import os
 import sqlite3
+import sys
 from collections.abc import Callable
 from pathlib import Path
 
 
 def default_data_dir(app_name: str = "raztodo") -> Path:
-    if os.name == "nt":  # Windows
+    if sys.platform == "win32":
         path = (
             Path(os.getenv("APPDATA", Path.home() / "AppData" / "Roaming")) / app_name
         )
-    else:  # Linux / macOS
-        path = (
-            Path(os.getenv("XDG_DATA_HOME", Path.home() / ".local" / "share"))
-            / app_name
-        )
+    elif sys.platform == "darwin":
+        path = Path.home() / "Library" / "Application Support" / app_name
+    else:
+        path = Path.home() / ".local" / "share" / app_name
+
     path.mkdir(parents=True, exist_ok=True)
     return path
 

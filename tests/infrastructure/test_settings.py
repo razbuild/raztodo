@@ -1,67 +1,63 @@
 import os
-import tempfile
+import sys
 from pathlib import Path
 
 from raztodo.infrastructure.settings import Settings
 
 
-class TestSettings:
+def test_default_data_dir_linux(tmp_path, monkeypatch):
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+    monkeypatch.setattr(sys, "platform", "linux", raising=False)
+    monkeypatch.delenv("RAZTODO_DB", raising=False)
 
-    def test_default_db_name(self):
-        os.environ.pop("RAZTODO_DB", None)
-        config = Settings()
-        assert config.db_name == "tasks.db"
+    s = Settings()
 
-    def test_db_name_from_environment(self):
-        os.environ["RAZTODO_DB"] = "custom.db"
-        try:
-            config = Settings()
-            assert config.db_name == "custom.db"
-        finally:
-            os.environ.pop("RAZTODO_DB", None)
+    expected = tmp_path / ".local" / "share" / "raztodo"
+    assert s.data_dir == expected
+    assert expected.exists() and expected.is_dir()
 
-    def test_resolve_data_dir_default(self):
-        os.environ.pop("XDG_DATA_HOME", None)
-        config = Settings()
-        expected = Path.home() / ".local/share/raztodo"
-        assert config.data_dir == expected
-        assert config.data_dir.exists()
 
-    def test_resolve_data_dir_from_xdg(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            os.environ["XDG_DATA_HOME"] = tmpdir
-            try:
-                config = Settings()
-                expected = Path(tmpdir) / "raztodo"
-                assert config.data_dir == expected
-                assert config.data_dir.exists()
-            finally:
-                os.environ.pop("XDG_DATA_HOME", None)
+def test_default_db_path_relative(tmp_path, monkeypatch):
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+    monkeypatch.setattr(sys, "platform", "linux", raising=False)
+    monkeypatch.delenv("RAZTODO_DB", raising=False)
 
-    def test_db_path_relative(self):
-        os.environ.pop("RAZTODO_DB", None)
-        config = Settings()
-        db_path = config.db_path
-        assert db_path.is_absolute()
-        assert db_path.name == "tasks.db"
-        assert db_path.parent == config.data_dir
+    s = Settings()
+    assert s.db_name == "tasks.db"
+    assert s.db_path == s.data_dir / "tasks.db"
 
-    def test_db_path_absolute(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            abs_db_path = Path(tmpdir) / "absolute.db"
-            os.environ["RAZTODO_DB"] = str(abs_db_path)
-            try:
-                config = Settings()
-                assert config.db_path == abs_db_path
-            finally:
-                os.environ.pop("RAZTODO_DB", None)
 
-    def test_data_dir_creation(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            data_dir = Path(tmpdir) / "raztodo" / "test"
-            os.environ["XDG_DATA_HOME"] = str(data_dir.parent.parent)
-            try:
-                config = Settings()
-                assert config.data_dir.exists()
-            finally:
-                os.environ.pop("XDG_DATA_HOME", None)
+def test_env_db_absolute(tmp_path, monkeypatch):
+    abs_db = tmp_path / "custom.db"
+    monkeypatch.setenv("RAZTODO_DB", str(abs_db))
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+    monkeypatch.setattr(sys, "platform", "linux", raising=False)
+
+    s = Settings()
+    assert s.db_name == str(abs_db)
+    assert s.db_path == abs_db
+
+
+def test_windows_appdata(monkeypatch, tmp_path):
+    appdata = tmp_path / "AppData" / "Roaming"
+    monkeypatch.setenv("APPDATA", str(appdata))
+    monkeypatch.setattr(sys, "platform", "win32", raising=False)
+    monkeypatch.delenv("RAZTODO_DB", raising=False)
+
+    s = Settings()
+
+    expected = Path(os.getenv("APPDATA")) / "raztodo"
+    assert s.data_dir == expected
+    assert expected.exists() and expected.is_dir()
+
+
+def test_darwin_home(monkeypatch, tmp_path):
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+    monkeypatch.setattr(sys, "platform", "darwin", raising=False)
+    monkeypatch.delenv("RAZTODO_DB", raising=False)
+
+    s = Settings()
+
+    expected = tmp_path / "Library" / "Application Support" / "raztodo"
+    assert s.data_dir == expected
+    assert expected.exists() and expected.is_dir()

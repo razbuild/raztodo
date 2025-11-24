@@ -7,13 +7,20 @@ from typing import ClassVar
 
 class Colorizer:
     COLORS: ClassVar[dict[str, str]] = {
-        "BLACK": "30", "RED": "31", "GREEN": "32", "YELLOW": "33",
-        "BLUE": "34", "MAGENTA": "35", "CYAN": "36", "WHITE": "37", "GRAY": "90",
+        "BLACK": "30",
+        "RED": "31",
+        "GREEN": "32",
+        "YELLOW": "33",
+        "BLUE": "34",
+        "MAGENTA": "35",
+        "CYAN": "36",
+        "WHITE": "37",
+        "GRAY": "90",
     }
 
     ICONS: ClassVar[dict[str, dict[str, str]]] = {
-        "ok":   {"nerd": "", "std": "✓", "ascii": "[OK]",   "color": "GREEN"},
-        "err":  {"nerd": "", "std": "✗", "ascii": "[ERR]",  "color": "RED"},
+        "ok": {"nerd": "", "std": "✓", "ascii": "[OK]", "color": "GREEN"},
+        "err": {"nerd": "", "std": "✗", "ascii": "[ERR]", "color": "RED"},
         "warn": {"nerd": "", "std": "!", "ascii": "[WARN]", "color": "YELLOW"},
         "info": {"nerd": "󰙎", "std": "i", "ascii": "[INFO]", "color": "BLUE"},
     }
@@ -60,8 +67,9 @@ class Colorizer:
                 symbol = data["std"]
             else:
                 symbol = data["ascii"]
-            
+
             return self.color(symbol, code)
+
         return fn
 
     def color(self, text: str, fg_code: str) -> str:
@@ -75,7 +83,7 @@ class Colorizer:
     def _supports_color(self) -> bool:
         if os.getenv("NO_COLOR") or os.getenv("RAZTODO_NO_COLOR"):
             return False
-        
+
         force = os.getenv("RAZTODO_FORCE_COLOR", "").lower()
         if force in ("1", "true", "yes", "on"):
             return True
@@ -98,7 +106,7 @@ class Colorizer:
         force_nerd = os.getenv("RAZTODO_USE_NERD_ICONS", "").lower()
         if force_nerd in ("1", "true", "yes", "on"):
             return "nerd"
-        
+
         if os.name == "nt":
             return "std"
         else:

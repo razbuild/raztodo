@@ -21,7 +21,7 @@ class TestImportTasksUseCase:
             {"title": "Imported Task 1", "description": "Description 1", "done": False},
             {"title": "Imported Task 2", "description": "Description 2", "done": True},
         ]
-        
+
         file_path = self.create_json_file(tmp_path, tasks_data)
 
         use_case = ImportTasksUseCase(task_repo)
@@ -39,26 +39,30 @@ class TestImportTasksUseCase:
 
         with pytest.raises(RazTodoException) as exc_info:
             use_case.execute("/nonexistent/file.json")
-        
+
         assert "not found" in str(exc_info.value).lower()
 
     def test_import_invalid_json_syntax(self, task_repo, tmp_path):
         """Test importing file with invalid JSON syntax raises error."""
         p = tmp_path / "invalid.json"
         p.write_text("invalid json content", encoding="utf-8")
-        
+
         use_case = ImportTasksUseCase(task_repo)
 
         with pytest.raises(RazTodoException) as exc_info:
             use_case.execute(str(p))
 
         error_msg = str(exc_info.value).lower()
-        assert "json" in error_msg or "format" in error_msg or "expecting value" in error_msg
+        assert (
+            "json" in error_msg
+            or "format" in error_msg
+            or "expecting value" in error_msg
+        )
 
     def test_import_not_array(self, task_repo, tmp_path):
         """Test importing valid JSON that is not an array raises error."""
         file_path = self.create_json_file(tmp_path, {"not": "array"})
-        
+
         use_case = ImportTasksUseCase(task_repo)
 
         with pytest.raises(RazTodoException) as exc_info:
@@ -69,7 +73,7 @@ class TestImportTasksUseCase:
     def test_import_empty_list(self, task_repo, tmp_path):
         """Test importing an empty JSON list does nothing."""
         file_path = self.create_json_file(tmp_path, [])
-        
+
         use_case = ImportTasksUseCase(task_repo)
         count = use_case.execute(file_path)
 
@@ -104,7 +108,7 @@ class TestImportTasksUseCase:
 
     def test_import_upsert_mode_updates_data(self, task_repo, tmp_path):
         """Test import with upsert mode correctly updates existing tasks."""
-       
+
         task_repo.add_task("Existing Task", description="Old Description")
 
         tasks_data = [
@@ -121,6 +125,6 @@ class TestImportTasksUseCase:
 
         all_tasks = task_repo.get_tasks()
         updated_task = next(t for t in all_tasks if t.title == "Existing Task")
-        
+
         assert updated_task.description == "New Description"
         assert updated_task.done is True

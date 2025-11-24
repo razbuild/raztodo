@@ -1,4 +1,3 @@
-
 from raztodo.domain.task_entity import TaskEntity
 from raztodo.domain.task_repository import TaskRepository
 

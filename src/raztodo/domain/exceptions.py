@@ -1,5 +1,3 @@
-
-
 class RazTodoException(Exception):
     """Base exception class for all RazTodo domain-specific errors."""
 
@@ -89,9 +87,7 @@ class FileOperationError(RazTodoException):
         message (Optional[str]): Custom message override.
     """
 
-    def __init__(
-        self, filepath: str | None = None, message: str | None = None
-    ) -> None:
+    def __init__(self, filepath: str | None = None, message: str | None = None) -> None:
         self.filepath = filepath
         super().__init__(
             message or default_message("File operation failed", filepath=filepath)

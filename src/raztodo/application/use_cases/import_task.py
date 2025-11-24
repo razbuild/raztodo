@@ -15,9 +15,7 @@ class ImportTasksUseCase:
     def __init__(self, repo: TaskRepository) -> None:
         self.repo: TaskRepository = repo
 
-    def execute(
-        self, filepath: str, upsert: bool = False
-    ) -> int | dict[str, int]:
+    def execute(self, filepath: str, upsert: bool = False) -> int | dict[str, int]:
         """
         Import tasks from a file, optionally updating existing tasks.
 

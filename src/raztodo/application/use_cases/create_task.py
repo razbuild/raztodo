@@ -1,4 +1,3 @@
-
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_repository import TaskRepository
 

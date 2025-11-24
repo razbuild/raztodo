@@ -17,7 +17,7 @@ class TestColorizer:
     def test_methods_existence(self):
         """Test that dynamic methods are created."""
         colorizer = Colorizer()
-        
+
         # Colors
         assert hasattr(colorizer, "black")
         assert hasattr(colorizer, "red")
@@ -72,7 +72,7 @@ class TestColorizer:
         """Test RAZTODO_FORCE_COLOR with falsy values (Bug fix test)."""
         with mock.patch("sys.stdout") as mock_stdout:
             mock_stdout.isatty.return_value = False
-            
+
             for val in ["0", "false", "off"]:
                 with mock.patch.dict(os.environ, {"RAZTODO_FORCE_COLOR": val}):
                     colorizer = Colorizer()
@@ -84,7 +84,7 @@ class TestColorizer:
         with mock.patch.dict(os.environ):
             if "RAZTODO_USE_NERD_ICONS" in os.environ:
                 del os.environ["RAZTODO_USE_NERD_ICONS"]
-            
+
             colorizer = Colorizer()
             assert colorizer.icon_mode == "std"
             assert "✓" in colorizer.ok()
@@ -95,7 +95,7 @@ class TestColorizer:
         with mock.patch.dict(os.environ):
             if "RAZTODO_USE_NERD_ICONS" in os.environ:
                 del os.environ["RAZTODO_USE_NERD_ICONS"]
-            
+
             colorizer = Colorizer()
             assert colorizer.icon_mode == "std"
             assert "✓" in colorizer.ok()
@@ -111,14 +111,14 @@ class TestColorizer:
         """Test fallback to ASCII if encoding fails."""
         with mock.patch("sys.stdout") as mock_stdout:
             mock_stdout.encoding = "ascii"
-            
-            pass 
+
+            pass
 
     def test_icon_render_std(self):
         """Test specific output for Standard mode."""
         colorizer = Colorizer()
         colorizer.icon_mode = "std"
-        colorizer.use_color = False 
+        colorizer.use_color = False
 
         assert colorizer.ok() == "✓"
         assert colorizer.err() == "✗"
@@ -141,6 +141,6 @@ class TestColorizer:
         colorizer = Colorizer()
         colorizer.set_color(True)
         assert colorizer.use_color is True
-        
+
         colorizer.set_color(False)
         assert colorizer.use_color is False

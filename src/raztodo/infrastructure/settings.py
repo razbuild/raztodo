@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 
@@ -8,16 +9,15 @@ class Settings:
         self.data_dir = self._resolve_data_dir()
 
     def _resolve_data_dir(self) -> Path:
-        if os.name == "nt":
+        if sys.platform == "win32":
             path = (
                 Path(os.getenv("APPDATA", Path.home() / "AppData" / "Roaming"))
                 / "raztodo"
             )
+        elif sys.platform == "darwin":
+            path = Path.home() / "Library" / "Application Support" / "raztodo"
         else:
-            path = (
-                Path(os.getenv("XDG_DATA_HOME", Path.home() / ".local" / "share"))
-                / "raztodo"
-            )
+            path = Path.home() / ".local" / "share" / "raztodo"
 
         path.mkdir(parents=True, exist_ok=True)
         return path
