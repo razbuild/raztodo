@@ -49,7 +49,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           coverage run -m pytest
-          coverage xml
+          coverage xml -o coverage.xml
           coverage report -m
 
       - name: Upload coverage to Codecov
