@@ -48,7 +48,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run --source=src/raztodo -m pytest
+          coverage run -m pytest
           coverage xml -o coverage.xml
           coverage report -m
 
