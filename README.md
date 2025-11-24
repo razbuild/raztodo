@@ -1,4 +1,4 @@
-# Raztodo — Minimal Todo CLI
+![Alt text](src/raztodo/assets/logo.png)
 
 **Raztodo** is a minimal, fast, and **dependency-free** CLI Todo manager built with **Python** and **SQLite**.
 
