@@ -6,7 +6,7 @@
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/quality.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=quality&labelColor=444444&cacheSeconds=3600)
 
-![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztodo?token=7097847d-c7e5-49f2-a63a-2152fcb41e75&style=for-the-badge&logoSize=auto&labelColor=444444&cacheSeconds=3600)
+https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&labelColor=444444
 
 ---
 
