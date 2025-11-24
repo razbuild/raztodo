@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.14"]
+        python-version: ["3.10"]
 
     runs-on: ${{ matrix.os }}
 
@@ -49,7 +49,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           coverage run -m pytest
-          codecov xml
+          coverage xml
           coverage report -m
 
       - name: Upload coverage to Codecov
