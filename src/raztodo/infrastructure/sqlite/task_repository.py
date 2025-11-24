@@ -67,7 +67,7 @@ class SQLiteTaskRepository(TaskRepository):
         self._conn: Connection | None = self._connection_factory()
         self._dao = TaskDAO(self._conn)
 
-    def __enter__(self) -> "SQLiteTaskRepository":
+    def __enter__(self) -> SQLiteTaskRepository:
         return self
 
     def __exit__(
