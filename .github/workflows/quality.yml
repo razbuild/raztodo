@@ -41,7 +41,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install .[test,lint]
-          pip install coverage codecov
+          pip install coverage codecov build
 
       - name: Run Ruff (lint)
         run: ruff check src
@@ -59,7 +59,8 @@ jobs:
           flags: unittests
           fail_ci_if_error: false
 
-      - name: Build sdist & wheel
+      - name: Build sdist & wheel (only on ubuntu)
+        if: matrix.os == 'ubuntu-latest'
         run: python -m build --sdist --wheel --outdir dist/
 
       - name: Upload build artifacts
