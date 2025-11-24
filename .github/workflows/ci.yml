@@ -49,11 +49,12 @@ jobs:
       - name: Run tests with coverage
         run: |
           coverage run -m pytest
-          coverage xml -o coverage.xml
+          coverage xml -o junit.xml
           coverage report -m
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
