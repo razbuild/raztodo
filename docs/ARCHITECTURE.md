@@ -68,7 +68,7 @@ This layer contains the core business logic and entities, completely independent
 Contains concrete implementations of repositories, storage, configuration, and various services.
 
 #### Key Files
-- `[container.py](/src/raztodo/infrastructure/container.py)` – Dependency injection and service wiring  
+- `[container.py](../src/raztodo/infrastructure/container.py)` – Dependency injection and service wiring  
 - `[logger.py](/src/raztodo/infrastructure/logger.py)` – Logging configuration  
 - `[settings.py](/src/raztodo/infrastructure/settings.py)` – Configuration loading and environment settings  
 
