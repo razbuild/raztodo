@@ -68,14 +68,14 @@ This layer contains the core business logic and entities, completely independent
 Contains concrete implementations of repositories, storage, configuration, and various services.
 
 #### Key Files
-- [container.py](/src/raztodo/infrastructure/container.py) – Dependency injection and service wiring  
+- `[container.py](/src/raztodo/infrastructure/container.py)` – Dependency injection and service wiring  
 - `[logger.py](/src/raztodo/infrastructure/logger.py)` – Logging configuration  
 - `[settings.py](/src/raztodo/infrastructure/settings.py)` – Configuration loading and environment settings  
 
 #### `sqlite/`
 SQLite-based backend implementation:
 
-- `[connection.py](/src/raztodo/infrastructure/sqlite/connection.py)` – SQLite connection manager  
+- `[connection.py](.../src/raztodo/infrastructure/sqlite/connection.py)` – SQLite connection manager  
 - `[task_schema.py](/src/raztodo/infrastructure/sqlite/task_schema.py)` – Database schema definitions  
 - `[migrations.py](/src/raztodo/infrastructure/sqlite/migrations.py)` – Database migration utilities  
 - `[task_dao.py](/src/raztodo/infrastructure/sqlite/task_dao.py)` – Data access object for tasks  
