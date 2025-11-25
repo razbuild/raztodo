@@ -61,7 +61,7 @@ filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
-source = ["src"]
+source = ["src/raztodo"]
 disable_warnings = ["no-data-collected"]
 omit = [
     "*/tests/*",
