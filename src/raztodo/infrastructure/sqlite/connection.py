@@ -1,11 +1,16 @@
 import os
 import sqlite3
 import sys
+import tempfile
 from collections.abc import Callable
 from pathlib import Path
 
 
 def default_data_dir(app_name: str = "raztodo") -> Path:
+
+    if sys.platform == "win32" and os.getenv("GITHUB_ACTIONS") == "true":
+        path = Path(tempfile.gettempdir()) / app_name
+
     if sys.platform == "win32":
         path = (
             Path(os.getenv("APPDATA", Path.home() / "AppData" / "Roaming")) / app_name

@@ -1,5 +1,6 @@
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -9,6 +10,8 @@ class Settings:
         self.data_dir = self._resolve_data_dir()
 
     def _resolve_data_dir(self) -> Path:
+        if sys.platform == "win32" and os.getenv("GITHUB_ACTIONS") == "true":
+            path = Path(tempfile.gettempdir()) / "raztodo"
         if sys.platform == "win32":
             path = (
                 Path(os.getenv("APPDATA", Path.home() / "AppData" / "Roaming"))
