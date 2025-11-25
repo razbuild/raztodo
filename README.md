@@ -2,7 +2,7 @@
     <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="500">
 </p>
 
-![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
+![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&color=blue&cacheSeconds=3600)
 
 ![GitHub branch check runs](https://img.shields.io/github/check-runs/razbuild/raztodo/master?nameFilter=ruff&style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
 
