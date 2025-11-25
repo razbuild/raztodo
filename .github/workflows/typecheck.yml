@@ -1,4 +1,4 @@
-name: Type Check
+name: TYPE CHECK
 
 on:
   push:
