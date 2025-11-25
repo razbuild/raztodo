@@ -4,7 +4,7 @@
 
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
 
-![GitHub branch check runs](https://img.shields.io/github/check-runs/razbuild/raztodo/master?nameFilter=lint&style=flat&logo=ruff&logoSize=auto&labelColor=444444&cacheSeconds=3600)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/razbuild/raztodo/master?nameFilter=ruff&style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/tests.yml?branch=master&event=push&style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
 
