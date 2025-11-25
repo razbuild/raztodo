@@ -75,7 +75,7 @@ Contains concrete implementations of repositories, storage, configuration, and v
 #### `sqlite/`
 SQLite-based backend implementation:
 
-- `[connection.py](.../src/raztodo/infrastructure/sqlite/connection.py)` – SQLite connection manager  
+- `[connection.py](../src/raztodo/infrastructure/sqlite/connection.py)` – SQLite connection manager  
 - `[task_schema.py](/src/raztodo/infrastructure/sqlite/task_schema.py)` – Database schema definitions  
 - `[migrations.py](/src/raztodo/infrastructure/sqlite/migrations.py)` – Database migration utilities  
 - `[task_dao.py](/src/raztodo/infrastructure/sqlite/task_dao.py)` – Data access object for tasks  
