@@ -40,7 +40,7 @@ The Application layer contains the operational logic of the system in the form o
 Each file represents an isolated business action:
 
 - `[create_task.py](https://github.com/razbuild/raztodo/blob/master/src/raztodo/application/use_cases/create_task.py)` – Creates a new task with data validation  
-- `[delete_task.py](/src/raztodo/application/use_cases/delete_task.py)` – Deletes a task by its ID  
+- [delete_task.py](/src/raztodo/application/use_cases/delete_task.py) – Deletes a task by its ID  
 - `[export_task.py](/src/raztodo/application/use_cases/export_task.py)` – Exports tasks to an external format  
 - `[import_task.py](/src/raztodo/application/use_cases/import_task.py)` – Imports tasks from an external source  
 - `[list_tasks.py](/src/raztodo/application/use_cases/list_tasks.py)` – Retrieves the full list of tasks  
