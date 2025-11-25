@@ -48,8 +48,8 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run -m pytest
-          coverage xml -o junit.xml
+          coverage run --source=src/raztodo -m pytest
+          coverage xml
           coverage report -m
 
       - name: Upload coverage reports to Codecov
