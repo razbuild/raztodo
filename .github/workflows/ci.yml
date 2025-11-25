@@ -40,11 +40,23 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install .[test,lint]
+          pip install -e .[test,lint]
           pip install coverage codecov build
 
       - name: Run Ruff (lint)
         run: ruff check src
+
+      - name: Set PYTHONPATH
+        shell: bash
+        run: |
+          echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
+        if: runner.os != 'Windows'
+
+      - name: Set PYTHONPATH on Windows
+        shell: pwsh
+        run: |
+          echo "PYTHONPATH=$env:PYTHONPATH;$pwd\src" >> $env:GITHUB_ENV
+        if: runner.os == 'Windows'
 
       - name: Run tests with coverage
         run: |
@@ -52,10 +64,12 @@ jobs:
           coverage xml
           coverage report -m
 
-      - name: Upload coverage reports to Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: false
 
       - name: Build sdist & wheel (only on ubuntu)
         if: matrix.os == 'ubuntu-latest'
