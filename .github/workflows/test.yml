@@ -31,7 +31,8 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          coverage run --source=src -m pytest
+          export PYTHONPATH=$PYTHONPATH:./src
+          coverage run --source=src/raztodo -m pytest
           coverage xml
           coverage report -m
 
