@@ -1,5 +1,4 @@
 import os
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -11,9 +10,9 @@ from raztodo.infrastructure.sqlite.connection import (
 
 
 @pytest.fixture
-def temp_db():
-    with tempfile.NamedTemporaryFile(suffix=".db") as f:
-        yield f.name
+def temp_db(tmp_path):
+    """Fixture to provide a temporary database path."""
+    return str(tmp_path / "test.db")
 
 
 class TestConnectionFactory:
