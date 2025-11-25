@@ -2,19 +2,22 @@
     <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="500">
 </p>
 
-![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&color=blue&cacheSeconds=3600)
+<p align="center">
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=flat&logoSize=auto&label=ruff&labelColor=222222&color=blue&cacheSeconds=3600)
+  <img src="https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&color=blue&cacheSeconds=3600" alt="License">
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=black&labelColor=222222&color=222222&cacheSeconds=3600)
+  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=flat&logoSize=auto&label=ruff&labelColor=222222&color=blue&cacheSeconds=3600" alt="Ruff">
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=mypy&labelColor=222222&color=purple&cacheSeconds=3600)
+  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=black&labelColor=222222&color=222222&cacheSeconds=3600" alt="Black">
 
+  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=mypy&labelColor=222222&color=purple&cacheSeconds=3600" alt="Mypy">
 
+  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/tests.yml?branch=master&event=push&style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600" alt="Tests">
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/tests.yml?branch=master&event=push&style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
+  <img src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600" alt="Coverage">
 
-![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600)
+</p>
+
 
 
 ---
