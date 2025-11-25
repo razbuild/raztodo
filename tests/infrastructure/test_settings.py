@@ -43,6 +43,7 @@ def test_windows_appdata(monkeypatch, tmp_path):
     monkeypatch.setenv("APPDATA", str(appdata))
     monkeypatch.setattr(sys, "platform", "win32", raising=False)
     monkeypatch.delenv("RAZTODO_DB", raising=False)
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
 
     s = Settings()
 

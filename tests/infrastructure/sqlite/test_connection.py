@@ -94,7 +94,9 @@ class TestDefaultDataDir:
     def test_default_data_dir_windows(self, monkeypatch):
         """Test default data dir on Windows."""
         monkeypatch.setattr("sys.platform", "win32")
+        monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
         monkeypatch.setenv("APPDATA", "/tmp/appdata")
+
         path = default_data_dir("myapp")
         assert path == Path("/tmp/appdata/myapp")
 
