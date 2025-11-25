@@ -10,7 +10,7 @@
 
   <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=mypy&labelColor=333333&color=purple&cacheSeconds=3600">
 
-  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/tests.yml?branch=master&event=push&style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600" alt="Tests">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/test.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&labelColor=333333&color=66ff66&cacheSeconds=3600">
 
   <img src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=flat&logoSize=auto&labelColor=222222&cacheSeconds=3600" alt="Coverage">
 

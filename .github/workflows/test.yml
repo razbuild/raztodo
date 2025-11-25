@@ -1,4 +1,4 @@
-name: TESTS
+name: TEST
 on:
   push:
     branches: [ master ]
