@@ -4,11 +4,11 @@
 
 <p align="center">
 
-  <img src="https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&color=blue&cacheSeconds=3600" alt="License">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&logoSize=auto&labelColor=333333&color=66ffff&cacheSeconds=3600">
 
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=flat&logoSize=auto&label=ruff&labelColor=222222&color=66ffff&cacheSeconds=3600">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ruff&labelColor=333333&color=blue&cacheSeconds=3600">
 
-  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=black&labelColor=222222&color=222222&cacheSeconds=3600" alt="Black">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=mypy&labelColor=333333&color=blue&cacheSeconds=3600">
 
   <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=mypy&labelColor=222222&color=purple&cacheSeconds=3600" alt="Mypy">
 
