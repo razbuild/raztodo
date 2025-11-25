@@ -6,7 +6,7 @@
 
   <img src="https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=222222&color=blue&cacheSeconds=3600" alt="License">
 
-  <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=flat&logoSize=auto&label=ruff&labelColor=222222&color=blue&cacheSeconds=3600" alt="Ruff">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=flat&logoSize=auto&label=ruff&labelColor=222222&color=66ffff&cacheSeconds=3600">
 
   <img src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=black&labelColor=222222&color=222222&cacheSeconds=3600" alt="Black">
 
