@@ -174,3 +174,19 @@ raztodo --help
 
 > `__main__.py` is not meant for direct execution during development.
 
+
+## Conclusion / Next Steps
+
+The architecture ensures separation of concerns, making the codebase maintainable and testable.
+
+Developers can confidently extend functionality without affecting core business rules.
+
+Future enhancements could include:
+
+Adding new CLI commands or presentation interfaces (e.g., Web API).
+
+Supporting additional database backends via Infrastructure.
+
+Introducing automated tests for all Use Cases.
+
+This section helps new contributors quickly understand the design rationale and areas for improvement or extension.
