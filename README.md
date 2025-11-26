@@ -4,15 +4,15 @@
 
 <p align="center">
 
-  <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=flat&logoSize=auto&labelColor=333333&color=66ffff&cacheSeconds=3600">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=black&labelColor=333333&color=666666&cacheSeconds=3600">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=black&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=flat&logoSize=auto&label=ruff&labelColor=333333&color=blue&cacheSeconds=3600">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ruff&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=flat&logoSize=auto&label=mypy&labelColor=333333&color=violet&cacheSeconds=3600">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=mypy&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/test.yml?branch=master&event=push&style=flat&logoSize=auto&labelColor=333333&color=66ff66&cacheSeconds=3600">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/test.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
   <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=flat&logoSize=auto&labelColor=333333&cacheSeconds=%203600">
 
