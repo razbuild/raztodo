@@ -1,6 +1,6 @@
 # Architecture
 
-This project follows **Clean Architecture** (Hexagonal / Ports and Adapters) to ensure that core business logic remains independent from frameworks, infrastructure, and delivery mechanisms. This structure improves **testability**, **maintainability**, and **long-term extensibility**.
+This project is structured according to **Clean Architecture** (Hexagonal / Ports and Adapters) to ensure that core business logic remains independent from frameworks, infrastructure, and delivery mechanisms. This design improves **testability**, **maintainability**, and **long-term extensibility**.
 
 ---
 
@@ -8,33 +8,33 @@ This project follows **Clean Architecture** (Hexagonal / Ports and Adapters) to 
 
 | Layer | Responsibility |
 |-------|----------------|
-| **Domain** | Pure business rules, entities, and abstractions. Completely independent of other layers. |
-| **Application** | Use Cases orchestrating domain logic through repository interfaces. Contains operational workflows. |
-| **Infrastructure** | Technical implementations such as database persistence, logging, configuration, and external services. |
-| **Presentation** | User-facing interfaces (CLI). Handles user input/output. |
+| **Domain** | Contains pure business rules, entities, and abstractions. Fully independent of other layers. |
+| **Application** | Orchestrates domain logic through repository interfaces. Implements operational workflows (Use Cases). |
+| **Infrastructure** | Implements technical details such as database access, logging, configuration, and external services. |
+| **Presentation** | Provides user-facing interfaces (CLI) and handles input/output. |
 
-**Dependency Direction:** All dependencies point **inward**. Outer layers depend on inner layers; inner layers never depend on outer layers.
+**Dependency Rule:** All dependencies point **inward**. Outer layers depend on inner layers; inner layers never depend on outer layers.
 
 ---
 
-## Dependency Rule
+## Dependency Rule Diagram
 
 ```mermaid
 flowchart LR
     Presentation --> Application
     Application --> Domain
     Infrastructure --> Application
-    %% Optional: Infrastructure may use Domain types for mapping purposes or wiring
+    %% Optional: Infrastructure may use Domain types for mapping purposes
 ```
 
-- **Domain**: depends on nothing.  
-- **Application**: depends only on Domain.  
-- **Presentation**: depends on Application (and indirectly uses Domain via Application).  
-- **Infrastructure**: depends on Application; may reference Domain for DTOs, entities, or mapping, but **never depends on Presentation** for business logic.
+- **Domain:** depends on nothing.  
+- **Application:** depends only on Domain.  
+- **Presentation:** depends on Application (and indirectly uses Domain via Application).  
+- **Infrastructure:** depends on Application; may reference Domain for DTOs or entities but **never depends on Presentation**.
 
-> **Notes:**
-> - Some Use Cases, like database migrations, may call Infrastructure utilities (e.g., `migrations.py`) for technical operations. These operations do not contain business logic and are an acceptable exception to strict layer dependency rules.
-> - Infrastructure may reference Presentation components for wiring purposes (like `TaskRouter` in `AppContainer`). This does **not** introduce business logic dependency on Presentation; it's strictly for dependency injection.
+> **Notes:**  
+> - Some Use Cases, like database migrations, may call Infrastructure utilities (e.g., `migrations.py`) for technical operations. These do not contain business logic.  
+> - Infrastructure may reference Presentation for wiring purposes (e.g., `TaskRouter` in `AppContainer`). This does **not** create a business logic dependency.
 
 ---
 
@@ -53,12 +53,12 @@ flowchart TD
     UserInput --> Parser --> Handler --> UseCase --> RepoIface --> RepoImpl --> DB
 ```
 
-**Explanation:**  
+**Flow Explanation:**  
 1. User sends input via CLI.  
-2. Presentation parses and routes the command to the correct Use Case.  
-3. Use Case executes business logic using repository interfaces.  
-4. Infrastructure provides concrete repository implementations and persists data.  
-5. Response flows back through the same layers to the user.
+2. Presentation parses and routes commands to the corresponding Use Case.  
+3. Use Case executes business logic via repository interfaces.  
+4. Infrastructure persists data and provides concrete repository implementations.  
+5. Responses flow back through the same layers to the user.
 
 ---
 
@@ -88,28 +88,28 @@ Contains **Use Cases**—isolated operations coordinating Domain logic.
 
 | File | Purpose | Input / Output |
 |------|---------|----------------|
-| `create_task.py` | Creates a new task | Input: task data; Output: created Task |
-| `delete_task.py` | Deletes a task by ID | Input: task ID; Output: success/failure |
-| `update_task.py` | Updates task details | Input: task ID + new data; Output: updated Task |
-| `list_tasks.py` | Retrieves all tasks | Output: list of Tasks |
-| `search_tasks.py` | Searches for tasks | Input: search criteria; Output: matching Tasks |
-| `mark_task_done.py` | Marks a task as completed | Input: task ID; Output: updated Task |
-| `import_task.py` | Imports tasks | Input: external file; Output: imported Tasks |
-| `export_task.py` | Exports tasks | Input: criteria; Output: external file |
-| `migrate_tasks.py` | Handles database migrations | Input: migration commands; Output: migration status |
+| `create_task.py` | Create a new task | Input: task data; Output: Task |
+| `delete_task.py` | Delete a task by ID | Input: task ID; Output: success/failure |
+| `update_task.py` | Update task details | Input: task ID + new data; Output: Task |
+| `list_tasks.py` | Retrieve all tasks | Output: list of Tasks |
+| `search_tasks.py` | Search for tasks | Input: criteria; Output: Tasks |
+| `mark_task_done.py` | Mark a task completed | Input: task ID; Output: Task |
+| `import_task.py` | Import tasks | Input: file; Output: Tasks |
+| `export_task.py` | Export tasks | Input: criteria; Output: file |
+| `migrate_tasks.py` | Database migrations | Input: commands; Output: status |
 
-> Each Use Case is fully testable independently from Presentation and Infrastructure, except for migration-related utilities that interface with Infrastructure scripts.
+> All Use Cases are fully testable independently from Presentation and Infrastructure.
 
 ---
 
 ## 2. Domain Layer
 
 **Directory:** `domain/`  
-Contains **core business logic and entities**. Independent of frameworks, DB, or CLI.
+Contains **core business logic and entities**, fully independent of frameworks, database, or CLI.
 
 - `task_entity.py` – Task entity and business rules  
 - `exceptions.py` – Domain-specific exceptions  
-- `task_repository.py` – Repository interface (contract for storage)
+- `task_repository.py` – Repository interface
 
 ---
 
@@ -118,9 +118,9 @@ Contains **core business logic and entities**. Independent of frameworks, DB, or
 **Directory:** `infrastructure/`  
 Provides concrete implementations for repositories, persistence, logging, and configuration.
 
-- `container.py` – Dependency injection / service wiring  
-- `logger.py` – Logging configuration  
-- `settings.py` – Config/environment settings  
+- `container.py` – Dependency injection / wiring  
+- `logger.py` – Logging setup  
+- `settings.py` – Configuration and environment
 
 ### SQLite Implementation
 
@@ -128,8 +128,8 @@ Provides concrete implementations for repositories, persistence, logging, and co
 - `task_schema.py` – Database schema  
 - `migrations.py` – Migration utilities  
 - `task_dao.py` – Data access object  
-- `task_mapper.py` – Mapping between Domain and DB models  
-- `task_repository.py` – Implementation of TaskRepository interface
+- `task_mapper.py` – Domain ↔ DB mapping  
+- `task_repository.py` – TaskRepository implementation
 
 ---
 
@@ -142,7 +142,7 @@ Handles **user interaction via CLI**.
 - `parser.py` – Argument parsing  
 - `router.py` – Routes commands to Use Cases  
 - `formatters.py` – Output formatting  
-- `helpers.py` – Utility functions  
+- `helpers.py` – Utilities
 
 ### Commands
 
@@ -150,13 +150,13 @@ Handles **user interaction via CLI**.
 |--------------|---------|
 | `create_task_cmd.py` | Add a task |
 | `delete_task_cmd.py` | Delete a task |
-| `update_task_cmd.py` | Update task details |
-| `list_tasks_cmd.py` | List all tasks |
+| `update_task_cmd.py` | Update task |
+| `list_tasks_cmd.py` | List tasks |
 | `search_tasks_cmd.py` | Search tasks |
-| `mark_task_done_cmd.py` | Mark as completed |
+| `mark_task_done_cmd.py` | Mark completed |
 | `import_task_cmd.py` | Import tasks |
 | `export_task_cmd.py` | Export tasks |
-| `migrate_tasks_cmd.py` | Database migrations |
+| `migrate_tasks_cmd.py` | Run migrations |
 
 ---
 
@@ -164,7 +164,7 @@ Handles **user interaction via CLI**.
 
 **File:** `__main__.py`  
 
-CLI is exposed via `pyproject.toml` console script:
+CLI usage via `pyproject.toml` console script:
 
 ```bash
 raztodo add "Task1" --desc "Test1"
@@ -172,17 +172,5 @@ raztodo list
 raztodo --help
 ```
 
-> `__main__.py` is not intended for direct execution during development.
-
----
-
-## 6. Testing Strategy
-
-- **Unit Tests:** Target Domain and Application layers  
-- **Integration Tests:** Cover Use Cases + Infrastructure  
-- **CLI Tests:** Ensure Presentation layer maps correctly to Use Cases
-
----
-
-This document provides a **comprehensive, maintainable, and testable architecture reference** for developers joining the project, with clear notes on acceptable exceptions to strict layer separation rules.
+> `__main__.py` is not meant for direct execution during development.
 
