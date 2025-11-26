@@ -1,38 +1,45 @@
-## Architecture
-This project follows Clean Architecture (Hexagonal / Ports and Adapters) to ensure that core business logic remains independent from frameworks, infrastructure, and delivery mechanisms. This structure increases testability, maintainability, and long-term extensibility.
+# Architecture
+
+This project follows **Clean Architecture** (Hexagonal / Ports and Adapters) to ensure that core business logic remains independent from frameworks, infrastructure, and delivery mechanisms. This structure improves **testability**, **maintainability**, and **long-term extensibility**.
 
 ---
 
-### Overview
-- **Domain**: Pure business rules, entities, and abstractions.
+## Overview
 
-- **Application**: Use cases orchestrating domain logic through repository interfaces.
+| Layer | Responsibility |
+|-------|----------------|
+| **Domain** | Pure business rules, entities, and abstractions. Completely independent of other layers. |
+| **Application** | Use Cases orchestrating domain logic through repository interfaces. Contains operational workflows. |
+| **Infrastructure** | Technical implementations such as database persistence, logging, configuration, and external services. |
+| **Presentation** | User-facing interfaces (CLI). Handles user input/output. |
 
-- **Infrastructure**: Technical implementations such as database persistence, logging, and configuration.
+**Dependency Direction:** All dependencies point **inward**. Outer layers depend on inner layers; inner layers never depend on outer layers.
 
-- **Presentation**: User-facing interfaces (CLI).
-
-- **Dependency Direction**: All dependencies point inward; outer layers depend on inner layers, never the reverse.
 ---
 
-### Dependency Rule
+## Dependency Rule
+
 ```mermaid
 flowchart LR
     Presentation --> Application
     Application --> Domain
     Infrastructure --> Application
-    Infrastructure --> Domain
+    %% Optional: Infrastructure may use Domain types for mapping purposes or wiring
 ```
-- **Domain** depends on nothing.
 
-- **Application** depends only on Domain.
+- **Domain**: depends on nothing.  
+- **Application**: depends only on Domain.  
+- **Presentation**: depends on Application (and indirectly uses Domain via Application).  
+- **Infrastructure**: depends on Application; may reference Domain for DTOs, entities, or mapping, but **never depends on Presentation** for business logic.
 
-- **Presentation** and Infrastructure depend on both Application and Domain.
+> **Notes:**
+> - Some Use Cases, like database migrations, may call Infrastructure utilities (e.g., `migrations.py`) for technical operations. These operations do not contain business logic and are an acceptable exception to strict layer dependency rules.
+> - Infrastructure may reference Presentation components for wiring purposes (like `TaskRouter` in `AppContainer`). This does **not** introduce business logic dependency on Presentation; it's strictly for dependency injection.
 
-- **Infrastructure** must never depend on Presentation.
 ---
-### Data Flow (End-to-End)
-Below is a high-level view of how data flows through the system:
+
+## Data Flow (End-to-End)
+
 ```mermaid
 flowchart TD
     UserInput["User Input"]
@@ -46,10 +53,16 @@ flowchart TD
     UserInput --> Parser --> Handler --> UseCase --> RepoIface --> RepoImpl --> DB
 ```
 
+**Explanation:**  
+1. User sends input via CLI.  
+2. Presentation parses and routes the command to the correct Use Case.  
+3. Use Case executes business logic using repository interfaces.  
+4. Infrastructure provides concrete repository implementations and persists data.  
+5. Response flows back through the same layers to the user.
+
 ---
 
 ## Project Structure
-
 
 ```
 src/
@@ -64,105 +77,112 @@ src/
     ├── __main__.py
 ```
 
+---
+
+## 1. Application Layer
+
+**Directory:** `application/`  
+Contains **Use Cases**—isolated operations coordinating Domain logic.
+
+### Use Cases
+
+| File | Purpose | Input / Output |
+|------|---------|----------------|
+| `create_task.py` | Creates a new task | Input: task data; Output: created Task |
+| `delete_task.py` | Deletes a task by ID | Input: task ID; Output: success/failure |
+| `update_task.py` | Updates task details | Input: task ID + new data; Output: updated Task |
+| `list_tasks.py` | Retrieves all tasks | Output: list of Tasks |
+| `search_tasks.py` | Searches for tasks | Input: search criteria; Output: matching Tasks |
+| `mark_task_done.py` | Marks a task as completed | Input: task ID; Output: updated Task |
+| `import_task.py` | Imports tasks | Input: external file; Output: imported Tasks |
+| `export_task.py` | Exports tasks | Input: criteria; Output: external file |
+| `migrate_tasks.py` | Handles database migrations | Input: migration commands; Output: migration status |
+
+> Each Use Case is fully testable independently from Presentation and Infrastructure, except for migration-related utilities that interface with Infrastructure scripts.
 
 ---
 
-### 1. Application Layer  
-**Directory:** `application/`
+## 2. Domain Layer
 
-The Application layer contains the operational logic of the system in the form of **Use Cases**, each defining a specific business operation.
+**Directory:** `domain/`  
+Contains **core business logic and entities**. Independent of frameworks, DB, or CLI.
 
-#### `use_cases/`
-Each file represents an isolated business action:
-
-- [create_task.py](/src/raztodo/application/use_cases/create_task.py) – Creates a new task with data validation  
-- [delete_task.py](/src/raztodo/application/use_cases/delete_task.py) – Deletes a task by its ID  
-- [export_task.py](/src/raztodo/application/use_cases/export_task.py) – Exports tasks to an external format  
-- [import_task.py](/src/raztodo/application/use_cases/import_task.py) – Imports tasks from an external source  
-- [list_tasks.py](/src/raztodo/application/use_cases/list_tasks.py) – Retrieves the full list of tasks  
-- [mark_task_done.py](/src/raztodo/application/use_cases/mark_task_done.py) – Marks a task as completed  
-- [migrate_tasks.py](/src/raztodo/application/use_cases/migrate_tasks.py) – Handles database migrations  
-- [search_tasks.py](/src/raztodo/application/use_cases/search_tasks.py) – Searches for tasks by criteria  
-- [update_task.py](/src/raztodo/application/use_cases/update_task.py) – Updates task details  
+- `task_entity.py` – Task entity and business rules  
+- `exceptions.py` – Domain-specific exceptions  
+- `task_repository.py` – Repository interface (contract for storage)
 
 ---
 
-### 2. Domain Layer  
-**Directory:** `domain/`
+## 3. Infrastructure Layer
 
-This layer contains the core business logic and entities, completely independent of external systems.
+**Directory:** `infrastructure/`  
+Provides concrete implementations for repositories, persistence, logging, and configuration.
 
-- [task_entity.py](/src/raztodo/domain/task_entity.py) – Domain model representing a Task  
-- [exceptions.py](/src/raztodo/domain/exceptions.py) – Domain-specific exceptions  
-- [task_repository.py](/src/raztodo/domain/task_repository.py) – Repository interface defining the storage contract  
+- `container.py` – Dependency injection / service wiring  
+- `logger.py` – Logging configuration  
+- `settings.py` – Config/environment settings  
 
----
+### SQLite Implementation
 
-### 3. Infrastructure Layer  
-**Directory:** `infrastructure/`
-
-Contains concrete implementations of repositories, storage, configuration, and various services.
-
-#### Key Files
-- [container.py](../src/raztodo/infrastructure/container.py) – Dependency injection and service wiring  
-- [logger.py](/src/raztodo/infrastructure/logger.py) – Logging configuration  
-- [settings.py](/src/raztodo/infrastructure/settings.py) – Configuration loading and environment settings  
-
-#### `sqlite/`
-SQLite-based backend implementation:
-
-- [connection.py](../src/raztodo/infrastructure/sqlite/connection.py) – SQLite connection manager  
-- [task_schema.py](/src/raztodo/infrastructure/sqlite/task_schema.py) – Database schema definitions  
-- [migrations.py](/src/raztodo/infrastructure/sqlite/migrations.py) – Database migration utilities  
-- [task_dao.py](/src/raztodo/infrastructure/sqlite/task_dao.py) – Data access object for tasks  
-- [task_mapper.py](/src/raztodo/infrastructure/sqlite/task_mapper.py) – Mapping between domain models and DB models  
-- [task_repository.py](/src/raztodo/infrastructure/sqlite/task_repository.py) – SQLite implementation of TaskRepository  
+- `connection.py` – DB connection manager  
+- `task_schema.py` – Database schema  
+- `migrations.py` – Migration utilities  
+- `task_dao.py` – Data access object  
+- `task_mapper.py` – Mapping between Domain and DB models  
+- `task_repository.py` – Implementation of TaskRepository interface
 
 ---
 
-### 4. Presentation Layer  
-**Directory:** `presentation/cli/`
+## 4. Presentation Layer
 
-This layer manages user interaction. The project includes a simple command-line interface.
+**Directory:** `presentation/cli/`  
+Handles **user interaction via CLI**.
 
-#### Key Files
-- [entrypoint.py](/src/raztodo/presentation/cli/entrypoint.py) – CLI entry point  
-- [parser.py](/src/raztodo/presentation/cli/parser.py) – Argument parsing  
-- [router.py](/src/raztodo/presentation/cli/router.py) – Routes CLI commands to Use Cases  
-- [formatters.py](/src/raztodo/presentation/cli/formatters.py) – Output formatting helpers  
-- [helpers.py](/src/raztodo/presentation/cli/helpers.py) – Utility functions  
+- `entrypoint.py` – CLI entry point  
+- `parser.py` – Argument parsing  
+- `router.py` – Routes commands to Use Cases  
+- `formatters.py` – Output formatting  
+- `helpers.py` – Utility functions  
 
-#### `commands/`
-Command handlers for individual CLI operations:
+### Commands
 
-- [create_task_cmd.py](/src/raztodo/presentation/cli/commands/create_task_cmd.py)
-- [delete_task_cmd.py](/src/raztodo/presentation/cli/commands/delete_task_cmd.py)  
-- [export_task_cmd.py](/src/raztodo/presentation/cli/commands/export_task_cmd.py)  
-- [import_task_cmd.py](/src/raztodo/presentation/cli/commands/import_task_cmd.py)  
-- [list_tasks_cmd.py](/src/raztodo/presentation/cli/commands/list_tasks_cmd.py)  
-- [mark_task_done_cmd.py](/src/raztodo/presentation/cli/commands/mark_task_done_cmd.py)  
-- [migrate_tasks_cmd.py](/src/raztodo/presentation/cli/commands/migrate_tasks_cmd.py)  
-- [search_tasks_cmd.py](/src/raztodo/presentation/cli/commands/search_tasks_cmd.py) 
-- [update_task_cmd.py](/src/raztodo/presentation/cli/commands/update_task_cmd.py) 
+| Command File | Purpose |
+|--------------|---------|
+| `create_task_cmd.py` | Add a task |
+| `delete_task_cmd.py` | Delete a task |
+| `update_task_cmd.py` | Update task details |
+| `list_tasks_cmd.py` | List all tasks |
+| `search_tasks_cmd.py` | Search tasks |
+| `mark_task_done_cmd.py` | Mark as completed |
+| `import_task_cmd.py` | Import tasks |
+| `export_task_cmd.py` | Export tasks |
+| `migrate_tasks_cmd.py` | Database migrations |
 
 ---
 
-### 5. Entry Point  
-**File:** `__main__.py`
+## 5. Entry Point
 
-This project exposes its command-line interface (CLI) via a console script defined in `pyproject.toml`.
-After installation, the CLI becomes available under the command:
-```bash
-raztodo
-```
+**File:** `__main__.py`  
 
-Example:
+CLI is exposed via `pyproject.toml` console script:
+
 ```bash
 raztodo add "Task1" --desc "Test1"
-```
-You can list all commands:
-```bash
+raztodo list
 raztodo --help
 ```
-The `__main__.py` file remains part of the structure but is not intended for direct execution in typical usage.
+
+> `__main__.py` is not intended for direct execution during development.
+
+---
+
+## 6. Testing Strategy
+
+- **Unit Tests:** Target Domain and Application layers  
+- **Integration Tests:** Cover Use Cases + Infrastructure  
+- **CLI Tests:** Ensure Presentation layer maps correctly to Use Cases
+
+---
+
+This document provides a **comprehensive, maintainable, and testable architecture reference** for developers joining the project, with clear notes on acceptable exceptions to strict layer separation rules.
 
