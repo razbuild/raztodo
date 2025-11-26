@@ -14,7 +14,7 @@
 
   <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/test.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
-  <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=flat&logoSize=auto&labelColor=333333&cacheSeconds=%203600">
+  <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
 </p>
 
