@@ -39,11 +39,11 @@
 - **Search:** Full-text search across tasks.
 - **Pagination:** Paginated listings for long task lists.
 - **Terminal Output:** Optional colored output with ANSI and icons.
-- **Data Import/Export:** Export and import tasks via JSON.
-- **Storage:** Persistent storage with SQLite (no external services required).
+- **Data Import/Export:** Export and import tasks via [JSON](https://www.json.org/json-en.html).
+- **Storage:** Persistent storage with [SQLite](https://sqlite.org) (no external services required).
 - **Logging:** Configurable logging via environment variables.
 - **Migration:** Run database migrations.
-
+- **Cross platform** linux, mac, windows 
 
 ---
 
