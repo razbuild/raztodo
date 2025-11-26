@@ -175,18 +175,194 @@ raztodo --help
 > `__main__.py` is not meant for direct execution during development.
 
 
-## Conclusion / Next Steps
+# 🏛️ Architecture
 
-The architecture ensures separation of concerns, making the codebase maintainable and testable.
+This project follows **Clean Architecture** (Hexagonal / Ports & Adapters) to ensure that core business logic remains **independent** from frameworks, infrastructure, and delivery mechanisms. This approach improves:
 
-Developers can confidently extend functionality without affecting core business rules.
+- ✅ **Testability**  
+- ✅ **Maintainability**  
+- ✅ **Long-term extensibility**
 
-Future enhancements could include:
+---
 
-Adding new CLI commands or presentation interfaces (e.g., Web API).
+## 🗂️ Overview of Layers
 
-Supporting additional database backends via Infrastructure.
+| Layer | Responsibility |
+|-------|----------------|
+| **Domain** | Core business rules, entities, and abstractions. Fully independent. |
+| **Application** | Use Cases orchestrating domain logic via repository interfaces. Handles operational workflows. |
+| **Infrastructure** | Technical implementations: database, logging, configuration, external services. |
+| **Presentation** | User-facing interfaces (CLI). Handles input/output. |
 
-Introducing automated tests for all Use Cases.
+**Dependency Direction:** All dependencies point **inward**. Outer layers depend on inner layers; inner layers never depend on outer layers.
 
-This section helps new contributors quickly understand the design rationale and areas for improvement or extension.
+---
+
+## 🔄 Dependency Rule
+
+```mermaid
+flowchart LR
+    Presentation --> Application
+    Application --> Domain
+    Infrastructure --> Application
+```
+
+- **Domain:** depends on nothing.  
+- **Application:** depends only on Domain.  
+- **Presentation:** depends on Application (indirectly uses Domain via Application).  
+- **Infrastructure:** depends on Application; may reference Domain for DTOs, entities, or mapping, but **never depends on Presentation** for business logic.
+
+> **Notes:**  
+> - Some Use Cases (e.g., migrations) may call Infrastructure utilities for technical tasks.  
+> - Infrastructure may reference Presentation components strictly for dependency injection (no business logic).
+
+---
+
+## 🌐 Data Flow (End-to-End)
+
+```mermaid
+flowchart TD
+    UserInput["User Input"]
+    Parser["CLI Parser<br/>(Presentation)"]
+    Handler["Command Handler<br/>(Presentation)"]
+    UseCase["Use Case<br/>(Application)"]
+    RepoIface["Repository Interface<br/>(Domain)"]
+    RepoImpl["Repository Implementation<br/>(Infrastructure)"]
+    DB["SQLite Database"]
+
+    UserInput --> Parser --> Handler --> UseCase --> RepoIface --> RepoImpl --> DB
+```
+
+**Flow Explanation:**
+
+1. User sends input via CLI.  
+2. Presentation parses & routes the command to the correct Use Case.  
+3. Use Case executes business logic using repository interfaces.  
+4. Infrastructure persists data & provides concrete implementations.  
+5. Response flows back to the user through the same layers.
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+└── raztodo/
+    ├── application/
+    │   └── use_cases/
+    ├── domain/
+    ├── infrastructure/
+    │   └── sqlite/
+    ├── presentation/
+    │   └── cli/
+    ├── __main__.py
+```
+
+---
+
+## 1️⃣ Application Layer
+
+**Directory:** `application/`  
+Contains **Use Cases** coordinating domain logic.
+
+### Use Cases
+
+| File | Purpose | Input / Output |
+|------|---------|----------------|
+| `create_task.py` | Create a new task | Input: task data; Output: Task |
+| `delete_task.py` | Delete a task | Input: task ID; Output: success/failure |
+| `update_task.py` | Update task details | Input: task ID + data; Output: Task |
+| `list_tasks.py` | Retrieve all tasks | Output: list of Tasks |
+| `search_tasks.py` | Search tasks | Input: criteria; Output: Tasks |
+| `mark_task_done.py` | Mark a task completed | Input: task ID; Output: Task |
+| `import_task.py` | Import tasks | Input: file; Output: Tasks |
+| `export_task.py` | Export tasks | Input: criteria; Output: file |
+| `migrate_tasks.py` | Handle DB migrations | Input: commands; Output: status |
+
+> Fully testable independently from Presentation & Infrastructure.
+
+---
+
+## 2️⃣ Domain Layer
+
+**Directory:** `domain/`  
+Contains **core business logic**.
+
+- `task_entity.py` – Task entity & rules  
+- `exceptions.py` – Domain-specific exceptions  
+- `task_repository.py` – Repository interface
+
+---
+
+## 3️⃣ Infrastructure Layer
+
+**Directory:** `infrastructure/`  
+Provides concrete implementations: DB, logging, configuration.
+
+- `container.py` – Dependency injection  
+- `logger.py` – Logging setup  
+- `settings.py` – Config/env variables  
+
+### SQLite Implementation
+
+- `connection.py` – DB manager  
+- `task_schema.py` – DB schema  
+- `migrations.py` – Migration utilities  
+- `task_dao.py` – Data access object  
+- `task_mapper.py` – Domain ↔ DB mapping  
+- `task_repository.py` – Repository implementation
+
+---
+
+## 4️⃣ Presentation Layer
+
+**Directory:** `presentation/cli/`  
+Handles **CLI user interaction**.
+
+- `entrypoint.py` – CLI entry point  
+- `parser.py` – Argument parsing  
+- `router.py` – Routes commands  
+- `formatters.py` – Output formatting  
+- `helpers.py` – Utility functions  
+
+### Commands
+
+| Command File | Purpose |
+|--------------|---------|
+| `create_task_cmd.py` | Add task |
+| `delete_task_cmd.py` | Delete task |
+| `update_task_cmd.py` | Update task |
+| `list_tasks_cmd.py` | List all tasks |
+| `search_tasks_cmd.py` | Search tasks |
+| `mark_task_done_cmd.py` | Mark completed |
+| `import_task_cmd.py` | Import tasks |
+| `export_task_cmd.py` | Export tasks |
+| `migrate_tasks_cmd.py` | DB migrations
+
+---
+
+## 5️⃣ Entry Point
+
+**File:** `__main__.py`
+
+```bash
+raztodo add "Task1" --desc "Test1"
+raztodo list
+raztodo --help
+```
+
+> Not intended for direct execution during development.
+
+---
+
+## ✅ Conclusion
+
+- Separation of concerns makes the code **maintainable** & **testable**.  
+- Developers can extend functionality without affecting business rules.  
+
+**Future enhancements:**
+
+- Add new CLI commands or Web API interface  
+- Support additional DB backends  
+- Implement automated tests for all Use Cases
+
