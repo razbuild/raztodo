@@ -1,14 +1,50 @@
 ## Architecture
+This project follows Clean Architecture (Hexagonal / Ports and Adapters) to ensure that core business logic remains independent from frameworks, infrastructure, and delivery mechanisms. This structure increases testability, maintainability, and long-term extensibility.
 
-This project follows **Clean Architecture** (hexagonal/ports-and-adapters style) to keep business rules independent from frameworks and infrastructure.
+---
 
-Key principles:
-- **Domain**: Pure business models and rules (entities, domain exceptions, repository interfaces). No framework code.
-- **Application**: Use cases (interactors) that orchestrate domain entities and depend only on abstractions (ports). They accept input DTOs and return output DTOs.
-- **Infrastructure**: Concrete adapters — database drivers, repositories, mappers, migration scripts, logging, configuration. Implements the domain ports.
-- **Presentation**: Thin adapters (CLI) that map user input to application DTOs and present output; contains argument parsing, formatters, and command routing.
+### Overview
+- **Domain**: Pure business rules, entities, and abstractions.
 
-This separation improves testability, maintainability, and allows each layer to evolve independently.
+- **Application**: Use cases orchestrating domain logic through repository interfaces.
+
+- **Infrastructure**: Technical implementations such as database persistence, logging, and configuration.
+
+- **Presentation**: User-facing interfaces (CLI).
+
+- **Dependency Direction**: All dependencies point inward; outer layers depend on inner layers, never the reverse.
+---
+
+### Dependency Rule
+```mermaid
+flowchart LR
+    Presentation --> Application
+    Application --> Domain
+    Infrastructure --> Application
+    Infrastructure --> Domain
+```
+- **Domain** depends on nothing.
+
+- **Application** depends only on Domain.
+
+- **Presentation** and Infrastructure depend on both Application and Domain.
+
+- **Infrastructure** must never depend on Presentation.
+---
+### Data Flow (End-to-End)
+Below is a high-level view of how data flows through the system:
+```mermaid
+flowchart TD
+    UserInput["User Input"]
+    Parser["CLI Parser<br/>(Presentation)"]
+    Handler["Command Handler<br/>(Presentation)"]
+    UseCase["Use Case<br/>(Application)"]
+    RepoIface["Repository Interface<br/>(Domain)"]
+    RepoImpl["Repository Implementation<br/>(Infrastructure)"]
+    DB["SQLite Database"]
+
+    UserInput --> Parser --> Handler --> UseCase --> RepoIface --> RepoImpl --> DB
+```
 
 ---
 
