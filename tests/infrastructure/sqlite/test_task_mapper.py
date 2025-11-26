@@ -1,5 +1,3 @@
-"""Tests for mapper functions."""
-
 import json
 import sqlite3
 from contextlib import closing

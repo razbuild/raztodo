@@ -1,5 +1,3 @@
-"""Tests for UpdateTaskUseCase."""
-
 import pytest
 
 from raztodo.application.use_cases.update_task import UpdateTaskUseCase

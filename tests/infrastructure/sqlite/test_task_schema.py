@@ -1,5 +1,3 @@
-"""Tests for schema management."""
-
 from contextlib import closing
 
 from raztodo.infrastructure.sqlite.task_schema import ensure_schema

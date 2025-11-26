@@ -1,5 +1,3 @@
-"""Tests for migration functions."""
-
 from raztodo.infrastructure.sqlite.migrations import (
     create_unique_title_index,
     deduplicate_titles,

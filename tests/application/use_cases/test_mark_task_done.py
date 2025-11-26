@@ -1,5 +1,3 @@
-"""Tests for MarkDoneUseCase."""
-
 import pytest
 
 from raztodo.application.use_cases.mark_task_done import MarkDoneUseCase

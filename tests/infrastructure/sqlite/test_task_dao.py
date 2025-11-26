@@ -1,5 +1,3 @@
-"""Tests for TaskDAO."""
-
 import json
 
 import pytest

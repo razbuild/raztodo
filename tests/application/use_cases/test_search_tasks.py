@@ -1,5 +1,3 @@
-"""Tests for SearchTasksUseCase."""
-
 from raztodo.application.use_cases.search_tasks import SearchTasksUseCase
 from raztodo.domain.task_entity import TaskEntity
 

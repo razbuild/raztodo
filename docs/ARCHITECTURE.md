@@ -1,14 +1,14 @@
-# 🏛️ Architecture
+# Architecture
 
 This project follows **Clean Architecture** to ensure that core business logic remains **independent** from frameworks, infrastructure, and delivery mechanisms. This approach improves:
 
-- ✅ **Testability**  
-- ✅ **Maintainability**  
-- ✅ **Long-term extensibility**
+- **Testability**  
+- **Maintainability**  
+- **Long-term extensibility**
 
 ---
 
-## 🗂️ Overview of Layers
+## Overview of Layers
 
 | Layer | Responsibility |
 |-------|----------------|
@@ -21,7 +21,7 @@ This project follows **Clean Architecture** to ensure that core business logic r
 
 ---
 
-## 🔄 Dependency Rule
+## Dependency Rule
 
 ```mermaid
 flowchart LR
@@ -41,7 +41,7 @@ flowchart LR
 
 ---
 
-## 🌐 Data Flow (End-to-End)
+## Data Flow (End-to-End)
 
 ```mermaid
 flowchart TD
@@ -66,7 +66,7 @@ flowchart TD
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -83,7 +83,7 @@ src/
 
 ---
 
-## 1️⃣ Application Layer
+## Application Layer
 
 **Directory:** [application/](/src/raztodo/application/)  
 Contains **Use Cases** coordinating domain logic.
@@ -106,7 +106,7 @@ Contains **Use Cases** coordinating domain logic.
 
 ---
 
-## 2️⃣ Domain Layer
+## Domain Layer
 
 **Directory:** [domain/](/src/raztodo/domain/)
 Contains **core business logic**.
@@ -117,7 +117,7 @@ Contains **core business logic**.
 
 ---
 
-## 3️⃣ Infrastructure Layer
+## Infrastructure Layer
 
 **Directory:** [infrastructure/](/src/raztodo/infrastructure/)
 Provides concrete implementations: DB, logging, configuration.
@@ -137,7 +137,7 @@ Provides concrete implementations: DB, logging, configuration.
 
 ---
 
-## 4️⃣ Presentation Layer
+## Presentation Layer
 
 **Directory:** [presentation/cli/](/src/raztodo/presentation/cli/)  
 Handles **CLI user interaction**.
@@ -165,7 +165,7 @@ Handles **CLI user interaction**.
 
 ---
 
-## 5️⃣ Entry Point
+## Entry Point
 
 **File:** `__main__.py`
 
@@ -179,7 +179,7 @@ raztodo --help
 
 ---
 
-## ✅ Conclusion
+## Conclusion
 
 - Separation of concerns makes the code **maintainable** & **testable**.  
 - Developers can extend functionality without affecting business rules.  

@@ -1,5 +1,3 @@
-"""Tests for ExportTasksUseCase."""
-
 import json
 import os
 import tempfile

@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="500">
+    <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="400">
 </p>
 
 <p align="center">
@@ -27,7 +27,7 @@
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Project Structure](/docs/ARCHITECTURE.md)
-- [Running Tests](#running-tests)
+- [Running Tests](/docs/TESTING.md)
 - [Contributing](#contributing)
 - [License](#license)
 

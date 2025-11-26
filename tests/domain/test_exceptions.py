@@ -1,5 +1,3 @@
-"""Tests for domain exceptions."""
-
 import pytest
 
 from raztodo.domain.exceptions import (

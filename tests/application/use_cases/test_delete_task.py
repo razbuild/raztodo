@@ -1,5 +1,3 @@
-"""Tests for DeleteTaskUseCase."""
-
 import pytest
 
 from raztodo.application.use_cases.delete_task import DeleteTaskUseCase

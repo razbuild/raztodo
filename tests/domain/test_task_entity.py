@@ -1,5 +1,3 @@
-"""Tests for Task entity."""
-
 from raztodo.domain.task_entity import TaskEntity
 
 
