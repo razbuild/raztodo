@@ -1,6 +1,6 @@
 # 🏛️ Architecture
 
-This project follows **Clean Architecture** (Hexagonal / Ports & Adapters) to ensure that core business logic remains **independent** from frameworks, infrastructure, and delivery mechanisms. This approach improves:
+This project follows **Clean Architecture** to ensure that core business logic remains **independent** from frameworks, infrastructure, and delivery mechanisms. This approach improves:
 
 - ✅ **Testability**  
 - ✅ **Maintainability**  
