@@ -38,12 +38,12 @@
 - **Task Management:** Add, update, remove, list, mark as done, set due dates, manage tags and projects, edit tasks, set priority.
 - **Search:** Full-text search across tasks.
 - **Pagination:** Paginated listings for long task lists.
-- **Terminal Output:** Optional colored output with ANSI and icons.
+- **Terminal Output:** Optional colored output with **ANSI** and icons.
 - **Data Import/Export:** Export and import tasks via [JSON](https://www.json.org/json-en.html).
 - **Storage:** Persistent storage with [SQLite](https://sqlite.org) (no external services required).
 - **Logging:** Configurable logging via environment variables.
 - **Database Migration:** Run database migrations.
-- **Cross-Platform:** Supports Linux, macOS, and Windows.
+- **Cross-Platform:** Supports **Linux**, **macOS**, and **Windows**.
 
 
 ---
