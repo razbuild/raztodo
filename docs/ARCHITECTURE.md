@@ -85,7 +85,7 @@ src/
 
 ## 1️⃣ Application Layer
 
-**Directory:** `application/`  
+**Directory:** [application/](/src/raztodo/application/)  
 Contains **Use Cases** coordinating domain logic.
 
 ### Use Cases
@@ -108,7 +108,7 @@ Contains **Use Cases** coordinating domain logic.
 
 ## 2️⃣ Domain Layer
 
-**Directory:** `domain/`  
+**Directory:** [domain/](/src/raztodo/domain/)
 Contains **core business logic**.
 
 - `task_entity.py` – Task entity & rules  
@@ -119,7 +119,7 @@ Contains **core business logic**.
 
 ## 3️⃣ Infrastructure Layer
 
-**Directory:** `infrastructure/`  
+**Directory:** [infrastructure/](/src/raztodo/infrastructure/)
 Provides concrete implementations: DB, logging, configuration.
 
 - `container.py` – Dependency injection  
@@ -139,14 +139,15 @@ Provides concrete implementations: DB, logging, configuration.
 
 ## 4️⃣ Presentation Layer
 
-**Directory:** `presentation/cli/`  
+**Directory:** [presentation/cli/](/src/raztodo/presentation/cli/)  
 Handles **CLI user interaction**.
 
 - `entrypoint.py` – CLI entry point  
 - `parser.py` – Argument parsing  
 - `router.py` – Routes commands  
 - `formatters.py` – Output formatting  
-- `helpers.py` – Utility functions  
+- `helpers.py` – Utility functions
+- `ansi.py`  - Support ANSI color and Icon
 
 ### Commands
 
