@@ -18,8 +18,6 @@
 
 </p>
 
-
-
 ---
 
 ## Table of Contents
@@ -28,7 +26,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- [Project Structure](#project-structure)
+- [Project Structure](/docs/ARCHITECTURE.md)
 - [Running Tests](#running-tests)
 - [Contributing](#contributing)
 - [License](#license)
@@ -36,13 +34,16 @@
 ---
 
 ## Features
-- Add, update, remove, and view tasks
-- Full-text search across tasks
-- Paginated listings for long task lists
-- Optional colored terminal output
-- Export and import tasks via JSON
-- Persistent storage with SQLite (no external services required)
-- Configurable logging via environment variables
+
+- **Task Management:** Add, update, remove, list, mark as done, set due dates, manage tags and projects, edit, set priority.
+- **Search:** Full-text search across tasks.
+- **Pagination:** Paginated listings for long task lists.
+- **Terminal Output:** Optional colored output with ANSI and icons.
+- **Data Import/Export:** Export and import tasks via JSON.
+- **Storage:** Persistent storage with SQLite (no external services required).
+- **Logging:** Configurable logging via environment variables.
+- **Migration:** Run database migrations.
+
 
 ---
 
