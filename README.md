@@ -52,7 +52,7 @@
 
 | Requirement | Details |
 |-------------|---------|
-| Python      | 3.9+ |
+| Python      | 3.14+ |
 | Dependencies| None (zero external dependencies) |
 
 ---
@@ -137,34 +137,6 @@ source venv/bin/activate
 ```bash
 python -m venv venv
 venv\Scripts\activate
-```
-
----
-
-## Project Structure
-
-```
-raztodo/
-│
-├── src/raztodo/
-│   ├── core/       # Core logic and data management
-│   │   ├── storage.py
-│   │   └── logger.py
-│   ├── cli/        # CLI commands and terminal colors
-│   │   ├── commands.py
-│   │   └── colors.py
-│   ├── __main__.py
-│   └── __init__.py
-│
-├── tests/          # Unit tests for core and CLI modules
-│   ├── core/
-│   │   ├── storage.py
-│   │   └── logger.py
-│   └── cli/
-│       ├── commands.py
-│       └── colors.py
-│
-└── README.md
 ```
 
 ---
