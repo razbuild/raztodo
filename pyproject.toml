@@ -27,6 +27,9 @@ raztodo = "raztodo.__main__:main"
 [project.optional-dependencies]
 test = ["pytest"]
 lint = ["ruff"]
+formatter = ["black"]
+typecheck = ["mypy"]
+dev = ["pytest", "ruff", "black", "mypy"]
 
 [build-system]
 requires = ["hatchling"]

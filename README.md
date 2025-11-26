@@ -23,7 +23,7 @@
 ## Table of Contents
 - [Features](#features)
 - [Requirements](#requirements)
-- [Installation](#installation)
+- [Installation](/docs/INSTALLATION.md)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Project Structure](/docs/ARCHITECTURE.md)
@@ -54,24 +54,6 @@
 |-------------|---------|
 | Python      | 3.14+ |
 | Dependencies| None (zero external dependencies) |
-
----
-
-## Installation
-
-### From PyPI
-```bash
-pip install raztodo
-```
-
-### Local Development
-```bash
-git clone https://github.com/razbuild/raztodo.git
-cd raztodo
-pip install -e .
-# or (if you prefer isolating CLI)
-pipx install .
-```
 
 ---
 
