@@ -3,10 +3,6 @@
 </p>
 
 <p align="center">
-    <strong>RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.</strong>
-</p>
-
-<p align="center">
   <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&labelColor=ffffff&color=000000">
   <img alt="Python" src="https://img.shields.io/badge/python-3.14+-000000?style=for-the-badge&labelColor=ffffff">
   <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&label=coverage&labelColor=ffffff&color=000000&cacheSeconds=3600">
@@ -17,6 +13,10 @@
   <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ci&labelColor=ffffff&color=000000&cacheSeconds=3600">
 
   </a>
+</p>
+
+<p align="center">
+    <strong>RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.</strong>
 </p>
 
 ---
