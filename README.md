@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <strong>A fast, zero-dependency command-line task manager powered by SQLite</strong>
+    <strong>RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.</strong>
 </p>
 
 <p align="center">
