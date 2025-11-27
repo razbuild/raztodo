@@ -91,7 +91,7 @@ black src/ tests/
 ### Linting and Error Checking
 
 ```bash
-ruff src/ tests/
+ruff check src/ tests/
 ```
 
 Fix any errors reported by ruff before committing code.

@@ -1,158 +1,122 @@
 <p align="center">
-    <img src="src/raztodo/assets/logo.png" alt="Project Logo" width="400">
+    <img src="src/raztodo/assets/logo.png" alt="RazTodo Logo" width="400">
 </p>
 
 <p align="center">
+    <strong>A fast, zero-dependency command-line task manager powered by SQLite</strong>
+</p>
 
-  <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
+<p align="center">
+  <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&labelColor=ffffff&color=000000">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.14+-000000?style=for-the-badge&labelColor=ffffff">
+  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&labelColor=ffffff&color=000000">
+</p>
 
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/formatcheck.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=black&labelColor=ffffff&color=000000&cacheSeconds=3600">
-
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/lint.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ruff&labelColor=ffffff&color=000000&cacheSeconds=3600">
-
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/typecheck.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=mypy&labelColor=ffffff&color=000000&cacheSeconds=3600">
-
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/test.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
-
-  <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&labelColor=ffffff&color=000000&cacheSeconds=3600">
-
+<p align="center">
+  <a href="https://github.com/razbuild/raztodo/actions/workflows/ci.yml">
+    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&style=flat-square&label=CI">
+  </a>
 </p>
 
 ---
 
-## Table of Contents
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](/docs/INSTALLATION.md)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Project Structure](/docs/ARCHITECTURE.md)
-- [Running Tests](/docs/TESTING.md)
-- [Contributing](#contributing)
-- [License](#license)
+## ✨ Features
+
+- 📝 **Task Management** — Add, update, remove, list, and mark tasks as done
+- 🏷️ **Tags & Projects** — Organize tasks with tags and project names
+- 🔍 **Search** — Full-text search across all tasks
+- 📅 **Due Dates & Priority** — Set deadlines and priority levels (L/M/H)
+- 📤 **Import/Export** — Backup and restore tasks via JSON
+- 🎨 **Colored Output** — Beautiful ANSI colors and icons
+- 💾 **SQLite Storage** — No external services required
+- 🖥️ **Cross-Platform** — Works on Linux, macOS, and Windows
 
 ---
 
-## Features
+## 🚀 Quick Start
 
-- **Task Management:** Add, update, remove, list, mark as done, set due dates, manage tags and projects, edit tasks, set priority.
-- **Search:** Full-text search across tasks.
-- **Pagination:** Paginated listings for long task lists.
-- **Terminal Output:** Optional colored output with **ANSI** and icons.
-- **Data Import/Export:** Export and import tasks via [JSON](https://www.json.org/json-en.html).
-- **Storage:** Persistent storage with [SQLite](https://sqlite.org) (no external services required).
-- **Logging:** Configurable logging via environment variables.
-- **Database Migration:** Run database migrations.
-- **Cross-Platform:** Supports **Linux**, **macOS**, and **Windows**.
+### Installation
 
-
----
-
-## Requirements
-
-| Requirement | Details |
-|-------------|---------|
-| Python      | 3.14+ |
-| Dependencies| None (zero external dependencies) |
-
----
-
-## Usage
-
-### Example Workflow
 ```bash
-# Add
-raztodo add "Buy groceries" "Milk, eggs, bread"
-raztodo add "Read a book"
+pip install raztodo
+```
 
-# List
+> 📖 For more installation options, see [Installation Guide](docs/INSTALLATION.md)
+
+### Basic Usage
+
+```bash
+# Create a task
+raztodo add "Buy groceries" --priority H --due 2024-12-31
+
+# List all tasks
 raztodo list
 
-# Update
-raztodo update 1 --title "Buy groceries & snacks" --desc "Milk, eggs, bread, chips"
-
-# Show
-raztodo show 1
+# Mark as done
+raztodo done 1
 
 # Search
-raztodo search "book"
-
-# Remove
-raztodo remove 2
-
-# JSON export/import
-raztodo export tasks.json
-raztodo import tasks.json
+raztodo search "groceries"
 ```
 
-### Global Options
-
-| Option | Description |
-|--------|-------------|
-| `--no-color` | Disable colored output |
-| `--db path/to/db.sqlite` | Use custom database path (default: `~/.local/share/raztodo/tasks.db`) |
+> 📖 For complete command reference, see [Usage Guide](docs/USAGE.md)
 
 ---
 
-## Configuration
+## 📋 Commands
 
-| Variable | Description |
-|----------|-------------|
-| `LOG_LEVEL` | Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL) |
-| `RAZTASK_DB` | Default database path (default: `~/.local/share/raztodo/tasks.db`) |
+| Command | Description |
+|---------|-------------|
+| `add` | Create a new task |
+| `list` | List tasks with filters |
+| `update` | Update a task |
+| `done` | Mark task as done/undone |
+| `remove` | Delete a task |
+| `search` | Search tasks |
+| `export` | Export to JSON |
+| `import` | Import from JSON |
+| `migrate` | Run database migration |
 
-You can set these environment variables in your shell or in a `.env` file.
-
-### Virtual Environment Setup
-
-To keep dependencies isolated, it's recommended to use a virtual environment.  
-You can read more in the official Python documentation:  
-[Creating Virtual Environments](https://docs.python.org/3/library/venv.html)
-
-#### For Linux & macOS
 ```bash
-python -m venv venv
-source venv/bin/activate
-```
-
-#### For Windows
-```bash
-python -m venv venv
-venv\Scripts\activate
+# Get help for any command
+raztodo --help
+raztodo add --help
 ```
 
 ---
 
-## Running Tests
+## ⚙️ Configuration
 
-Install testing and formatting tools:
-```bash
-pip install pytest ruff black
-```
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `RAZTODO_DB` | Database path | `tasks.db` |
+| `LOG_LEVEL` | Logging level | `ERROR` |
 
-Run tests, check code style, and format code:
-```bash
-pytest tests/ && ruff check src/ && black --check src/ tests/
-```
-
-Format code automatically:
-```bash
-black src/ tests/
-```
+> 📖 For detailed configuration, see [Configuration Guide](docs/CONFIGURATION.md)
 
 ---
 
-## Contributing
+## 📚 Documentation
 
-Contributions, issues, and feature requests are welcome. You can open a pull request or an issue.
-
-Before contributing:
-- Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) for code style.
-- Run tests locally to ensure everything works.
+- [Installation Guide](docs/INSTALLATION.md) — Install via pip, pipx, or from source
+- [Usage Guide](docs/USAGE.md) — Complete command reference
+- [Configuration](docs/CONFIGURATION.md) — Environment variables and options
+- [Architecture](docs/ARCHITECTURE.md) — Project structure and design
+- [Testing](docs/TESTING.md) — Running tests and contributing
 
 ---
 
-## License
+## 🤝 Contributing
 
-This project is licensed under the MIT License — see the [LICENSE](https://github.com/razbuild/raztodo/blob/main/LICENSE) file for details.
+Contributions are welcome! Please:
 
+1. Fork the repository
+2. Create a feature branch
+3. Run tests: `pytest && ruff check src/ && black --check src/`
+4. Submit a pull request
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
