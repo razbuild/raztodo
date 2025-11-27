@@ -4,9 +4,12 @@ This document provides guidelines for running tests and maintaining code quality
 
 ## Requirements
 
-Ensure the following tools are installed (preferably in a virtual environment):
+This project requires Python 3.14.
+Older Python versions are not supported and will not pass tests or static analysis **mypy**, **ruff**, **pytest**.
 
-* Python >= 3.10
+Install development dependencies:
+
+* Python >= 3.14
 * pytest
 * mypy
 * black
