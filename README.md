@@ -118,6 +118,6 @@ Contributions are welcome! Please:
 
 ---
 
-## 📄 License
+## License
 
 MIT License — see [LICENSE](LICENSE) for details.
