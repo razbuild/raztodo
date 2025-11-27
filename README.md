@@ -3,10 +3,6 @@
 </p>
 
 <p align="center">
-  <h2>RazTodo</h2>
-</p>
-
-<p align="center">
     <strong>A fast, zero-dependency command-line task manager powered by SQLite</strong>
 </p>
 
@@ -25,20 +21,20 @@
 
 ---
 
-## ✨ Features
+## Features
 
-- 📝 **Task Management** — Add, update, remove, list, and mark tasks as done
-- 🏷️ **Tags & Projects** — Organize tasks with tags and project names
-- 🔍 **Search** — Full-text search across all tasks
-- 📅 **Due Dates & Priority** — Set deadlines and priority levels (L/M/H)
-- 📤 **Import/Export** — Backup and restore tasks via JSON
-- 🎨 **Colored Output** — Beautiful ANSI colors and icons
-- 💾 **SQLite Storage** — No external services required
-- 🖥️ **Cross-Platform** — Works on Linux, macOS, and Windows
+- **Task Management** — Add, update, remove, list, and mark tasks as done
+- **Tags & Projects** — Organize tasks with tags and project names
+- **Search** — Full-text search across all tasks
+- **Due Dates & Priority** — Set deadlines and priority levels (L/M/H)
+- **Import/Export** — Backup and restore tasks via JSON
+- **Colored Output** — Beautiful ANSI colors and icons
+- **SQLite Storage** — No external services required
+- **Cross-Platform** — Works on Linux, macOS, and Windows
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -46,7 +42,7 @@
 pip install raztodo
 ```
 
-> 📖 For more installation options, see [Installation Guide](docs/INSTALLATION.md)
+> For more installation options, see [Installation Guide](docs/INSTALLATION.md)
 
 ### Basic Usage
 
@@ -64,11 +60,11 @@ raztodo done 1
 raztodo search "groceries"
 ```
 
-> 📖 For complete command reference, see [Usage Guide](docs/USAGE.md)
+> For complete command reference, see [Usage Guide](docs/USAGE.md)
 
 ---
 
-## 📋 Commands
+## Commands
 
 | Command | Description |
 |---------|-------------|
@@ -90,18 +86,18 @@ raztodo add --help
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `RAZTODO_DB` | Database path | `tasks.db` |
 | `LOG_LEVEL` | Logging level | `ERROR` |
 
-> 📖 For detailed configuration, see [Configuration Guide](docs/CONFIGURATION.md)
+> For detailed configuration, see [Configuration Guide](docs/CONFIGURATION.md)
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 - [Installation Guide](docs/INSTALLATION.md) — Install via pip, pipx, or from source
 - [Usage Guide](docs/USAGE.md) — Complete command reference
@@ -111,7 +107,7 @@ raztodo add --help
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please:
 
