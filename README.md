@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="src/raztodo/assets/logo.png" alt="RazTodo Logo" width="400">
+    <img src="src/raztodo/assets/logo.png" alt="RazTodo Logo" width="300">
 </p>
 
 <p align="center">
