@@ -26,6 +26,13 @@ pip install raztodo
 ```bash
 pipx install raztodo
 ```
+### Uninstall
+
+```bash
+pip uninstall raztodo
+# For pipx:
+pipx uninstall raztodo
+```
 
 > `pipx` installs the CLI in an isolated environment, preventing conflicts with your global Python packages.
 
