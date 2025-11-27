@@ -44,16 +44,20 @@ flowchart LR
 ## Data Flow (End-to-End)
 
 ```mermaid
-flowchart TD
-    UserInput["User Input"]
-    Parser["CLI Parser<br/>(Presentation)"]
-    Handler["Command Handler<br/>(Presentation)"]
-    UseCase["Use Case<br/>(Application)"]
-    RepoIface["Repository Interface<br/>(Domain)"]
-    RepoImpl["Repository Implementation<br/>(Infrastructure)"]
-    DB["SQLite Database"]
+sequenceDiagram
+    participant CLI
+    participant UseCase
+    participant RepoInterface
+    participant RepoImpl
+    participant DB
 
-    UserInput --> Parser --> Handler --> UseCase --> RepoIface --> RepoImpl --> DB
+    CLI->>UseCase: Execute Command
+    UseCase->>RepoInterface: Save/Query Task
+    RepoInterface->>RepoImpl: Delegate Implementation
+    RepoImpl->>DB: SQL Execution
+    DB-->>RepoImpl: Result
+    RepoImpl-->>UseCase: Entity
+    UseCase-->>CLI: Response DTO
 ```
 
 **Flow Explanation:**
