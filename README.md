@@ -9,7 +9,7 @@
 <p align="center">
   <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&labelColor=ffffff&color=000000">
   <img alt="Python" src="https://img.shields.io/badge/python-3.14+-000000?style=for-the-badge&labelColor=ffffff">
-  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&labelColor=ffffff&color=000000">
+  <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&label=coverage&labelColor=ffffff&color=000000&cacheSeconds=3600">
 </p>
 
 <p align="center">
