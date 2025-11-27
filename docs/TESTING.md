@@ -1,4 +1,4 @@
-# RazTodo Testing Guide
+# Testing
 
 This document provides guidelines for running tests and maintaining code quality in the RazTodo project.
 
@@ -51,8 +51,8 @@ pytest tests/test_example.py::test_function_name
 Consider organizing tests by type:
 
 ```bash
-pytest tests/unit
-pytest tests/integration
+pytest tests/domain
+pytest tests/infrastructure
 ```
 
 ## Checking Test Coverage
