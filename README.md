@@ -3,6 +3,10 @@
 </p>
 
 <p align="center">
+  <h2>RazTodo</h2>
+</p>
+
+<p align="center">
     <strong>A fast, zero-dependency command-line task manager powered by SQLite</strong>
 </p>
 
