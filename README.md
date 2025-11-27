@@ -14,7 +14,8 @@
 
 <p align="center">
   <a href="https://github.com/razbuild/raztodo/actions/workflows/ci.yml">
-    <img alt="CI" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&style=flat-square&label=CI">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ci&labelColor=ffffff&color=000000&cacheSeconds=3600">
+
   </a>
 </p>
 
