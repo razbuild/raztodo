@@ -231,7 +231,6 @@ Include:
 
 ## Questions?
 
-- Open a [Discussion](https://github.com/razbuild/raztodo/discussions)
 - Check existing [Issues](https://github.com/razbuild/raztodo/issues)
 
 ---
