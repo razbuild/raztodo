@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-    <img src="src/raztodo/assets/preview.png" alt="Preview" width="300">
+    <img src="src/raztodo/assets/preview.webm" alt="Preview" width="300">
 </p>
 
 
