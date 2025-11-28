@@ -15,11 +15,11 @@
   </a>
 </p>
 
-### Preview
+<p align="center">
+    <img src="src/raztodo/assets/preview.png" alt="RazTodo Logo" width="300">
+</p>
 
-```bash
-asciinema play /src/raztodo/assets/demo.cast
-```
+
 <p align="center">
     <strong>RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.</strong>
 </p>
