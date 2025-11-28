@@ -15,6 +15,14 @@
   </a>
 </p>
 
+### Demo
+
+```
+asciinema play /demo.cast
+```
+
+---
+
 <p align="center">
     <strong>RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.</strong>
 </p>
