@@ -85,9 +85,11 @@ class TestColorizer:
             if "RAZTODO_USE_NERD_ICONS" in os.environ:
                 del os.environ["RAZTODO_USE_NERD_ICONS"]
 
-            colorizer = Colorizer()
-            assert colorizer.icon_mode == "std"
-            assert "✓" in colorizer.ok()
+            # Force deterministic behavior: pretend nerd fonts are not installed
+            with mock.patch.object(Colorizer, "_has_nerd_fonts", return_value=False):
+                colorizer = Colorizer()
+                assert colorizer.icon_mode == "std"
+                assert "✓" in colorizer.ok()
 
     @mock.patch("os.name", "nt")
     def test_icon_mode_windows_default(self):
@@ -95,6 +97,11 @@ class TestColorizer:
         with mock.patch.dict(os.environ):
             if "RAZTODO_USE_NERD_ICONS" in os.environ:
                 del os.environ["RAZTODO_USE_NERD_ICONS"]
+
+            with mock.patch.object(Colorizer, "_has_nerd_fonts", return_value=False):
+                colorizer = Colorizer()
+                assert colorizer.icon_mode == "std"
+                assert "✓" in colorizer.ok()
 
             colorizer = Colorizer()
             assert colorizer.icon_mode == "std"

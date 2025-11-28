@@ -1,5 +1,6 @@
 import ctypes
 import os
+import subprocess
 import sys
 from collections.abc import Callable
 from typing import ClassVar
@@ -103,14 +104,138 @@ class Colorizer:
         except Exception:
             return "ascii"
 
+        # Check for explicit nerd fonts preference
         force_nerd = os.getenv("RAZTODO_USE_NERD_ICONS", "").lower()
         if force_nerd in ("1", "true", "yes", "on"):
             return "nerd"
 
+        # Check for explicit disable
+        force_no_nerd = os.getenv("RAZTODO_NO_NERD_ICONS", "").lower()
+        if force_no_nerd in ("1", "true", "yes", "on"):
+            return "std"
+
+        # Auto-detect nerd fonts
+        if self._has_nerd_fonts():
+            return "nerd"
+
+        # Default to standard icons
+        return "std"
+
+    def _has_nerd_fonts(self) -> bool:
+        """Detect if nerd fonts are available in the terminal."""
+        # Check environment variables that indicate nerd fonts
+        nerd_env = os.getenv("NERDFONTS") or os.getenv("NERD_FONTS")
+        if nerd_env and nerd_env.lower() in ("1", "true", "yes", "on"):
+            return True
+
+        # Check font name from environment
+        font_name = os.getenv("FONT_NAME", "").lower()
+        if font_name and any(
+            name in font_name
+            for name in [
+                "nerd",
+                "nf-",
+                "hack nerd",
+                "fira code nerd",
+                "jetbrains mono nerd",
+                "meslo nerd",
+                "cascadia code nerd",
+            ]
+        ):
+            return True
+
+        # Check terminal font setting
+        term_font = os.getenv("TERM_FONT", "").lower()
+        if term_font and any(
+            name in term_font
+            for name in [
+                "nerd",
+                "nf-",
+                "hack nerd",
+                "fira code nerd",
+                "jetbrains mono nerd",
+                "meslo nerd",
+                "cascadia code nerd",
+            ]
+        ):
+            return True
+
+        # Try to detect installed nerd fonts
+        if self._check_installed_nerd_fonts():
+            return True
+
+        return bool(self._check_installed_nerd_fonts())
+
+    def _check_installed_nerd_fonts(self) -> bool:
+        """Check if nerd fonts are installed on the system."""
         if os.name == "nt":
-            return "std"
+            # Windows: Check registry or font directory
+
+            try:
+                result = subprocess.run(
+                    [
+                        "powershell",
+                        "-Command",
+                        "Get-ChildItem 'C:\\Windows\\Fonts' | Where-Object {$_.Name -like '*Nerd*'} | Select-Object -First 1",
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=2,
+                )
+                if result.returncode == 0 and result.stdout.strip():
+                    return True
+            except Exception:
+                pass
+
+        elif sys.platform == "darwin":
+            # macOS: Check via system_profiler or font directory
+            try:
+                result = subprocess.run(
+                    ["system_profiler", "SPFontsDataType"],
+                    capture_output=True,
+                    text=True,
+                    timeout=2,
+                )
+                if result.returncode == 0:
+                    output = result.stdout.lower()
+                    if any(name.lower() in output for name in ["nerd", "nf-"]):
+                        return True
+            except Exception:
+                pass
+
+            # Also check common font directories
+            font_dirs = [
+                os.path.expanduser("~/Library/Fonts"),
+                "/Library/Fonts",
+                "/System/Library/Fonts",
+            ]
+            for font_dir in font_dirs:
+                if os.path.isdir(font_dir):
+                    try:
+                        for item in os.listdir(font_dir):
+                            if "nerd" in item.lower() or "nf-" in item.lower():
+                                return True
+                    except Exception:
+                        continue
+
         else:
-            return "std"
+            # Linux: Use fc-list (fontconfig)
+            try:
+                result = subprocess.run(
+                    ["fc-list", ":", "family"],
+                    capture_output=True,
+                    text=True,
+                    timeout=2,
+                )
+                if result.returncode == 0:
+                    output = result.stdout.lower()
+                    nerd_indicators = ["nerd", "nf-", "hack nerd", "fira code nerd"]
+                    if any(indicator in output for indicator in nerd_indicators):
+                        return True
+            except Exception:
+                pass
+
+        return False
 
     def _enable_windows_vt_mode(self) -> bool:
         windll = getattr(ctypes, "windll", None)
