@@ -1,0 +1,98 @@
+[project]
+name = "raztodo"
+version = "0.1.0"
+description = "A fast, zero-dependency command-line todo/task manager using SQLite."
+keywords = ["cli", "todo", "task", "command-line", "python"]
+authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
+license = "MIT"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.14"
+dependencies = []
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.14",
+    "Environment :: Console",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/razbuild/raztodo"
+Repository = "https://github.com/razbuild/raztodo"
+issues = "https://github.com/razbuild/raztodo/issues"
+
+[project.scripts]
+raztodo = "raztodo.__main__:main"
+
+[project.optional-dependencies]
+test = ["pytest"]
+lint = ["ruff"]
+formatter = ["black"]
+typecheck = ["mypy"]
+coverage = ["coverage"]
+dev = ["pytest", "ruff", "black", "mypy", "coverage"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    "env",
+    "downloads",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+select = ["F", "E", "I", "N", "UP", "RUF", "B", "SIM"]
+ignore = ["E501", "N818", "RUF019"]
+
+[tool.pytest.ini_options]
+addopts = ["--strict-config", "--strict-markers"]
+xfail_strict = true
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/raztodo"]
+disable_warnings = ["no-data-collected"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/__init__.py",
+    "*/__main__.py",
+    "*/presentation/cli/helpers.py",  # Utility functions, tested indirectly
+    "*/presentation/cli/commands/*",  # CLI commands, tested via integration
+    "*/presentation/cli/entrypoint.py",  # CLI entry point, tested via integration
+    "*/presentation/cli/parser.py",  # CLI parser, tested via integration
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@abstractmethod",
+    "def __repr__",
+    "def __str__",
+    "if __name__ == .__main__.:",
+    "class.*Error.*:",
+    "raise.*Error",
+    "pass$",
+]
+precision = 2
+show_missing = true
+skip_covered = false
+skip_empty = true
