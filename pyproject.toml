@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A simple command-line todo application"
 authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
 license = "MIT"
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.14"
 dependencies = []
 

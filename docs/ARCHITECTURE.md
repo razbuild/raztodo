@@ -89,7 +89,7 @@ src/
 
 ## Application Layer
 
-**Directory:** [application/](/src/raztodo/application/)  
+**Directory:** [application/](https://github.com/razbuild/raztodo/blob/master/src/raztodo/application/)  
 Contains **Use Cases** coordinating domain logic.
 
 ### Use Cases
@@ -112,7 +112,7 @@ Contains **Use Cases** coordinating domain logic.
 
 ## Domain Layer
 
-**Directory:** [domain/](/src/raztodo/domain/)
+**Directory:** [domain/](https://github.com/razbuild/raztodo/blob/master/src/raztodo/domain/)
 Contains **core business logic**.
 
 - `task_entity.py` – Task entity & rules  
@@ -123,7 +123,7 @@ Contains **core business logic**.
 
 ## Infrastructure Layer
 
-**Directory:** [infrastructure/](/src/raztodo/infrastructure/)
+**Directory:** [infrastructure/](/https://github.com/razbuild/raztodo/blob/master/src/raztodo/infrastructure/)
 Provides concrete implementations: DB, logging, configuration.
 
 - `container.py` – Dependency injection  
@@ -143,7 +143,7 @@ Provides concrete implementations: DB, logging, configuration.
 
 ## Presentation Layer
 
-**Directory:** [presentation/cli/](/src/raztodo/presentation/cli/)  
+**Directory:** [presentation/cli/](https://github.com/razbuild/raztodo/blob/master/src/raztodo/presentation/cli/)  
 Handles **CLI user interaction**.
 
 - `entrypoint.py` – CLI entry point  

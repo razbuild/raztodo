@@ -1,28 +1,13 @@
-<p align="center">
-    <img src="src/raztodo/assets/logo.png" alt="RazTodo Logo" width="300">
-</p>
+![Logo](https://raw.githubusercontent.com/razbuild/raztodo/master/src/raztodo/assets/logo.png)
 
-<p align="center">
-  <img alt="GitHub License" src="https://img.shields.io/github/license/razbuild/raztodo?style=for-the-badge&labelColor=ffffff&color=000000">
-  <img alt="Python" src="https://img.shields.io/badge/python-3.14+-000000?style=for-the-badge&labelColor=ffffff">
-  <img alt="Codecov (with branch)" src="https://img.shields.io/codecov/c/github/razbuild/raztodo/master?style=for-the-badge&logoSize=auto&label=coverage&labelColor=ffffff&color=000000&cacheSeconds=3600">
-</p>
-
-<p align="center">
-  <a href="https://github.com/razbuild/raztodo/actions/workflows/ci.yml">
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&style=for-the-badge&logoSize=auto&label=ci&labelColor=ffffff&color=000000&cacheSeconds=3600">
-
-  </a>
-</p>
-
-<p align="center">
-    <img src="src/raztodo/assets/preview.webm" alt="Preview" width="300">
-</p>
+![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?logoSize=auto&cacheSeconds=3600)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&logoSize=auto&cacheSeconds=3600)
+![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztodo/master?logoSize=auto&cacheSeconds=3600)
 
 
-<p align="center">
-    <strong>RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.</strong>
-</p>
+---
+
+RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.
 
 ---
 
@@ -47,7 +32,7 @@
 pip install raztodo
 ```
 
-> For more installation options, see [Installation Guide](docs/INSTALLATION.md)
+> For more installation options, see [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
 
 ### Basic Usage
 
@@ -65,7 +50,7 @@ raztodo done 1
 raztodo search "groceries"
 ```
 
-> For complete command reference, see [Usage Guide](docs/USAGE.md)
+> For complete command reference, see [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
 
 ---
 
@@ -98,17 +83,17 @@ raztodo add --help
 | `RAZTODO_DB` | Database path | `tasks.db` |
 | `LOG_LEVEL` | Logging level | `ERROR` |
 
-> For detailed configuration, see [Configuration Guide](docs/CONFIGURATION.md)
+> For detailed configuration, see [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
 
 ---
 
 ## Documentation
 
-- [Installation Guide](docs/INSTALLATION.md) — Install via pip, pipx, or from source
-- [Usage Guide](docs/USAGE.md) — Complete command reference
-- [Configuration](docs/CONFIGURATION.md) — Environment variables and options
-- [Architecture](docs/ARCHITECTURE.md) — Project structure and design
-- [Testing](docs/TESTING.md) — Running tests and contributing
+- [Installation Guide](https://github.com/razbuild/raztodo/blob/main/docs/INSTALLATION.md) — Install via pip, pipx, or from source
+- [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md) — Complete command reference
+- [Configuration](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md) — Environment variables and options
+- [Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md) — Project structure and design
+- [Testing](https://github.com/razbuild/raztodo/blob/master/docs/TESTING.md) — Running tests and contributing
 
 ---
 
@@ -125,4 +110,4 @@ Contributions are welcome! Please:
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License — see [LICENSE](https://github.com/razbuild/raztodo/blob/master/LICENSE) for details.
