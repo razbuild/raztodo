@@ -86,7 +86,7 @@ raztodo add --help
 
 ## Documentation
 
-- [Installation Guide](https://github.com/razbuild/raztodo/blob/main/docs/INSTALLATION.md) — Install via pip, pipx, or from source
+- [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md) — Install via pip, pipx, or from source
 - [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md) — Complete command reference
 - [Configuration](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md) — Environment variables and options
 - [Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md) — Project structure and design
