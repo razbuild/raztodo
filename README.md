@@ -4,9 +4,6 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&logoSize=auto&cacheSeconds=3600)
 ![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztodo/master?logoSize=auto&cacheSeconds=3600)
 
-
----
-
 RazTodo is a fast, zero-dependency command-line task manager powered by SQLite.
 
 ---
