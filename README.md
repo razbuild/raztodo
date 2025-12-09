@@ -113,4 +113,4 @@ Contributions are welcome! Please:
 
 ## License
 
-MIT License — see [LICENSE](https://github.com/razbuild/raztodo/blob/master/LICENSE) for details.
+MIT License
