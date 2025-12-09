@@ -5,7 +5,7 @@ from raztodo.infrastructure.container import AppContainer
 from raztodo.infrastructure.logger import get_logger
 from raztodo.presentation.cli.entrypoint import run_cli
 
-logger = get_logger("main")
+logger = get_logger("__main__")
 
 
 def main() -> int:
