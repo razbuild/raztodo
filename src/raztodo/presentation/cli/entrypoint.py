@@ -7,7 +7,7 @@ from raztodo.presentation.cli.ansi import Colorizer
 from raztodo.presentation.cli.parser import get_parser
 
 color = Colorizer()
-logger = get_logger("entrypoint_cli")
+logger = get_logger("entrypoint")
 
 
 class HandlerProtocol(Protocol):
