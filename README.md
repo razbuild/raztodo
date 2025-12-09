@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/razbuild/raztodo/master/logo.png)
+![Logo](https://raw.githubusercontent.com/razbuild/raztodo/master/assets/logo.png)
 
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?logoSize=auto&color=blue&cacheSeconds=3600)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&logoSize=auto&cacheSeconds=3600)]()
