@@ -8,11 +8,11 @@
 
 ---
 
-## Preview
-
 RazTodo is simple, cross-platform CLI todo and task management tool — no dependencies, using SQLite for storage.
 
-![Preview](https://raw.githubusercontent.com/razbuild/raztodo/master/assets/preview.gif)
+| Preview |
+|:-------:|
+| <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/preview.gif" alt="Preview"> |
 
 ## Features
 
