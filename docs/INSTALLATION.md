@@ -84,13 +84,13 @@ This ensures you have all packages for testing, linting, and formatting.
 Confirm that the CLI is installed and accessible:
 
 ```bash
-raztodo --help
+rt --help
 ```
 
 You should see output like:
 
 ```text
-usage: raztodo [-h] [--version] COMMAND ...
+usage: rt [-h] [--version] COMMAND ...
 
 A command-line task manager powered by SQLite. Use one of the commands below to manage your todos.
 
@@ -111,13 +111,13 @@ options:
   --version             Show raztodo version information and exit
 
 Examples:
-  raztodo add 'Buy groceries' --priority H --due tomorrow
-  raztodo list --priority H --pending
-  raztodo update 1 --title 'New title' --done
-  raztodo search 'meeting' --project work
+  rt add 'Buy groceries' --priority H --due tomorrow
+  rt list --priority H --pending
+  rt update 1 --title 'New title' --done
+  rt search 'meeting' --project work
 
 Tips:
-  • Show command help: raztodo <command> --help
+  • Show command help: rt <command> --help
   • Output in JSON mode when available for automation
 ```
 
