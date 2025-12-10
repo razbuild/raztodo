@@ -7,7 +7,7 @@ authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
 license = "MIT"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.13"
-dependencies = []
+dependencies = ["raztint"]
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
