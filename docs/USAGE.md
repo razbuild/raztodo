@@ -8,16 +8,16 @@ Complete reference for all **RazTodo** commands and options.
 
 ```bash
 # Add a task
-raztodo add "Buy groceries" --priority H --due 2024-12-31
+rt add "Buy groceries" --priority H --due 2024-12-31
 
 # List all tasks
-raztodo list
+rt list
 
 # Mark task as done
-raztodo done 1
+rt done 1
 
 # Search tasks
-raztodo search "groceries"
+rt search "groceries"
 ```
 
 ---
@@ -29,7 +29,7 @@ raztodo search "groceries"
 Create a new task with a title and optional metadata.
 
 ```bash
-raztodo add <title> [options]
+rt add <title> [options]
 ```
 
 | Option | Short | Description |
@@ -44,9 +44,9 @@ raztodo add <title> [options]
 **Examples:**
 
 ```bash
-raztodo add "Complete project" --priority H --due 2024-12-31
-raztodo add "Call client" -p M --desc "Discuss requirements" --tags work,urgent
-raztodo add "Buy milk" --project shopping
+rt add "Complete project" --priority H --due 2024-12-31
+rt add "Call client" -p M --desc "Discuss requirements" --tags work,urgent
+rt add "Buy milk" --project shopping
 ```
 
 ---
@@ -56,7 +56,7 @@ raztodo add "Buy milk" --project shopping
 List tasks with optional filtering, sorting, and pagination.
 
 ```bash
-raztodo list [options]
+rt list [options]
 ```
 
 | Option | Short | Description |
@@ -77,10 +77,10 @@ raztodo list [options]
 **Examples:**
 
 ```bash
-raztodo list --pending --priority H
-raztodo list --project work --sort priority --desc
-raztodo list --tags urgent,important --due-before 2024-12-31
-raztodo list --limit 10 --offset 20
+rt list --pending --priority H
+rt list --project work --sort priority --desc
+rt list --tags urgent,important --due-before 2024-12-31
+rt list --limit 10 --offset 20
 ```
 
 ---
@@ -90,7 +90,7 @@ raztodo list --limit 10 --offset 20
 Update one or more fields of an existing task.
 
 ```bash
-raztodo update <id> [options]
+rt update <id> [options]
 ```
 
 | Option | Short | Description |
@@ -106,9 +106,9 @@ raztodo update <id> [options]
 **Examples:**
 
 ```bash
-raztodo update 1 --title "Updated title"
-raztodo update 5 --priority H --due 2024-12-31
-raztodo update 3 --tags work,urgent --project client
+rt update 1 --title "Updated title"
+rt update 5 --priority H --due 2024-12-31
+rt update 3 --tags work,urgent --project client
 ```
 
 ---
@@ -118,7 +118,7 @@ raztodo update 3 --tags work,urgent --project client
 Mark a task as completed or revert it to pending.
 
 ```bash
-raztodo done <id> [options]
+rt done <id> [options]
 ```
 
 | Option | Description |
@@ -129,9 +129,9 @@ raztodo done <id> [options]
 **Examples:**
 
 ```bash
-raztodo done 1
-raztodo done 5 --undo
-raztodo done 3 --json
+rt done 1
+rt done 5 --undo
+rt done 3 --json
 ```
 
 ---
@@ -141,7 +141,7 @@ raztodo done 3 --json
 Delete a task by ID. This action cannot be undone.
 
 ```bash
-raztodo remove <id> [options]
+rt remove <id> [options]
 ```
 
 | Option | Description |
@@ -151,8 +151,8 @@ raztodo remove <id> [options]
 **Examples:**
 
 ```bash
-raztodo remove 1
-raztodo remove 5 --json
+rt remove 1
+rt remove 5 --json
 ```
 
 ---
@@ -162,7 +162,7 @@ raztodo remove 5 --json
 Search for tasks by keyword in title or description.
 
 ```bash
-raztodo search <keyword> [options]
+rt search <keyword> [options]
 ```
 
 | Option | Short | Description |
@@ -177,9 +177,9 @@ raztodo search <keyword> [options]
 **Examples:**
 
 ```bash
-raztodo search "meeting" --pending
-raztodo search "project" --priority H --project work
-raztodo search "urgent" --tags important,work
+rt search "meeting" --pending
+rt search "project" --priority H --project work
+rt search "urgent" --tags important,work
 ```
 
 ---
@@ -189,7 +189,7 @@ raztodo search "urgent" --tags important,work
 Export all tasks to a JSON file for backup or transfer.
 
 ```bash
-raztodo export <filepath> [options]
+rt export <filepath> [options]
 ```
 
 | Option | Description |
@@ -199,8 +199,8 @@ raztodo export <filepath> [options]
 **Examples:**
 
 ```bash
-raztodo export tasks_backup.json
-raztodo export ~/backups/tasks_2024.json
+rt export tasks_backup.json
+rt export ~/backups/tasks_2024.json
 ```
 
 ---
@@ -210,7 +210,7 @@ raztodo export ~/backups/tasks_2024.json
 Import tasks from a JSON file (exported by the export command).
 
 ```bash
-raztodo import <filepath> [options]
+rt import <filepath> [options]
 ```
 
 | Option | Description |
@@ -221,8 +221,8 @@ raztodo import <filepath> [options]
 **Examples:**
 
 ```bash
-raztodo import tasks_backup.json
-raztodo import ~/backups/tasks.json --upsert
+rt import tasks_backup.json
+rt import ~/backups/tasks.json --upsert
 ```
 
 ---
@@ -232,7 +232,7 @@ raztodo import ~/backups/tasks.json --upsert
 Run database migration to deduplicate task titles and enforce unique index.
 
 ```bash
-raztodo migrate
+rt migrate
 ```
 
 Run this command when upgrading from an older version.
@@ -253,10 +253,10 @@ These options work with all commands:
 **Examples:**
 
 ```bash
-raztodo --no-color list
-raztodo --db ~/work/tasks.db add "Work task"
-raztodo --help
-raztodo list --help
+rt --no-color list
+rt --db ~/work/tasks.db add "Work task"
+rt --help
+rt list --help
 ```
 
 ---
@@ -267,10 +267,10 @@ Most commands support `--json` flag for automation and scripting:
 
 ```bash
 # Get tasks as JSON
-raztodo list --json
+rt list --json
 
 # Parse with jq
-raztodo list --json | jq '.[].title'
+rt list --json | jq '.[].title'
 ```
 
 ---
@@ -290,7 +290,7 @@ raztodo list --json | jq '.[].title'
 All dates should be in **YYYY-MM-DD** format:
 
 ```bash
-raztodo add "Meeting" --due 2024-12-31
-raztodo list --due-before 2024-06-01
+rt add "Meeting" --due 2024-12-31
+rt list --due-before 2024-06-01
 ```
 
