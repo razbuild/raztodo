@@ -32,7 +32,7 @@ pip install -e .[dev]
 ### 3. Verify Setup
 
 ```bash
-raztodo --help
+rt --help
 pytest
 ```
 
