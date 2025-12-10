@@ -12,7 +12,6 @@ from raztodo.presentation.cli.commands import (
     search_tasks_cmd,
     update_task_cmd,
 )
-from raztodo.presentation.cli.formatters import CLIHelpFormatter
 
 
 def _get_version() -> str:
@@ -23,8 +22,10 @@ def _get_version() -> str:
 
 
 def get_parser() -> argparse.ArgumentParser:
+    from raztodo.presentation.cli.formatters import CLIHelpFormatter
+
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        prog="rt",
+        prog="raztodo",
         description=(
             "A command-line task manager powered by SQLite. "
             "Use one of the commands below to manage your todos."
