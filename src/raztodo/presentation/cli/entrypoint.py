@@ -3,10 +3,8 @@ from typing import Any, Protocol
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.infrastructure.logger import get_logger
-from raztodo.presentation.cli.ansi import Colorizer
 from raztodo.presentation.cli.parser import get_parser
 
-color = Colorizer()
 logger = get_logger("entrypoint")
 
 
@@ -16,6 +14,8 @@ class HandlerProtocol(Protocol):
 
 
 def run_cli(handler: HandlerProtocol, argv: list[str] | None = None) -> int:
+    from raztint import err, info
+
     parser = get_parser()
     args = parser.parse_args(argv)
 
@@ -32,7 +32,7 @@ def run_cli(handler: HandlerProtocol, argv: list[str] | None = None) -> int:
 
     except KeyboardInterrupt:
         logger.info(f"Command '{args.command}' interrupted by user")
-        print(f"\n{color.info()} Operation cancelled", file=sys.stderr)
+        print(f"\n{info()} Operation cancelled", file=sys.stderr)
         return 130
 
     except SystemExit:
@@ -40,10 +40,10 @@ def run_cli(handler: HandlerProtocol, argv: list[str] | None = None) -> int:
 
     except RazTodoException as e:
         logger.exception(f"Domain error: {e}")
-        print(f"{color.err()} {e}", file=sys.stderr)
+        print(f"{err()} {e}", file=sys.stderr)
         return 1
 
     except Exception as e:
         logger.exception(f"Unexpected error: {e}")
-        print(f"{color.err()} {e}", file=sys.stderr)
+        print(f"{err()} {e}", file=sys.stderr)
         return 1
