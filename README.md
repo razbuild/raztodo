@@ -8,7 +8,7 @@
 
 ---
 
-RazTodo is simple, cross-platform CLI todo and task management tool — no dependencies, using SQLite for storage.
+RazTodo is a lightweight and cross-platform CLI tool for efficient todo and task management, using SQLite as its storage backend.
 
 | Preview |
 |:-------:|
