@@ -41,16 +41,16 @@ pip install raztodo
 
 ```bash
 # Create a task
-raztodo add "Buy groceries" --priority H --due 2024-12-31
+rt add "Buy groceries" --priority H --due 2024-12-31
 
 # List all tasks
-raztodo list
+rt list
 
 # Mark as done
-raztodo done 1
+rt done 1
 
 # Search
-raztodo search "groceries"
+rt search "groceries"
 ```
 
 > For complete command reference, see [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
@@ -73,8 +73,8 @@ raztodo search "groceries"
 
 ```bash
 # Get help for any command
-raztodo --help
-raztodo add --help
+rt --help
+rt add --help
 ```
 
 ---
