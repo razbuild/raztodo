@@ -6,13 +6,14 @@ keywords = ["cli", "todo", "task", "command-line", "python"]
 authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
 license = "MIT"
 readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = []
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: End Users/Desktop",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Environment :: Console",
     "Topic :: Utilities",
@@ -24,7 +25,7 @@ Repository = "https://github.com/razbuild/raztodo"
 issues = "https://github.com/razbuild/raztodo/issues"
 
 [project.scripts]
-raztodo = "raztodo.__main__:main"
+rt = "raztodo.__main__:main"
 
 [project.optional-dependencies]
 test = ["pytest"]
