@@ -24,19 +24,19 @@ def _get_version() -> str:
 
 def get_parser() -> argparse.ArgumentParser:
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        prog="raztodo",
+        prog="rt",
         description=(
             "A command-line task manager powered by SQLite. "
             "Use one of the commands below to manage your todos."
         ),
         epilog=(
             "Examples:\n"
-            "  raztodo add 'Buy groceries' --priority H --due tomorrow\n"
-            "  raztodo list --priority H --pending\n"
-            "  raztodo update 1 --title 'New title' --done\n"
-            "  raztodo search 'meeting' --project work\n\n"
+            "  rt add 'Buy groceries' --priority H --due tomorrow\n"
+            "  rt list --priority H --pending\n"
+            "  rt update 1 --title 'New title' --done\n"
+            "  rt search 'meeting' --project work\n\n"
             "Tips:\n"
-            "  • Show command help: raztodo <command> --help\n"
+            "  • Show command help: rt <command> --help\n"
             "  • Output in JSON mode when available for automation"
         ),
         formatter_class=CLIHelpFormatter,
