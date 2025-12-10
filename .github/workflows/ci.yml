@@ -37,7 +37,7 @@ jobs:
         run: mypy src
 
   test:
-    name: Test (${{ matrix.os }})
+    name: Test (${{ matrix.os }} - Python ${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -50,8 +50,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.14"
+          python-version: [3.13, 3.14]
+          python-version: ${{ matrix.python }}
           allow-prereleases: true
+          cache: pip
 
       - name: Install dependencies
         run: pip install coverage pytest
