@@ -174,9 +174,9 @@ Handles **CLI user interaction**.
 **File:** `__main__.py`
 
 ```bash
-raztodo add "Task1" --desc "Test1"
-raztodo list
-raztodo --help
+rt add "Task1" --desc "Test1"
+rt list
+rt --help
 ```
 
 > Not intended for direct execution during development.
