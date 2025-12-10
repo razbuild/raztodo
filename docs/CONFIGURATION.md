@@ -48,7 +48,7 @@ RazTodo stores the SQLite database in platform-specific directories:
 Use the `--db` option to specify a custom database:
 
 ```bash
-raztodo --db /path/to/custom.db list
+rt --db /path/to/custom.db list
 ```
 
 Or set `RAZTODO_DB` to an absolute path:
@@ -74,13 +74,13 @@ export RAZTODO_DB="/path/to/custom.db"
 
 ```bash
 # Disable colors
-raztodo --no-color list
+rt --no-color list
 
 # Use custom database
-raztodo --db ~/work/tasks.db add "Work task"
+rt --db ~/work/tasks.db add "Work task"
 
 # Combine options
-raztodo --no-color --db ./project.db list
+rt --no-color --db ./project.db list
 ```
 
 ---
@@ -99,7 +99,7 @@ Configure logging level via `LOG_LEVEL` environment variable:
 
 ```bash
 # Enable debug logging
-LOG_LEVEL=DEBUG raztodo list
+LOG_LEVEL=DEBUG rt list
 ```
 
 ---
