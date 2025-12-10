@@ -2,11 +2,10 @@ import argparse
 import sys
 from typing import Any
 
-from raztodo.presentation.cli.ansi import Colorizer
+from raztint import warn
+
 from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import format_tasks_list, output_json, parse_tags
-
-color = Colorizer()
 
 
 def add_parser(sub: Any) -> None:
@@ -79,7 +78,7 @@ class SearchTasksCMD:
 
         if getattr(args, "done", False) and getattr(args, "pending", False):
             print(
-                f"{color.warn()} Both --done and --pending specified; showing all matches",
+                f"{warn()} Both --done and --pending specified; showing all matches",
                 file=sys.stderr,
             )
         else:
@@ -92,7 +91,7 @@ class SearchTasksCMD:
             if getattr(args, "json", False):
                 output_json([])
             else:
-                print(f"{color.warn()} No tasks found for '{args.keyword}'")
+                print(f"{warn()} No tasks found for '{args.keyword}'")
             return 0
 
         format_tasks_list(tasks, json_mode=getattr(args, "json", False))
