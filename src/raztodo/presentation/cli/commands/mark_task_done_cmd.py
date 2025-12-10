@@ -5,7 +5,7 @@ from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import handle_command_error, output_success
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'done' subcommand to the CLI parser."""
     done = sub.add_parser(
         "done",
@@ -13,9 +13,9 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Mark a task as completed or mark it as pending again (using --undo).\n\n"
             "Examples:\n"
-            "  raztodo done 1\n"
-            "  raztodo done 5 --undo\n"
-            "  raztodo done 3 --json"
+            "  rt done 1\n"
+            "  rt done 5 --undo\n"
+            "  rt done 3 --json"
         ),
         formatter_class=CLIHelpFormatter,
     )

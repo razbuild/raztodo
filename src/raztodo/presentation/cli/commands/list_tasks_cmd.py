@@ -9,7 +9,7 @@ from raztodo.presentation.cli.helpers import format_tasks_list, parse_tags
 color = Colorizer()
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'list' subcommand to the CLI parser."""
     listp = sub.add_parser(
         "list",
@@ -17,10 +17,10 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "List tasks with optional filtering, sorting, and pagination.\n\n"
             "Examples:\n"
-            "  raztodo list --pending --priority H\n"
-            "  raztodo list --project work --sort priority --desc\n"
-            "  raztodo list --tags urgent,important --due-before 2024-12-31\n"
-            "  raztodo list --limit 10 --offset 20"
+            "  rt list --pending --priority H\n"
+            "  rt list --project work --sort priority --desc\n"
+            "  rt list --tags urgent,important --due-before 2024-12-31\n"
+            "  rt list --limit 10 --offset 20"
         ),
         formatter_class=CLIHelpFormatter,
     )

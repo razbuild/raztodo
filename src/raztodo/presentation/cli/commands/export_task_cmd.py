@@ -5,7 +5,7 @@ from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import handle_command_error, output_success
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'export' subcommand to the CLI parser."""
     export = sub.add_parser(
         "export",
@@ -13,8 +13,8 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Export all tasks to a JSON file for backup or transfer.\n\n"
             "Examples:\n"
-            "  raztodo export tasks_backup.json\n"
-            "  raztodo export ~/backups/tasks_2024.json --json"
+            "  rt export tasks_backup.json\n"
+            "  rt export ~/backups/tasks_2024.json --json"
         ),
         formatter_class=CLIHelpFormatter,
     )

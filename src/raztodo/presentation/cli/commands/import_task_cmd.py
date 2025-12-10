@@ -9,7 +9,7 @@ from raztodo.presentation.cli.helpers import (
 )
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'import' subcommand to the CLI parser."""
     import_ = sub.add_parser(
         "import",
@@ -17,8 +17,8 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Import tasks from a JSON file (exported by the export command).\n\n"
             "Examples:\n"
-            "  raztodo import tasks_backup.json\n"
-            "  raztodo import ~/backups/tasks.json --upsert --json"
+            "  rt import tasks_backup.json\n"
+            "  rt import ~/backups/tasks.json --upsert --json"
         ),
         formatter_class=CLIHelpFormatter,
     )

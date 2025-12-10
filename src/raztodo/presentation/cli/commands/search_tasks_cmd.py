@@ -9,7 +9,7 @@ from raztodo.presentation.cli.helpers import format_tasks_list, output_json, par
 color = Colorizer()
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'search' subcommand to the CLI parser."""
     search = sub.add_parser(
         "search",
@@ -17,9 +17,9 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Search for tasks by keyword in title or description, with optional filters.\n\n"
             "Examples:\n"
-            "  raztodo search 'meeting' --pending\n"
-            "  raztodo search 'project' --priority H --project work\n"
-            "  raztodo search 'urgent' --tags important,work"
+            "  rt search 'meeting' --pending\n"
+            "  rt search 'project' --priority H --project work\n"
+            "  rt search 'urgent' --tags important,work"
         ),
         formatter_class=CLIHelpFormatter,
     )

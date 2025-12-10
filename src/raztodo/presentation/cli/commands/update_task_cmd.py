@@ -9,7 +9,7 @@ from raztodo.presentation.cli.helpers import (
 )
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'update' subcommand to the CLI parser."""
     update = sub.add_parser(
         "update",
@@ -17,9 +17,9 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Update one or more fields of an existing task by ID.\n\n"
             "Examples:\n"
-            "  raztodo update 1 --title 'Updated title'\n"
-            "  raztodo update 5 --priority H --due 2024-12-31\n"
-            "  raztodo update 3 --tags work,urgent --project client"
+            "  rt update 1 --title 'Updated title'\n"
+            "  rt update 5 --priority H --due 2024-12-31\n"
+            "  rt update 3 --tags work,urgent --project client"
         ),
         formatter_class=CLIHelpFormatter,
     )

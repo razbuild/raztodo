@@ -9,7 +9,7 @@ from raztodo.presentation.cli.helpers import (
 )
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'add' subcommand to the CLI parser."""
     add = sub.add_parser(
         "add",
@@ -17,9 +17,9 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Create a new task with a title and optional metadata.\n\n"
             "Examples:\n"
-            "  raztodo add 'Complete project' --priority H --due 2024-12-31\n"
-            "  raztodo add 'Call client' -p M --desc 'Discuss requirements' --tags work,urgent\n"
-            "  raztodo add 'Buy milk' --project shopping"
+            "  rt add 'Complete project' --priority H --due 2024-12-31\n"
+            "  rt add 'Call client' -p M --desc 'Discuss requirements' --tags work,urgent\n"
+            "  rt add 'Buy milk' --project shopping"
         ),
         formatter_class=CLIHelpFormatter,
     )

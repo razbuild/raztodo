@@ -5,8 +5,8 @@ from raztodo.presentation.cli.formatters import CLIHelpFormatter
 
 
 def add_parser(
-    sub: argparse._SubParsersAction[argparse.ArgumentParser],
-) -> argparse.ArgumentParser:
+    sub: Any,
+) -> Any:
     """Add the 'migrate' subcommand to the CLI parser."""
     p = sub.add_parser(
         "migrate",
@@ -15,7 +15,7 @@ def add_parser(
             "Run database migration to deduplicate task titles and enforce unique index.\n"
             "This command should be run when upgrading from an older version.\n\n"
             "Example:\n"
-            "  raztodo migrate"
+            "  rt migrate"
         ),
         formatter_class=CLIHelpFormatter,
     )

@@ -5,7 +5,7 @@ from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import handle_command_error, output_success
 
 
-def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None:
+def add_parser(sub: Any) -> None:
     """Add the 'remove' subcommand to the CLI parser."""
     remove = sub.add_parser(
         "remove",
@@ -13,8 +13,8 @@ def add_parser(sub: argparse._SubParsersAction[argparse.ArgumentParser]) -> None
         description=(
             "Delete a task by its ID. This action cannot be undone.\n\n"
             "Examples:\n"
-            "  raztodo remove 1\n"
-            "  raztodo remove 5 --json"
+            "  rt remove 1\n"
+            "  rt remove 5 --json"
         ),
         formatter_class=CLIHelpFormatter,
     )
