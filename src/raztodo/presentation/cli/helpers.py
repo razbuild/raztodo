@@ -2,11 +2,10 @@ import json
 from collections.abc import Callable
 from typing import Any
 
+from raztint import err, ok, tint
+
 from raztodo.domain.exceptions import ERROR_TYPE_MAP
 from raztodo.domain.task_entity import TaskEntity
-from raztodo.presentation.cli.ansi import Colorizer
-
-color = Colorizer()
 
 ERROR_TYPE_PAIRS: list[tuple[type[BaseException], str]] = [
     (exc_class, key) for key, exc_class in ERROR_TYPE_MAP.items()
@@ -43,7 +42,7 @@ def output_success(message: str, json_mode: bool = False, **json_data: Any) -> N
     if json_mode:
         output_json({"ok": True, **json_data})
     else:
-        print(f"{color.ok()} {message}")
+        print(f"{ok()} {message}")
 
 
 def output_error(
@@ -58,7 +57,7 @@ def output_error(
             error_data["type"] = error_type
         output_json(error_data)
     else:
-        print(f"{color.err()} {error}")
+        print(f"{err()} {error}")
 
 
 def handle_command_error(
@@ -93,8 +92,8 @@ def handle_command_error(
 
 def format_task(task: TaskEntity) -> None:
     done: bool = getattr(task, "done", False)
-    status_icon: str = color.ok() if done else color.err()
-    status_text: str = color.green("[Done]") if done else color.yellow("[Pending]")
+    status_icon: str = ok() if done else err()
+    status_text: str = tint.green("[Done]") if done else tint.yellow("[Pending]")
 
     created_raw: str = getattr(task, "created_at", "")
     created_date: str = created_raw.split(" ")[0] if created_raw else "N/A"
@@ -105,24 +104,24 @@ def format_task(task: TaskEntity) -> None:
     due_date: str = getattr(task, "due_date", None) or ""
 
     meta_fields: list[tuple[Any, Callable[[Any], str]]] = [
-        (priority, lambda v: f"Priority: {color.yellow(v)}"),
-        (project, lambda v: f"Project: {color.cyan(v)}"),
-        (tags, lambda v: f"Tags: {', '.join([color.magenta(t) for t in v])}"),
-        (due_date, lambda v: f"Due: {color.gray(v)}"),
+        (priority, lambda v: f"Priority: {tint.yellow(v)}"),
+        (project, lambda v: f"Project: {tint.cyan(v)}"),
+        (tags, lambda v: f"Tags: {', '.join([tint.magenta(t) for t in v])}"),
+        (due_date, lambda v: f"Due: {tint.gray(v)}"),
     ]
 
     metadata_parts: list[str] = [fmt(value) for value, fmt in meta_fields if value]
-    metadata_parts.append(f"Created: {color.gray(created_date)}")
+    metadata_parts.append(f"Created: {tint.gray(created_date)}")
 
     print(
-        f"{status_icon} {color.blue(f'#{task.id}')} {task.title} {color.gray(f'{status_text}')}"
+        f"{status_icon} {tint.blue(f'#{task.id}')} {task.title} {tint.gray(f'{status_text}')}"
     )
 
     description: str = getattr(task, "description", "") or ""
     if description:
-        print(f"   {color.gray(description)}")
+        print(f"   {tint.gray(description)}")
 
-    print(f"   {color.gray(' | '.join(metadata_parts))}")
+    print(f"   {tint.gray(' | '.join(metadata_parts))}")
     print()
 
 
