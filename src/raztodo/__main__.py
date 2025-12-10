@@ -14,8 +14,10 @@ def main() -> int:
     try:
         return run_cli(handler=handler)
     except Exception as e:
+        from raztint import err
+
         logger.exception(e)
-        print("[Fatal] Unexpected error.", file=sys.stderr)
+        print(f"{err()} Unexpected error.", file=sys.stderr)
         return 1
     finally:
         container.close_singleton()
