@@ -1,6 +1,5 @@
 import sys
 
-from raztodo.domain.exceptions import RazTodoException
 from raztodo.infrastructure.container import AppContainer
 from raztodo.infrastructure.logger import get_logger
 from raztodo.presentation.cli.entrypoint import run_cli
@@ -14,10 +13,6 @@ def main() -> int:
 
     try:
         return run_cli(handler=handler)
-    except RazTodoException as e:
-        logger.exception(e)
-        print(f"[Error] {e}", file=sys.stderr)
-        return 1
     except Exception as e:
         logger.exception(e)
         print("[Fatal] Unexpected error.", file=sys.stderr)
