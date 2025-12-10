@@ -2,11 +2,10 @@ import argparse
 import sys
 from typing import Any
 
-from raztodo.presentation.cli.ansi import Colorizer
+from raztint import warn
+
 from raztodo.presentation.cli.formatters import CLIHelpFormatter
 from raztodo.presentation.cli.helpers import format_tasks_list, parse_tags
-
-color = Colorizer()
 
 
 def add_parser(sub: Any) -> None:
@@ -99,7 +98,7 @@ class ListTasksCMD:
         done: bool | None = None
         if getattr(args, "done", False) and getattr(args, "pending", False):
             print(
-                f"{color.warn()} Both --done and --pending specified; showing all tasks",
+                f"{warn()} Both --done and --pending specified; showing all tasks",
                 file=sys.stderr,
             )
         elif getattr(args, "done", False):
@@ -142,7 +141,7 @@ class ListTasksCMD:
         tasks = sorted(tasks, key=sort_key, reverse=reverse)
 
         if not tasks:
-            print(f"{color.warn()} No tasks found")
+            print(f"{warn()} No tasks found")
             return 0
 
         format_tasks_list(tasks, json_mode=getattr(args, "json", False))
