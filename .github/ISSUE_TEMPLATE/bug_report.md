@@ -10,7 +10,7 @@ assignees: ''
 A clear description of the bug.
 
 ## Steps to Reproduce
-1. Run `raztodo ...`
+1. Run `rt ...`
 2. ...
 
 ## Expected Behavior
