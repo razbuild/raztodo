@@ -16,7 +16,7 @@ RazTodo is a lightweight and cross-platform CLI tool for efficient todo and task
 
 ## Features
 
-- **Task Management** — Add, update, remove, list, and mark tasks as done
+- **Task Management** — Add, update, remove, list, and mark tasks as done, clear tasks
 - **Tags & Projects** — Organize tasks with tags and project names
 - **Search** — Full-text search across all tasks
 - **Due Dates & Priority** — Set deadlines and priority levels L | M | H
@@ -24,6 +24,8 @@ RazTodo is a lightweight and cross-platform CLI tool for efficient todo and task
 - **Colored Output** — Beautiful **ANSI** colors and icons
 - **SQLite Storage** — No external services required
 - **Cross-Platform** — Works on **Linux**, **macOS**, and **Windows**
+- **Fast Performance** — Lazy loading and optimized architecture
+- **Clean Architecture** — Maintainable and testable codebase
 
 ---
 
@@ -70,6 +72,7 @@ rt search "groceries"
 | `export` | Export to JSON |
 | `import` | Import from JSON |
 | `migrate` | Run database migration |
+| `clear` | Delete all tasks |
 
 ```bash
 # Get help for any command
@@ -97,17 +100,24 @@ rt add --help
 - [Configuration](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md) — Environment variables and options
 - [Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md) — Project structure and design
 - [Testing](https://github.com/razbuild/raztodo/blob/master/docs/TESTING.md) — Running tests and contributing
+- [Changelog](https://github.com/razbuild/raztodo/blob/master/CHANGELOG.md) — Release notes and version history
 
 ---
-
-## Contributing
 
 Contributions are welcome! Please:
 
 1. Fork the repository
 2. Create a feature branch
-3. Run tests: `pytest && ruff check src/ && black --check src/`
+3. Run quality checks:
+   ```bash
+   pytest
+   ruff check src/ tests/
+   black --check src/ tests/
+   mypy src/
+   ```
 4. Submit a pull request
+
+For detailed guidelines, see [Contributing Guide](https://github.com/razbuild/raztodo/blob/master/CONTRIBUTING.md).
 
 ---
 
