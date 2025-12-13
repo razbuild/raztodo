@@ -9,7 +9,7 @@ Older Python versions are **not supported** and will not pass tests or static an
 
 Install development dependencies:
 
-* Python >= 3.14
+* Python >= 3.13
 * pytest
 * mypy
 * black

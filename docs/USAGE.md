@@ -239,6 +239,18 @@ Run this command when upgrading from an older version.
 
 ---
 
+### `clear` - Delete all tasks
+
+Delete all tasks from the database. This action cannot be undone.
+
+| Option | Description |
+|--------|-------------|
+| `--confirm` | | Confirm that you want to delete all tasks (required) (default: False) |
+| `--json` | | Output result as JSON instead of human-readable format (default: False) |
+
+
+---
+
 ## Global Options
 
 These options work with all commands:

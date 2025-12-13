@@ -6,7 +6,7 @@ This guide explains how to install and work with **RazTodo**, both as an end-use
 
 ## Prerequisites
 
-* Python **3.14+**
+* Python **3.13+**
 * `pip` or `pipx` installed
 
 ---
@@ -90,25 +90,26 @@ rt --help
 You should see output like:
 
 ```text
-usage: rt [-h] [--version] COMMAND ...
+usage: raztodo [-h] [--version] COMMAND ...
 
 A command-line task manager powered by SQLite. Use one of the commands below to manage your todos.
 
 positional arguments:
-  COMMAND               Available commands
-    add                 Create a new task
-    list                List all tasks
-    remove              Delete a task
-    update              Update an existing task
-    search              Search tasks by keyword
-    export              Export tasks to a JSON file
-    import              Import tasks from a JSON file
-    done                Mark a task as done or undone
-    migrate             Run database migration
+  COMMAND     Available commands
+    add       Create a new task
+    list      List all tasks
+    remove    Delete a task
+    update    Update an existing task
+    search    Search tasks by keyword
+    export    Export tasks to a JSON file
+    import    Import tasks from a JSON file
+    done      Mark a task as done or undone
+    migrate   Run database migration
+    clear     Delete all tasks
 
 options:
-  -h, --help            show this help message and exit
-  --version             Show raztodo version information and exit
+  -h, --help  show this help message and exit
+  --version   Show raztodo version information and exit
 
 Examples:
   rt add 'Buy groceries' --priority H --due tomorrow
