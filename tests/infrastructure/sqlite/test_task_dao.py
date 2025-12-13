@@ -206,3 +206,23 @@ class TestTaskDAO:
 
         rows = list(dao.search("Task", tags=["urgent"]))
         assert len(rows) == 1
+
+    def test_clear_all(self, dao):
+        """Test clearing all tasks."""
+        dao.insert("Task 1")
+        dao.insert("Task 2")
+        dao.insert("Task 3")
+
+        rows_before = list(dao.fetch_all())
+        assert len(rows_before) == 3
+
+        count = dao.clear_all()
+        assert count == 3
+
+        rows_after = list(dao.fetch_all())
+        assert len(rows_after) == 0
+
+    def test_clear_all_empty(self, dao):
+        """Test clearing when database is empty."""
+        count = dao.clear_all()
+        assert count == 0

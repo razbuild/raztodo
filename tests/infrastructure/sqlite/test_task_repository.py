@@ -254,3 +254,39 @@ class TestSQLiteTaskRepository:
         with pytest.raises(RazTodoException) as exc_info:
             task_repo.add_task("Task", description=long_desc)
         assert "description" in str(exc_info.value).lower()
+
+    def test_clear_all_tasks(self, task_repo):
+        """Test clearing all tasks."""
+        task_repo.add_task("Task 1")
+        task_repo.add_task("Task 2")
+        task_repo.add_task("Task 3")
+
+        tasks_before = task_repo.get_tasks()
+        assert len(tasks_before) == 3
+
+        count = task_repo.clear_all_tasks()
+        assert count == 3
+
+        tasks_after = task_repo.get_tasks()
+        assert len(tasks_after) == 0
+
+    def test_clear_all_tasks_empty_repository(self, task_repo):
+        """Test clearing when repository is empty."""
+        count = task_repo.clear_all_tasks()
+        assert count == 0
+
+    def test_clear_all_tasks_removes_all_data(self, task_repo):
+        """Test that clear_all_tasks removes all task data."""
+        task_repo.add_task("Task 1", priority="H", project="Work")
+        task_repo.add_task("Task 2", priority="M", project="Personal")
+        task_repo.add_task("Task 3", tags=["urgent"])
+
+        task_repo.clear_all_tasks()
+
+        # Verify all tasks are gone
+        tasks = task_repo.get_tasks()
+        assert len(tasks) == 0
+
+        # Verify search returns nothing
+        search_results = task_repo.search_tasks("Task")
+        assert len(search_results) == 0

@@ -1,6 +1,7 @@
 import os
 
 from raztodo.infrastructure.container import AppContainer
+from raztodo.presentation.cli.entrypoint import create_router
 
 
 class TestAppContainer:
@@ -12,8 +13,8 @@ class TestAppContainer:
 
         assert container.config is not None
         assert container.logger is not None
-        assert container.task_handler is not None
         assert container.repo_singleton() is not None
+        assert container.connection_factory() is not None
 
         # Clean up
         container.close_singleton()
@@ -37,12 +38,17 @@ class TestAppContainer:
         # Clean up
         container.close_singleton()
 
-    def test_container_task_handler(self):
-        """Test container task handler."""
+    def test_container_can_create_router(self):
+        """Test that container can provide components to create router."""
         container = AppContainer()
 
-        assert container.task_handler is not None
-        assert hasattr(container.task_handler, "storage")
+        repo = container.repo_singleton()
+        connection_factory = container.connection_factory()
+        router = create_router(repo, connection_factory)
+
+        assert router is not None
+        assert hasattr(router, "storage")
+        assert router.storage is repo
 
         # Clean up
         container.close_singleton()
