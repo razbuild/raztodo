@@ -4,6 +4,7 @@ from typing import Any, Protocol
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.infrastructure.logger import get_logger
 from raztodo.presentation.cli.parser import get_parser
+from raztodo.presentation.cli.router import TaskRouter
 
 logger = get_logger("entrypoint")
 
@@ -11,6 +12,11 @@ logger = get_logger("entrypoint")
 class HandlerProtocol(Protocol):
     def get_command_class(self, name: str) -> type: ...
     def get_usecase(self, name: str) -> Any: ...
+
+
+def create_router(storage: Any, connection_factory: Any) -> TaskRouter:
+    """Create and return a TaskRouter instance."""
+    return TaskRouter(storage, connection_factory)
 
 
 def run_cli(handler: HandlerProtocol, argv: list[str] | None = None) -> int:

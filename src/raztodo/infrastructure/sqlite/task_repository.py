@@ -284,6 +284,14 @@ class SQLiteTaskRepository(TaskRepository):
         logger.info(f"Imported {count} tasks from {filepath}")
         return count
 
+    def clear_all_tasks(self) -> int:
+        try:
+            count = self._dao.clear_all()
+            logger.info(f"Cleared {count} tasks from repository")
+            return count
+        except sqlite3.Error as e:
+            raise RazTodoException(f"DatabaseError during clear_all_tasks: {e}") from e
+
     def close(self) -> None:
         if self._conn:
             self._conn.close()

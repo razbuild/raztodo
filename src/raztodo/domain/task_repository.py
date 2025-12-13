@@ -168,3 +168,13 @@ class TaskRepository(ABC):
             int: Count of successfully imported tasks.
         """
         pass
+
+    @abstractmethod
+    def clear_all_tasks(self) -> int:
+        """
+        Deletes all tasks from the repository.
+
+        Returns:
+            int: Number of deleted records.
+        """
+        pass

@@ -2,6 +2,7 @@ import argparse
 from importlib import metadata
 
 from raztodo.presentation.cli.commands import (
+    clear_tasks_cmd,
     create_task_cmd,
     delete_task_cmd,
     export_task_cmd,
@@ -65,5 +66,6 @@ def get_parser() -> argparse.ArgumentParser:
     import_task_cmd.add_parser(sub)
     mark_task_done_cmd.add_parser(sub)
     migrate_tasks_cmd.add_parser(sub)
+    clear_tasks_cmd.add_parser(sub)
 
     return parser

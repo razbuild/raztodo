@@ -5,10 +5,11 @@ from raztodo.infrastructure.logger import get_logger
 from raztodo.infrastructure.settings import Settings
 from raztodo.infrastructure.sqlite.connection import sqlite_connection_factory
 from raztodo.infrastructure.sqlite.task_repository import SQLiteTaskRepository
-from raztodo.presentation.cli.router import TaskRouter
 
 
 class AppContainer:
+    """Dependency injection container for infrastructure components."""
+
     _repo_singleton: SQLiteTaskRepository | None
     _connection_factory: Callable[..., Any]
 
@@ -19,7 +20,6 @@ class AppContainer:
             db_name or self.config.db_name
         )
         self._repo_singleton = None
-        self.task_handler = TaskRouter(self.repo_singleton(), self._connection_factory)
 
     def repo_singleton(self) -> SQLiteTaskRepository:
         """Return a singleton instance of the task repository."""
@@ -28,6 +28,10 @@ class AppContainer:
                 connection_factory=self._connection_factory
             )
         return self._repo_singleton
+
+    def connection_factory(self) -> Callable[..., Any]:
+        """Return the connection factory."""
+        return self._connection_factory
 
     def close_singleton(self) -> None:
         """Close and clear the singleton repository."""

@@ -2,14 +2,17 @@ import sys
 
 from raztodo.infrastructure.container import AppContainer
 from raztodo.infrastructure.logger import get_logger
-from raztodo.presentation.cli.entrypoint import run_cli
+from raztodo.presentation.cli.entrypoint import create_router, run_cli
 
 logger = get_logger("__main__")
 
 
 def main() -> int:
     container = AppContainer()
-    handler = container.task_handler
+    handler = create_router(
+        storage=container.repo_singleton(),
+        connection_factory=container.connection_factory(),
+    )
 
     try:
         return run_cli(handler=handler)

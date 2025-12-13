@@ -141,6 +141,12 @@ class TaskDAO:
             cur = self._conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
             return cur.rowcount
 
+    def clear_all(self) -> int:
+        """Delete all tasks from the database."""
+        with self._conn:
+            cur = self._conn.execute("DELETE FROM tasks")
+            return cur.rowcount
+
     def search(
         self,
         keyword: str,
@@ -148,16 +154,54 @@ class TaskDAO:
         project: str | None = None,
         tags: list[str] | None = None,
     ) -> list[Row]:
-        pattern = f"%{keyword}%"
+        # Use FTS5 for O(log n) search performance
+        # Escape special FTS5 characters and use phrase search for exact matching
+        keyword_escaped = keyword.replace('"', '""')
+        fts_query = f'"{keyword_escaped}"*'  # Prefix search for better performance
+
+        # Build query using FTS5 for O(log n) search
         query_parts = [
-            "SELECT id, title, description, done, created_at, priority, due_date, tags, project FROM tasks WHERE (title LIKE ? OR description LIKE ?)"
+            """SELECT t.id, t.title, t.description, t.done, t.created_at, 
+               t.priority, t.due_date, t.tags, t.project 
+               FROM tasks t
+               INNER JOIN tasks_fts fts ON t.id = fts.rowid
+               WHERE fts MATCH ?"""
         ]
-        params: list[Any] = [pattern, pattern]
+        params: list[Any] = [fts_query]
 
-        self._add_filter(query_parts, params, "priority", priority)
-        self._add_filter(query_parts, params, "project", project)
-        self._add_tags_filter(query_parts, params, tags)
+        # Add additional filters on the main table
+        filter_parts: list[str] = []
+        if priority is not None:
+            filter_parts.append("t.priority = ?")
+            params.append(priority)
+        if project is not None:
+            filter_parts.append("t.project = ?")
+            params.append(project)
+        if tags:
+            tag_filters = " OR ".join("t.tags LIKE ?" for _ in tags)
+            filter_parts.append(f"({tag_filters})")
+            params.extend(f"%{tag}%" for tag in tags)
 
-        query = " AND ".join(query_parts) + " ORDER BY id"
-        cur = self._conn.execute(query, params)
-        return cur.fetchall()
+        if filter_parts:
+            query_parts[0] += " AND " + " AND ".join(filter_parts)
+
+        query = query_parts[0] + " ORDER BY t.id"
+
+        try:
+            cur = self._conn.execute(query, params)
+            return cur.fetchall()
+        except Exception:
+            # Fallback to LIKE if FTS5 is not available (backward compatibility)
+            pattern = f"%{keyword}%"
+            query_parts = [
+                "SELECT id, title, description, done, created_at, priority, due_date, tags, project FROM tasks WHERE (title LIKE ? OR description LIKE ?)"
+            ]
+            params = [pattern, pattern]
+
+            self._add_filter(query_parts, params, "priority", priority)
+            self._add_filter(query_parts, params, "project", project)
+            self._add_tags_filter(query_parts, params, tags)
+
+            query = " AND ".join(query_parts) + " ORDER BY id"
+            cur = self._conn.execute(query, params)
+            return cur.fetchall()
