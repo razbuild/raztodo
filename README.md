@@ -34,6 +34,10 @@ RazTodo is a lightweight and cross-platform CLI tool for efficient todo and task
 ### Installation
 
 ```bash
+# Recommended for CLI usage
+pipx install raztodo
+
+# Or install via pip 
 pip install raztodo
 ```
 
