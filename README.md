@@ -2,7 +2,7 @@
 
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?logo=license&logoSize=auto&label=License&labelColor=3b3b3b&color=0055ff&cacheSeconds=3600&link=https%3A%2F%2Fgithub.com%2Frazbuild%2Fraztodo%2Fblob%2Fmaster%2FLICENSE)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&logo=githubactions&logoColor=&logoSize=auto&label=Build&labelColor=3b3b3b&cacheSeconds=3600&link=https%3A%2F%2Fgithub.com%2Frazbuild%2Fraztodo%2Factions%2Fworkflows%2Fci.yml)
-![Codecov (with branch)](https://img.shields.io/codecov/c/github/razbuild/raztodo/master?logo=codecov&logoColor=&logoSize=auto&label=Coverage&labelColor=3b3b3b&cacheSeconds=3600&link=https%3A%2F%2Fcodecov.io%2Fgh%2Frazbuild%2Fraztodo)
+![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztodo?logo=codecov&logoColor=white&logoSize=auto&label=Coverage&labelColor=3b3b3b&cacheSeconds=3600)
 ![PyPI - Version](https://img.shields.io/pypi/v/raztodo?pypiBaseUrl=https%3A%2F%2Fpypi.org&logo=pypi&logoColor=&logoSize=auto&label=PyPi&labelColor=3b3b3b&color=yellow&cacheSeconds=3600&link=https%3A%2F%2Fpypi.org%2Fproject%2Fraztodo%2F)
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Frazbuild%2Fraztodo%2Fmaster%2Fpyproject.toml&logo=python&logoColor=&logoSize=auto&label=Python&labelColor=3b3b3b&color=orange&cacheSeconds=3600&link=https%3A%2F%2Fwww.python.org%2F)
 
