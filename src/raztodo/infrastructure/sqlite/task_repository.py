@@ -56,8 +56,8 @@ def ensure_writable_path(filepath: str) -> Path:
             raise RazTodoException(
                 f"FileOperationError: Cannot create directory {dir_path}"
             ) from e
-    if file_path.exists() and not os.access(filepath, os.W_OK):
-        raise RazTodoException(f"FilePermissionError: Cannot write to file {filepath}")
+    if file_path.exists() and not os.access(str(file_path), os.W_OK):
+        raise RazTodoException(f"FilePermissionError: Cannot write to file {file_path}")
     return file_path
 
 
