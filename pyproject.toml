@@ -1,6 +1,6 @@
 [project]
 name = "raztodo"
-version = "0.2.0"
+version = "0.2.1"
 description = "A fast, zero-dependency command-line todo/task manager using SQLite."
 keywords = ["cli", "todo", "task", "command-line", "python"]
 authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
