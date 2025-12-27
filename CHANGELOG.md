@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.1] - 2025-12-27
+
+### Fixed
+- Fixed Windows APPDATA path resolution bug
+- Fixed absolute database path handling in connection factory
+- Fixed file permission check using resolved path instead of original path
+
+### Docs
+- Improve documentation clarity and correctness
+- Fix incorrect or unclear information in documentation
+
+---
+
 ## [0.2.0] - 2025-12-13
 
 ### Added
