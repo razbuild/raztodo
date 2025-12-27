@@ -32,7 +32,11 @@ def sqlite_connection_factory(
             conn = sqlite3.connect(":memory:", check_same_thread=False)
         else:
             db_path_obj = Path(db_name)
-            db_path = db_path_obj if db_path_obj.is_absolute() else default_data_dir() / db_name
+            db_path = (
+                db_path_obj
+                if db_path_obj.is_absolute()
+                else default_data_dir() / db_name
+            )
             conn = sqlite3.connect(str(db_path), check_same_thread=False)
         conn.row_factory = sqlite3.Row
         return conn
