@@ -175,14 +175,14 @@ refactor: simplify task repository
 
 ### Prefixes
 
-| Prefix | Use for |
-|--------|---------|
-| `feat` | New features |
-| `fix` | Bug fixes |
-| `docs` | Documentation |
-| `test` | Tests |
-| `refactor` | Code refactoring |
-| `chore` | Maintenance tasks |
+| Prefix     | Use for           |
+|------------|-------------------|
+| `feat`     | New features      |
+| `fix`      | Bug fixes         |
+| `docs`     | Documentation     |
+| `test`     | Tests             |
+| `refactor` | Code refactoring  |
+| `chore`    | Maintenance tasks |
 
 ---
 

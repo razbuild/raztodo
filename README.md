@@ -12,8 +12,8 @@
 
 RazTodo is a lightweight, cross-platform CLI task manager powered by SQLite, offering fast, privacy-first todo management with minimal external dependencies.
 
-| Preview |
-|:-------:|
+|                                         Preview                                          |
+|:----------------------------------------------------------------------------------------:|
 | ![Preview](https://raw.githubusercontent.com/razbuild/raztodo/master/assets/preview.gif) |
 
 ---
@@ -87,18 +87,18 @@ rt remove 1
 
 ## Commands
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `add` | Create a new task | `rt add "Task title" --priority H` |
-| `list` | List tasks with filters | `rt list --pending --priority H` |
-| `update` | Update a task | `rt update 1 --title "New title"` |
-| `done` | Mark task as done/undone | `rt done 1` |
-| `remove` | Delete a task | `rt remove 1` |
-| `search` | Search tasks | `rt search "keyword"` |
-| `export` | Export to JSON | `rt export backup.json` |
-| `import` | Import from JSON | `rt import backup.json` |
-| `migrate` | Run database migration | `rt migrate` |
-| `clear` | Delete all tasks | `rt clear --confirm` |
+| Command   | Description              | Example                            |
+|-----------|--------------------------|------------------------------------|
+| `add`     | Create a new task        | `rt add "Task title" --priority H` |
+| `list`    | List tasks with filters  | `rt list --pending --priority H`   |
+| `update`  | Update a task            | `rt update 1 --title "New title"`  |
+| `done`    | Mark task as done/undone | `rt done 1`                        |
+| `remove`  | Delete a task            | `rt remove 1`                      |
+| `search`  | Search tasks             | `rt search "keyword"`              |
+| `export`  | Export to JSON           | `rt export backup.json`            |
+| `import`  | Import from JSON         | `rt import backup.json`            |
+| `migrate` | Run database migration   | `rt migrate`                       |
+| `clear`   | Delete all tasks         | `rt clear --confirm`               |
 
 ```bash
 # Get help for any command
@@ -114,10 +114,10 @@ rt add --help
 
 RazTodo can be configured using environment variables:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
+| Variable     | Description               | Default    |
+|--------------|---------------------------|------------|
 | `RAZTODO_DB` | Database filename or path | `tasks.db` |
-| `LOG_LEVEL` | Logging level | `ERROR` |
+| `LOG_LEVEL`  | Logging level             | `ERROR`    |
 
 **Example:**
 
