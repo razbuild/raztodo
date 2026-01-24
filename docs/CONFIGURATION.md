@@ -19,10 +19,10 @@ RazTodo uses environment variables to configure its behavior. These can be set t
 
 ### Available Variables
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `RAZTODO_DB` | Database filename or absolute path | `tasks.db` | No |
-| `LOG_LEVEL` | Logging verbosity level | `ERROR` | No |
+| Variable     | Description                        | Default    | Required |
+|--------------|------------------------------------|------------|----------|
+| `RAZTODO_DB` | Database filename or absolute path | `tasks.db` | No       |
+| `LOG_LEVEL`  | Logging verbosity level            | `ERROR`    | No       |
 
 ### Setting Environment Variables
 
@@ -128,11 +128,11 @@ RazTodo uses SQLite to store your tasks. By default, it creates the database in 
 
 RazTodo automatically stores the database in the appropriate location for your operating system:
 
-| Platform | Default Path | Full Example |
-|----------|--------------|--------------|
-| **Linux** | `~/.local/share/raztodo/tasks.db` | `/home/username/.local/share/raztodo/tasks.db` |
-| **macOS** | `~/Library/Application Support/raztodo/tasks.db` | `/Users/username/Library/Application Support/raztodo/tasks.db` |
-| **Windows** | `%APPDATA%\raztodo\tasks.db` | `C:\Users\username\AppData\Roaming\raztodo\tasks.db` |
+| Platform    | Default Path                                     | Full Example                                                   |
+|-------------|--------------------------------------------------|----------------------------------------------------------------|
+| **Linux**   | `~/.local/share/raztodo/tasks.db`                | `/home/username/.local/share/raztodo/tasks.db`                 |
+| **macOS**   | `~/Library/Application Support/raztodo/tasks.db` | `/Users/username/Library/Application Support/raztodo/tasks.db` |
+| **Windows** | `%APPDATA%\raztodo\tasks.db`                     | `C:\Users\username\AppData\Roaming\raztodo\tasks.db`           |
 
 > **Note:** The directory is created automatically when you first run RazTodo.
 
@@ -225,13 +225,13 @@ RazTodo includes built-in logging to help with debugging and monitoring. You can
 
 ### Available Log Levels
 
-| Level | Value | Description | Use Case |
-|-------|-------|-------------|----------|
-| `DEBUG` | 10 | Most verbose - shows all details | Development, troubleshooting |
-| `INFO` | 20 | General operational information | Normal usage monitoring |
-| `WARNING` | 30 | Warning messages about potential issues | Production monitoring |
-| `ERROR` | 40 | Error messages only (default) | Production (quiet mode) |
-| `CRITICAL` | 50 | Only critical errors | Minimal logging |
+| Level      | Value | Description                             | Use Case                     |
+|------------|-------|-----------------------------------------|------------------------------|
+| `DEBUG`    | 10    | Most verbose - shows all details        | Development, troubleshooting |
+| `INFO`     | 20    | General operational information         | Normal usage monitoring      |
+| `WARNING`  | 30    | Warning messages about potential issues | Production monitoring        |
+| `ERROR`    | 40    | Error messages only (default)           | Production (quiet mode)      |
+| `CRITICAL` | 50    | Only critical errors                    | Minimal logging              |
 
 ### Setting Log Level
 
@@ -303,10 +303,10 @@ RazTodo provides global command-line options that work with all commands.
 
 ### Global Options
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--help` | `-h` | Show help message for the command |
-| `--version` | | Show RazTodo version information |
+| Option      | Short | Description                       |
+|-------------|-------|-----------------------------------|
+| `--help`    | `-h`  | Show help message for the command |
+| `--version` |       | Show RazTodo version information  |
 
 ### Using Help
 

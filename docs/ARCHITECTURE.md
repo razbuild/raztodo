@@ -155,17 +155,17 @@ Handles **CLI user interaction**.
 
 ### Commands
 
-| Command File | Purpose |
-|--------------|---------|
-| `create_task_cmd.py` | Add task |
-| `delete_task_cmd.py` | Delete task |
-| `update_task_cmd.py` | Update task |
-| `list_tasks_cmd.py` | List all tasks |
-| `search_tasks_cmd.py` | Search tasks |
+| Command File            | Purpose        |
+|-------------------------|----------------|
+| `create_task_cmd.py`    | Add task       |
+| `delete_task_cmd.py`    | Delete task    |
+| `update_task_cmd.py`    | Update task    |
+| `list_tasks_cmd.py`     | List all tasks |
+| `search_tasks_cmd.py`   | Search tasks   |
 | `mark_task_done_cmd.py` | Mark completed |
-| `import_task_cmd.py` | Import tasks |
-| `export_task_cmd.py` | Export tasks |
-| `migrate_tasks_cmd.py` | DB migrations
+| `import_task_cmd.py`    | Import tasks   |
+| `export_task_cmd.py`    | Export tasks   |
+| `migrate_tasks_cmd.py`  | DB migrations  |
 
 ---
 

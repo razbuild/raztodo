@@ -32,14 +32,14 @@ Create a new task with a title and optional metadata.
 rt add <title> [options]
 ```
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--desc TEXT` | `-d` | Task description |
-| `--priority LEVEL` | `-p` | Priority: `L` (Low), `M` (Medium), `H` (High) |
-| `--due DATE` | | Due date (YYYY-MM-DD format) |
-| `--tags TAGS` | `-t` | Comma-separated tags |
-| `--project NAME` | | Project or category name |
-| `--json` | | Output result as JSON |
+| Option             | Short | Description                                   |
+|--------------------|-------|-----------------------------------------------|
+| `--desc TEXT`      | `-d`  | Task description                              |
+| `--priority LEVEL` | `-p`  | Priority: `L` (Low), `M` (Medium), `H` (High) |
+| `--due DATE`       |       | Due date (YYYY-MM-DD format)                  |
+| `--tags TAGS`      | `-t`  | Comma-separated tags                          |
+| `--project NAME`   |       | Project or category name                      |
+| `--json`           |       | Output result as JSON                         |
 
 **Examples:**
 
@@ -59,20 +59,20 @@ List tasks with optional filtering, sorting, and pagination.
 rt list [options]
 ```
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--done` | | Show only completed tasks |
-| `--pending` | | Show only pending tasks |
-| `--priority LEVEL` | `-p` | Filter by priority: `L`, `M`, `H` |
-| `--project NAME` | | Filter by project name |
-| `--tags TAGS` | `-t` | Filter by tags (comma-separated) |
-| `--due-before DATE` | | Tasks due before date (YYYY-MM-DD) |
-| `--due-after DATE` | | Tasks due after date (YYYY-MM-DD) |
-| `--limit N` | | Limit number of results |
-| `--offset N` | | Skip N tasks (pagination) |
-| `--sort FIELD` | | Sort by: `id`, `title`, `created_at`, `done`, `priority`, `due_date` |
-| `--desc` | | Sort in descending order |
-| `--json` | | Output as JSON array |
+| Option              | Short | Description                                                          |
+|---------------------|-------|----------------------------------------------------------------------|
+| `--done`            |       | Show only completed tasks                                            |
+| `--pending`         |       | Show only pending tasks                                              |
+| `--priority LEVEL`  | `-p`  | Filter by priority: `L`, `M`, `H`                                    |
+| `--project NAME`    |       | Filter by project name                                               |
+| `--tags TAGS`       | `-t`  | Filter by tags (comma-separated)                                     |
+| `--due-before DATE` |       | Tasks due before date (YYYY-MM-DD)                                   |
+| `--due-after DATE`  |       | Tasks due after date (YYYY-MM-DD)                                    |
+| `--limit N`         |       | Limit number of results                                              |
+| `--offset N`        |       | Skip N tasks (pagination)                                            |
+| `--sort FIELD`      |       | Sort by: `id`, `title`, `created_at`, `done`, `priority`, `due_date` |
+| `--desc`            |       | Sort in descending order                                             |
+| `--json`            |       | Output as JSON array                                                 |
 
 **Examples:**
 
@@ -93,15 +93,15 @@ Update one or more fields of an existing task.
 rt update <id> [options]
 ```
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--title TEXT` | | New title |
-| `--desc TEXT` | | New description |
-| `--priority LEVEL` | `-p` | New priority: `L`, `M`, `H` |
-| `--due DATE` | | New due date (YYYY-MM-DD) |
-| `--tags TAGS` | `-t` | New tags (comma-separated) |
-| `--project NAME` | | New project name |
-| `--json` | | Output result as JSON |
+| Option             | Short | Description                 |
+|--------------------|-------|-----------------------------|
+| `--title TEXT`     |       | New title                   |
+| `--desc TEXT`      |       | New description             |
+| `--priority LEVEL` | `-p`  | New priority: `L`, `M`, `H` |
+| `--due DATE`       |       | New due date (YYYY-MM-DD)   |
+| `--tags TAGS`      | `-t`  | New tags (comma-separated)  |
+| `--project NAME`   |       | New project name            |
+| `--json`           |       | Output result as JSON       |
 
 **Examples:**
 
@@ -121,10 +121,10 @@ Mark a task as completed or revert it to pending.
 rt done <id> [options]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option   | Description                     |
+|----------|---------------------------------|
 | `--undo` | Mark as pending instead of done |
-| `--json` | Output result as JSON |
+| `--json` | Output result as JSON           |
 
 **Examples:**
 
@@ -144,8 +144,8 @@ Delete a task by ID. This action cannot be undone.
 rt remove <id> [options]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option   | Description           |
+|----------|-----------------------|
 | `--json` | Output result as JSON |
 
 **Examples:**
@@ -165,14 +165,14 @@ Search for tasks by keyword in title or description.
 rt search <keyword> [options]
 ```
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--done` | | Show only completed matches |
-| `--pending` | | Show only pending matches |
-| `--priority LEVEL` | `-p` | Filter by priority: `L`, `M`, `H` |
-| `--project NAME` | | Filter by project name |
-| `--tags TAGS` | `-t` | Filter by tags (comma-separated) |
-| `--json` | | Output as JSON array |
+| Option             | Short | Description                       |
+|--------------------|-------|-----------------------------------|
+| `--done`           |       | Show only completed matches       |
+| `--pending`        |       | Show only pending matches         |
+| `--priority LEVEL` | `-p`  | Filter by priority: `L`, `M`, `H` |
+| `--project NAME`   |       | Filter by project name            |
+| `--tags TAGS`      | `-t`  | Filter by tags (comma-separated)  |
+| `--json`           |       | Output as JSON array              |
 
 **Examples:**
 
@@ -192,8 +192,8 @@ Export all tasks to a JSON file for backup or transfer.
 rt export <filepath> [options]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option   | Description           |
+|----------|-----------------------|
 | `--json` | Output result as JSON |
 
 **Examples:**
@@ -213,10 +213,10 @@ Import tasks from a JSON file (exported by the export command).
 rt import <filepath> [options]
 ```
 
-| Option | Description |
-|--------|-------------|
+| Option     | Description                                  |
+|------------|----------------------------------------------|
 | `--upsert` | Update existing tasks if they match by title |
-| `--json` | Output result as JSON |
+| `--json`   | Output result as JSON                        |
 
 **Examples:**
 
@@ -243,10 +243,10 @@ Run this command when upgrading from an older version.
 
 Delete all tasks from the database. This action cannot be undone.
 
-| Option | Description |
-|--------|-------------|
-| `--confirm` | Confirm that you want to delete all tasks (required) (default: False) |
-| `--json` | Output result as JSON instead of human-readable format (default: False) |
+| Option      | Description                                                             |
+|-------------|-------------------------------------------------------------------------|
+| `--confirm` | Confirm that you want to delete all tasks (required) (default: False)   |
+| `--json`    | Output result as JSON instead of human-readable format (default: False) |
 
 
 ---
@@ -255,12 +255,12 @@ Delete all tasks from the database. This action cannot be undone.
 
 These options work with all commands:
 
-| Option | Description |
-|--------|-------------|
+| Option       | Description                   |
+|--------------|-------------------------------|
 | `--no-color` | Disable colored (ANSI) output |
-| `--db PATH` | Use a custom database file |
-| `--help` | Show help message |
-| `--version` | Show version information |
+| `--db PATH`  | Use a custom database file    |
+| `--help`     | Show help message             |
+| `--version`  | Show version information      |
 
 **Examples:**
 
@@ -289,11 +289,11 @@ rt list --json | jq '.[].title'
 
 ## Priority Levels
 
-| Level | Code | Description |
-|-------|------|-------------|
-| High | `H` | Urgent tasks |
-| Medium | `M` | Normal priority |
-| Low | `L` | Can wait |
+| Level  | Code | Description     |
+|--------|------|-----------------|
+| High   | `H`  | Urgent tasks    |
+| Medium | `M`  | Normal priority |
+| Low    | `L`  | Can wait        |
 
 ---
 
