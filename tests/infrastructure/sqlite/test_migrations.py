@@ -11,14 +11,12 @@ class TestMigrations:
         """Test deduplicating titles."""
         conn = in_memory_db()
         try:
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
 
             # Create duplicate titles
             conn.execute("INSERT INTO tasks (title) VALUES ('Duplicate')")
@@ -46,14 +44,12 @@ class TestMigrations:
         """Test deduplicate with no duplicates."""
         conn = in_memory_db()
         try:
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
 
             conn.execute("INSERT INTO tasks (title) VALUES ('Task 1')")
             conn.execute("INSERT INTO tasks (title) VALUES ('Task 2')")
@@ -68,24 +64,20 @@ class TestMigrations:
         """Test creating unique title index."""
         conn = in_memory_db()
         try:
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
 
             create_unique_title_index(conn)
 
             # Verify index exists
-            cursor = conn.execute(
-                """
+            cursor = conn.execute("""
                 SELECT name FROM sqlite_master 
                 WHERE type='index' AND name='idx_tasks_title_unique'
-            """
-            )
+            """)
             assert cursor.fetchone() is not None
         finally:
             conn.close()
@@ -94,25 +86,21 @@ class TestMigrations:
         """Test that creating index multiple times is safe."""
         conn = in_memory_db()
         try:
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
 
             create_unique_title_index(conn)
             create_unique_title_index(conn)  # Should not raise error
 
             # Index should still exist
-            cursor = conn.execute(
-                """
+            cursor = conn.execute("""
                 SELECT name FROM sqlite_master 
                 WHERE type='index' AND name='idx_tasks_title_unique'
-            """
-            )
+            """)
             assert cursor.fetchone() is not None
         finally:
             conn.close()

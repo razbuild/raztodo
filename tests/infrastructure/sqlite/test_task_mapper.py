@@ -66,14 +66,12 @@ class TestRowToTask:
         with closing(sqlite3.connect(":memory:")) as conn:
             conn.row_factory = sqlite3.Row
             tags_json = json.dumps(["tag1", "tag2"])
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE test (
                     id INTEGER, title TEXT, description TEXT, done INTEGER,
                     created_at TEXT, priority TEXT, due_date TEXT, tags TEXT, project TEXT
                 )
-            """
-            )
+            """)
             conn.execute(
                 """
                 INSERT INTO test VALUES (1, 'Task', 'Desc', 1, '2025-01-31 12:00:00', 

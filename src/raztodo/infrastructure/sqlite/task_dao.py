@@ -160,13 +160,11 @@ class TaskDAO:
         fts_query = f'"{keyword_escaped}"*'  # Prefix search for better performance
 
         # Build query using FTS5 for O(log n) search
-        query_parts = [
-            """SELECT t.id, t.title, t.description, t.done, t.created_at, 
+        query_parts = ["""SELECT t.id, t.title, t.description, t.done, t.created_at, 
                t.priority, t.due_date, t.tags, t.project 
                FROM tasks t
                INNER JOIN tasks_fts fts ON t.id = fts.rowid
-               WHERE fts MATCH ?"""
-        ]
+               WHERE fts MATCH ?"""]
         params: list[Any] = [fts_query]
 
         # Add additional filters on the main table

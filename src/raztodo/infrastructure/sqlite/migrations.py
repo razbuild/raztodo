@@ -43,9 +43,7 @@ def deduplicate_titles(conn: Connection) -> int:
 
 
 def create_unique_title_index(conn: Connection) -> None:
-    conn.execute(
-        """
+    conn.execute("""
         CREATE UNIQUE INDEX IF NOT EXISTS idx_tasks_title_unique
         ON tasks(title)
-        """
-    )
+        """)

@@ -25,14 +25,12 @@ class TestMigrateUseCase:
 
             # Create connection and add some duplicate tasks
             conn = connection_factory()
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
             conn.execute("INSERT INTO tasks (title) VALUES ('Duplicate')")
             conn.execute("INSERT INTO tasks (title) VALUES ('Duplicate')")
             conn.execute("INSERT INTO tasks (title) VALUES ('Unique')")
@@ -67,14 +65,12 @@ class TestMigrateUseCase:
 
             # Create empty table
             conn = connection_factory()
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
             conn.commit()
             conn.close()
 
@@ -103,14 +99,12 @@ class TestMigrateUseCase:
 
             # Create table with existing index
             conn = connection_factory()
-            conn.execute(
-                """
+            conn.execute("""
                 CREATE TABLE tasks (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL
                 )
-            """
-            )
+            """)
             conn.execute(
                 "CREATE UNIQUE INDEX IF NOT EXISTS idx_tasks_title_unique ON tasks(title)"
             )
