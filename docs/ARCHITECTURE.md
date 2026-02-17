@@ -74,15 +74,63 @@ sequenceDiagram
 
 ```
 src/
-└── raztodo/
-    ├── application/
-    │   └── use_cases/
-    ├── domain/
-    ├── infrastructure/
-    │   └── sqlite/
-    ├── presentation/
-    │   └── cli/
+└── raztodo
+    ├── application
+    │   ├── __init__.py
+    │   ├── use_case_factory.py
+    │   └── use_cases
+    │       ├── clear_tasks.py
+    │       ├── create_task.py
+    │       ├── delete_task.py
+    │       ├── export_task.py
+    │       ├── import_task.py
+    │       ├── __init__.py
+    │       ├── list_tasks.py
+    │       ├── mark_task_done.py
+    │       ├── migrate_tasks.py
+    │       ├── search_tasks.py
+    │       └── update_task.py
+    ├── domain
+    │   ├── exceptions.py
+    │   ├── __init__.py
+    │   ├── task_entity.py
+    │   └── task_repository.py
+    ├── infrastructure
+    │   ├── container.py
+    │   ├── __init__.py
+    │   ├── logger.py
+    │   ├── settings.py
+    │   └── sqlite
+    │       ├── connection.py
+    │       ├── __init__.py
+    │       ├── migrations.py
+    │       ├── task_dao.py
+    │       ├── task_mapper.py
+    │       ├── task_repository.py
+    │       └── task_schema.py
+    ├── __init__.py
     ├── __main__.py
+    └── presentation
+        ├── cli
+        │   ├── commands
+        │   │   ├── clear_tasks_cmd.py
+        │   │   ├── create_task_cmd.py
+        │   │   ├── delete_task_cmd.py
+        │   │   ├── export_task_cmd.py
+        │   │   ├── import_task_cmd.py
+        │   │   ├── __init__.py
+        │   │   ├── list_tasks_cmd.py
+        │   │   ├── mark_task_done_cmd.py
+        │   │   ├── migrate_tasks_cmd.py
+        │   │   ├── search_tasks_cmd.py
+        │   │   └── update_task_cmd.py
+        │   ├── entrypoint.py
+        │   ├── formatters.py
+        │   ├── helpers.py
+        │   ├── __init__.py
+        │   ├── parser.py
+        │   └── router.py
+        └── __init__.py
 ```
 
 ---
@@ -151,7 +199,6 @@ Handles **CLI user interaction**.
 - `router.py` – Routes commands  
 - `formatters.py` – Output formatting  
 - `helpers.py` – Utility functions
-- `ansi.py`  - Support ANSI color and Icon
 
 ### Commands
 
