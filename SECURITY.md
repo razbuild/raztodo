@@ -17,4 +17,3 @@ If you discover a security vulnerability, please:
 4. Allow up to 48 hours for an initial response
 
 We take security seriously and will address valid reports promptly.
-
