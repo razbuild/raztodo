@@ -1,0 +1,28 @@
+name: Docker Build & Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: docker build -t raztodo:test .
+
+    - name: Test Docker container
+      run: |
+        mkdir -p ./raztodo-data
+        docker run --rm -v $PWD/raztodo-data:/data raztodo:test add "CI test task"
+        docker run --rm -v $PWD/raztodo-data:/data raztodo:test list
+        ls ./raztodo-data

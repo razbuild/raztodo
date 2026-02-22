@@ -44,6 +44,22 @@ pip install raztodo
 
 > 📖 For more installation options (virtual environments, from source), see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
 
+### Docker (Optional)
+
+RazTodo can also be run as a Docker container for isolated or portable usage.
+
+```bash
+# Build the image
+docker build -t raztodo:local .
+
+# Add a task
+docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first docker task"
+```
+
+> 📖 For Docker usage and persistence details, see the [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
+
+---
+
 ### Basic Usage
 
 ```bash
@@ -72,7 +88,7 @@ rt remove 1
 
 ## Features
 
-- ✅ **Task Management** — Create, update, delete, and organize tasks
+- 📝 **Task Management** — Create, update, delete, and organize tasks
 - 🏷️ **Tags & Projects** — Organize tasks with tags and project names
 - 🔍 **Full-Text Search** — Search across all task fields
 - 📅 **Due Dates & Priority** — Set deadlines and priority levels (L/M/H)
@@ -138,6 +154,7 @@ export LOG_LEVEL="DEBUG"
 Complete documentation is available in the `docs/` directory:
 
 - 📦 **[Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)** — Install via pip, pipx, or from source
+- 🐳 **[Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)** — Run RazTodo using Docker with volume persistence
 - 📖 **[Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)** — Complete command reference with examples
 - ⚙️ **[Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)** — Environment variables and options
 - 🏗️ **[Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md)** — Project structure and design patterns
