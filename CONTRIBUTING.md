@@ -218,7 +218,7 @@ Include:
 - Steps to reproduce
 - Expected vs actual behavior
 - OS and Python version
-- **RazTodo** version (`raztodo --version`)
+- RazTodo version (`raztodo --version`)
 
 ### Feature Requests
 
