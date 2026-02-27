@@ -9,7 +9,7 @@ Thank you for your interest in contributing! This guide will help you get starte
 ### 1. Fork and Clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/raztodo.git
+git clone https://github.com/razbuild/raztodo.git
 cd raztodo
 ```
 
@@ -218,7 +218,7 @@ Include:
 - Steps to reproduce
 - Expected vs actual behavior
 - OS and Python version
-- RazTodo version (`raztodo --version`)
+- **RazTodo** version (`raztodo --version`)
 
 ### Feature Requests
 
