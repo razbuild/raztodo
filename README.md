@@ -8,9 +8,9 @@
 
 ---
 
-## About
+## RazTodo
 
-RazTodo is a lightweight, cross-platform CLI task manager powered by SQLite, offering fast, privacy-first todo management with minimal external dependencies.
+A lightweight, cross-platform, privacy-first CLI task manager powered by SQLite.
 
 |                                         Preview                                          |
 |:----------------------------------------------------------------------------------------:|
@@ -26,7 +26,7 @@ RazTodo is a lightweight, cross-platform CLI task manager powered by SQLite, off
 **Simple & Powerful** — Intuitive CLI, works out of the box, rich features  
 **Cross-Platform** — Works seamlessly on Linux, macOS, and Windows  
 
-Perfect for developers, power users, and anyone who wants a fast, reliable, local-first task manager.
+**Perfect for developers, power users, and anyone who wants a fast, reliable, local-first task manager.**
 
 ---
 
@@ -43,22 +43,6 @@ pip install raztodo
 ```
 
 > 📖 For more installation options (virtual environments, from source), see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
-
-### Docker (Optional)
-
-RazTodo can also be run as a Docker container for isolated or portable usage.
-
-```bash
-# Build the image
-docker build -t raztodo:local .
-
-# Add a task
-docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first docker task"
-```
-
-> 📖 For Docker usage and persistence details, see the [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
-
----
 
 ### Basic Usage
 
@@ -82,7 +66,19 @@ rt update 1 --title "Buy groceries and milk"
 rt remove 1
 ```
 
-> 📖 For complete command reference, see the [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
+### Docker (Optional)
+
+RazTodo can also be run as a Docker container for isolated or portable usage.
+
+```bash
+# Build the image
+docker build -t raztodo:local .
+
+# Add a task
+docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first docker task"
+```
+
+> 📖 For Docker usage and persistence details, see the [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
 
 ---
 
