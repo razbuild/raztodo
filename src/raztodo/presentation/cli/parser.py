@@ -1,4 +1,6 @@
 import argparse
+import os
+import sys 
 from importlib import metadata
 
 from raztodo.presentation.cli.commands import (
@@ -12,6 +14,7 @@ from raztodo.presentation.cli.commands import (
     migrate_tasks_cmd,
     search_tasks_cmd,
     update_task_cmd,
+    completion_cmd,
 )
 
 
@@ -49,10 +52,14 @@ def get_parser() -> argparse.ArgumentParser:
         version=f"%(prog)s {_get_version()}",
         help="Show raztodo version information and exit",
     )
+    
+    sub_required = True
+    if os.environ.get("RAZTODO_COMPLETION") == "1":
+        sub_required = False
 
     sub = parser.add_subparsers(
         dest="command",
-        required=True,
+        required=sub_required,
         help="Available commands",
         metavar="COMMAND",
     )
@@ -67,5 +74,6 @@ def get_parser() -> argparse.ArgumentParser:
     mark_task_done_cmd.add_parser(sub)
     migrate_tasks_cmd.add_parser(sub)
     clear_tasks_cmd.add_parser(sub)
+    completion_cmd.add_parser(sub)
 
     return parser
