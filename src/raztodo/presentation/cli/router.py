@@ -21,7 +21,7 @@ class TaskRouter:
         "migrate": "migrate_tasks_cmd",
         "clear": "clear_tasks_cmd",
     }
-
+  
     USECASE_MAP: ClassVar[dict[str, str]] = {
         "add": "create",
         "remove": "remove",
@@ -110,6 +110,11 @@ class TaskRouter:
 
     def get_usecase(self, command_name: str) -> Any:
         """Get use case instance for the given command name."""
+
+        # System commands don't need a usecase
+        if command_name in self.SYSTEM_COMMANDS:
+            return None
+
         uc_key = self.USECASE_MAP.get(command_name)
         if not uc_key:
             raise ValueError(f"No usecase mapping for command: {command_name}")
