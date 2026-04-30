@@ -173,7 +173,7 @@ Contributions are welcome! Here's how you can help:
    # Check code quality
    ruff check src/ tests/
    black --check src/ tests/
-   mypy src/
+   ty check src/
    ```
 4. **Submit a pull request**
 

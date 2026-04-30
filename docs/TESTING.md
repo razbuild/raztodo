@@ -9,9 +9,9 @@ Older Python versions are **not supported** and will not pass tests or static an
 
 Install development dependencies:
 
-* Python >= 3.13
+* Python >= 3.9
 * pytest
-* mypy
+* ty
 * black
 * ruff
 * coverage
@@ -75,7 +75,7 @@ Open `htmlcov/index.html` in your browser to visualize coverage.
 Ensure type correctness using:
 
 ```bash
-mypy src/
+ty check src/
 ```
 
 You can configure strictness in a `mypy.ini` or `pyproject.toml`.
