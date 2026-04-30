@@ -6,7 +6,7 @@ This guide explains how to install and work with **RazTodo**, both as an end-use
 
 ## Prerequisites
 
-* Python **3.9+**
+* Python **3.10+**
 * `pip` or `pipx` installed
 
 ---
