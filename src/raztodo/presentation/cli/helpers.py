@@ -2,7 +2,7 @@ import json
 from collections.abc import Callable
 from typing import Any
 
-from raztint import err, ok, tint
+from raztint import blue, cyan, err, gray, green, magenta, ok, yellow
 
 from raztodo.domain.exceptions import ERROR_TYPE_MAP
 from raztodo.domain.task_entity import TaskEntity
@@ -93,7 +93,7 @@ def handle_command_error(
 def format_task(task: TaskEntity) -> None:
     done: bool = getattr(task, "done", False)
     status_icon: str = ok() if done else err()
-    status_text: str = tint.green("[Done]") if done else tint.yellow("[Pending]")
+    status_text: str = green("[Done]") if done else yellow("[Pending]")
 
     created_raw: str = getattr(task, "created_at", "")
     created_date: str = created_raw.split(" ")[0] if created_raw else "N/A"
@@ -104,24 +104,22 @@ def format_task(task: TaskEntity) -> None:
     due_date: str = getattr(task, "due_date", None) or ""
 
     meta_fields: list[tuple[Any, Callable[[Any], str]]] = [
-        (priority, lambda v: f"Priority: {tint.yellow(v)}"),
-        (project, lambda v: f"Project: {tint.cyan(v)}"),
-        (tags, lambda v: f"Tags: {', '.join([tint.magenta(t) for t in v])}"),
-        (due_date, lambda v: f"Due: {tint.gray(v)}"),
+        (priority, lambda v: f"Priority: {yellow(v)}"),
+        (project, lambda v: f"Project: {cyan(v)}"),
+        (tags, lambda v: f"Tags: {', '.join([magenta(t) for t in v])}"),
+        (due_date, lambda v: f"Due: {gray(v)}"),
     ]
 
     metadata_parts: list[str] = [fmt(value) for value, fmt in meta_fields if value]
-    metadata_parts.append(f"Created: {tint.gray(created_date)}")
+    metadata_parts.append(f"Created: {gray(created_date)}")
 
-    print(
-        f"{status_icon} {tint.blue(f'#{task.id}')} {task.title} {tint.gray(f'{status_text}')}"
-    )
+    print(f"{status_icon} {blue(f'#{task.id}')} {task.title} {gray(f'{status_text}')}")
 
     description: str = getattr(task, "description", "") or ""
     if description:
-        print(f"   {tint.gray(description)}")
+        print(f"   {gray(description)}")
 
-    print(f"   {tint.gray(' | '.join(metadata_parts))}")
+    print(f"   {gray(' | '.join(metadata_parts))}")
     print()
 
 
