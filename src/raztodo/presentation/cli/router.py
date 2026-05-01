@@ -116,7 +116,6 @@ class TaskRouter:
             return None
 
         uc_key = self.USECASE_MAP.get(command_name)
-        uc_key = self.USECASE_MAP.get(name)
         if not uc_key:
             raise ValueError(f"No usecase mapping for command: {name}")
 
