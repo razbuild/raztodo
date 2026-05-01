@@ -2,28 +2,26 @@ import sys
 
 from raztodo.infrastructure.container import AppContainer
 from raztodo.infrastructure.logger import get_logger
-from raztodo.presentation.cli.entrypoint import run_cli
+from raztodo.presentation.cli.entrypoint import create_router, run_cli
 
 logger = get_logger("__main__")
 
 
-def build_router():
-    """
-    Lazy application bootstrap.
-    This is only executed for real commands like add/list/update.
-    NOT for --help, --version, or completion.
-    """
-    from raztodo.presentation.cli.entrypoint import create_router
+class LazyRouterBuilder:
 
-    container = AppContainer()
+    def __init__(self) -> None:
+        self._container: AppContainer | None = None
 
-    # store on function so we can close later
-    build_router._container = container
+    def __call__(self):
+        container = AppContainer()
+        self._container = container
+        return create_router(
+            storage=container.repo_singleton(),
+            connection_factory=container.connection_factory(),
+        )
 
-    return create_router(
-        storage=container.repo_singleton(),
-        connection_factory=container.connection_factory(),
-    )
+
+build_router = LazyRouterBuilder()
 
 
 def main() -> int:
@@ -37,7 +35,7 @@ def main() -> int:
         return 1
     finally:
         # Close container ONLY if it was actually created
-        container = getattr(build_router, "_container", None)
+        container = build_router._container
         if container:
             container.close_singleton()
 

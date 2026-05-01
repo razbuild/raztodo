@@ -1,18 +1,15 @@
 import sys
-from typing import Any, Protocol
-import argcomplete  
+from typing import Any
+
+import argcomplete
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.infrastructure.logger import get_logger
 from raztodo.presentation.cli.parser import get_parser
+from raztodo.presentation.cli.protocols import HandlerProtocol
 from raztodo.presentation.cli.router import TaskRouter
 
 logger = get_logger("entrypoint")
-
-
-class HandlerProtocol(Protocol):
-    def get_command_class(self, name: str) -> type: ...
-    def get_usecase(self, name: str) -> Any: ...
 
 
 def create_router(
@@ -25,13 +22,14 @@ def create_router(
 
 def run_cli(router_factory, argv: list[str] | None = None) -> int:
     from raztint import err, info
-    import os
 
     argv = argv or sys.argv[1:]
     parser = get_parser()
 
     # Hook argcomplete BEFORE parsing args
     argcomplete.autocomplete(parser)
+
+    args = None
 
     try:
         args = parser.parse_args(argv)
@@ -40,7 +38,7 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
         if getattr(args, "command", None) == "completion":
             from raztodo.presentation.cli.commands.completion_cmd import CompletionCMD
 
-            shell = getattr(args, "shell", None)
+            shell = getattr(args, "shell", None) or "bash"
             return CompletionCMD()(shell)
 
         if not args.command:

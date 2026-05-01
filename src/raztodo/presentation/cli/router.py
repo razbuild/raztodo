@@ -1,14 +1,10 @@
-from typing import Any, ClassVar, Protocol, runtime_checkable
+from typing import Any, ClassVar
 
 from raztodo.application.use_case_factory import DefaultUseCaseFactory, UseCaseFactory
+from raztodo.presentation.cli.protocols import Command, HandlerProtocol
 
 
-@runtime_checkable
-class Command(Protocol):
-    def __call__(self, *args: Any, **kwargs: Any) -> int: ...
-
-
-class TaskRouter:
+class TaskRouter(HandlerProtocol):
     COMMAND_MAP: ClassVar[dict[str, str]] = {
         "add": "create_task_cmd",
         "remove": "delete_task_cmd",
@@ -21,7 +17,7 @@ class TaskRouter:
         "migrate": "migrate_tasks_cmd",
         "clear": "clear_tasks_cmd",
     }
-  
+
     USECASE_MAP: ClassVar[dict[str, str]] = {
         "add": "create",
         "remove": "remove",
@@ -112,10 +108,10 @@ class TaskRouter:
         """Get use case instance for the given command name."""
 
         # System commands don't need a usecase
-        if command_name in self.SYSTEM_COMMANDS:
-            return None
+        # if command_name in self.SYSTEM_COMMANDS:
+        #     return None
 
-        uc_key = self.USECASE_MAP.get(command_name)
+        uc_key = self.USECASE_MAP.get(name)
         if not uc_key:
             raise ValueError(f"No usecase mapping for command: {name}")
 

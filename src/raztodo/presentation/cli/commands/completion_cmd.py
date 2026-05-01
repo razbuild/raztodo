@@ -1,8 +1,10 @@
 import os
+
 os.environ["RAZTODO_COMPLETION"] = "1"
 
 # Precompute a static command list for instant completions
 COMMANDS = "add list update done remove search export import migrate clear completion"
+
 
 class CompletionCMD:
     def __init__(self, get_task_ids=None):
@@ -14,6 +16,7 @@ class CompletionCMD:
             if shell in ["bash", "zsh"]:
                 # Minimal argcomplete shellcode; no router or use case initialization
                 import argcomplete
+
                 print(argcomplete.shellcode(shell=shell, executables=["rt"]))
                 return 0
 
@@ -41,12 +44,9 @@ complete -c rt -f -a '(__rt_complete)'
 
 def add_parser(subparsers):
     parser = subparsers.add_parser(
-        "completion",
-        help="Output shell completion script for bash, zsh, or fish"
+        "completion", help="Output shell completion script for bash, zsh, or fish"
     )
     parser.add_argument(
-        "shell",
-        choices=["bash", "zsh", "fish"],
-        help="Shell type for completion"
+        "shell", choices=["bash", "zsh", "fish"], help="Shell type for completion"
     )
     return parser
