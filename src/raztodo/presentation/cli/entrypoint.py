@@ -15,7 +15,6 @@ class HandlerProtocol(Protocol):
     def get_usecase(self, name: str) -> Any: ...
 
 
-def create_router(storage: Any, connection_factory: Any) -> TaskRouter:
 def create_router(
     storage: Any,
     connection_factory: Any,
