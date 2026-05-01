@@ -1,7 +1,10 @@
 import sys
 from typing import Any
 
-import argcomplete
+try:
+    import argcomplete
+except ImportError:
+    argcomplete = None
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.infrastructure.logger import get_logger
@@ -27,7 +30,8 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
     parser = get_parser()
 
     # Hook argcomplete BEFORE parsing args
-    argcomplete.autocomplete(parser)
+    if argcomplete is not None:
+        argcomplete.autocomplete(parser)
 
     args = None
 
