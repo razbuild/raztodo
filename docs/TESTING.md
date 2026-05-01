@@ -78,8 +78,6 @@ Ensure type correctness using:
 ty check src/
 ```
 
-You can configure strictness in a `mypy.ini` or `pyproject.toml`.
-
 ## Formatting and Linting
 
 ### Code Formatting

@@ -66,6 +66,24 @@ rt update 1 --title "Buy groceries and milk"
 rt remove 1
 ```
 
+### Shell Completion
+
+`rt` supports native `<Tab>` completion for bash, zsh and fish
+
+**Quick activation (bash/zsh):**
+```bash
+eval "$(rt completion bash)"
+```
+**Now try:**
+```bash
+rt <Tab>
+rt add --<Tab>
+```
+
+> 📖 For permanet setup and other shells (zsh, fish), see the [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPELETION.md)
+
+---
+
 ### Docker (Optional)
 
 RazTodo can also be run as a Docker container for isolated or portable usage.
@@ -94,6 +112,7 @@ docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first do
 - 🚀 **Cross-Platform** — Works on Linux, macOS, and Windows
 - ⚡ **Fast Performance** — Lazy loading and optimized architecture
 - 🏗️ **Clean Architecture** — Maintainable and testable codebase
+- ✨ **Shell Autocompletion** — Tab completion fo bash, zsh, and fish
 
 ---
 
@@ -111,6 +130,7 @@ docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first do
 | `import`  | Import from JSON         | `rt import backup.json`            |
 | `migrate` | Run database migration   | `rt migrate`                       |
 | `clear`   | Delete all tasks         | `rt clear --confirm`               |
+| `completion` | bash,zsh,fish  Shell type for completion         | `rt completion bash`               |
 
 ```bash
 # Get help for any command
