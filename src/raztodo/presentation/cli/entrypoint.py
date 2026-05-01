@@ -2,7 +2,7 @@ import sys
 from typing import Any
 
 try:
-    import argcomplete
+    import argcomplete  # type: ignore
 except ImportError:
     argcomplete = None
 
