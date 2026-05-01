@@ -104,11 +104,11 @@ class TaskRouter:
         self._command_cache[command_name] = cls
         return cls
 
-    def get_command_class(self, command_name: str) -> type[Command]:
+    def get_command_class(self, name: str) -> type[Command]:
         """Get command class for the given command name."""
-        return self._get_command_class_lazy(command_name)
+        return self._get_command_class_lazy(name)
 
-    def get_usecase(self, command_name: str) -> Any:
+    def get_usecase(self, name: str) -> Any:
         """Get use case instance for the given command name."""
 
         # System commands don't need a usecase
@@ -116,8 +116,9 @@ class TaskRouter:
             return None
 
         uc_key = self.USECASE_MAP.get(command_name)
+        uc_key = self.USECASE_MAP.get(name)
         if not uc_key:
-            raise ValueError(f"No usecase mapping for command: {command_name}")
+            raise ValueError(f"No usecase mapping for command: {name}")
 
         if uc_key == "create":
             return self.use_case_factory.create_create_task(self.storage)

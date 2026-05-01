@@ -5,6 +5,7 @@ from collections.abc import Callable
 from pathlib import Path
 from sqlite3 import Connection
 from types import TracebackType
+from typing import Any, cast
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
@@ -252,18 +253,21 @@ class SQLiteTaskRepository(TaskRepository):
             if not isinstance(item, dict) or "title" not in item:
                 logger.warning(f"Skipping invalid item at index {idx}")
                 continue
+
+            task_data = cast(dict[str, Any], item)
+
             try:
                 new_id = self.add_task(
-                    item["title"],
-                    item.get("description", ""),
-                    item.get("priority", ""),
-                    item.get("due_date"),
-                    item.get("tags", []),
-                    item.get("project"),
+                    task_data["title"],
+                    task_data.get("description", ""),
+                    task_data.get("priority", ""),
+                    task_data.get("due_date"),
+                    task_data.get("tags", []),
+                    task_data.get("project"),
                 )
-                if new_id and "done" in item:
+                if new_id and "done" in task_data:
                     try:
-                        self._dao.update(new_id, done=bool(item["done"]))
+                        self._dao.update(new_id, done=bool(task_data["done"]))
                     except sqlite3.Error as e:
                         logger.warning(
                             f"Failed to set done flag for task {new_id}: {e}"

@@ -9,9 +9,9 @@ Older Python versions are **not supported** and will not pass tests or static an
 
 Install development dependencies:
 
-* Python >= 3.13
+* Python >= 3.10
 * pytest
-* mypy
+* ty
 * black
 * ruff
 * coverage
@@ -19,7 +19,7 @@ Install development dependencies:
 Install them using:
 
 ```bash
-pip install pytest mypy black ruff coverage
+pip install pytest ty black ruff coverage
 # Or, if you cloned the project:
 pip install .[dev]
 ```
@@ -27,7 +27,7 @@ pip install .[dev]
 ## Tools Used
 
 * **Unit and Functional Testing:** [pytest](https://docs.pytest.org/)
-* **Type Checking:** [mypy](http://mypy-lang.org/)
+* **Type Checking:** [ty](https://astral.sh/)
 * **Formatting and Linting:** [black](https://black.readthedocs.io/) and [ruff](https://beta.ruff.rs/docs/)
 * **Test Coverage:** [coverage](https://coverage.readthedocs.io/)
 
@@ -75,7 +75,7 @@ Open `htmlcov/index.html` in your browser to visualize coverage.
 Ensure type correctness using:
 
 ```bash
-mypy src/
+ty check src/
 ```
 
 You can configure strictness in a `mypy.ini` or `pyproject.toml`.

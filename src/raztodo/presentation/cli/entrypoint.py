@@ -16,6 +16,11 @@ class HandlerProtocol(Protocol):
 
 
 def create_router(storage: Any, connection_factory: Any) -> TaskRouter:
+def create_router(
+    storage: Any,
+    connection_factory: Any,
+) -> HandlerProtocol:
+    """Create and return a TaskRouter instance."""
     return TaskRouter(storage, connection_factory)
 
 

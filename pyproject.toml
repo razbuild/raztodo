@@ -6,23 +6,28 @@ keywords = ["cli", "todo", "task", "command-line", "python"]
 authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
 license = "MIT"
 readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = ["raztint"]
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: End Users/Desktop",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
     "Environment :: Console",
     "Topic :: Utilities",
 ]
 
 [project.urls]
 Homepage = "https://github.com/razbuild/raztodo"
+Documentation = "https://github.com/razbuild/raztodo#readme"
 Repository = "https://github.com/razbuild/raztodo"
 issues = "https://github.com/razbuild/raztodo/issues"
+Changelog = "https://github.com/razbuild/raztodo/releases"
 
 [project.scripts]
 rt = "raztodo.__main__:main"
@@ -31,17 +36,27 @@ rt = "raztodo.__main__:main"
 test = ["pytest"]
 lint = ["ruff"]
 formatter = ["black"]
-typecheck = ["mypy"]
+typecheck = ["ty"]
 coverage = ["coverage"]
-dev = ["pytest", "ruff", "black", "mypy", "coverage"]
+dev = ["pytest", "ruff", "black", "ty", "coverage"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.mypy]
-ignore_missing_imports = true
-strict = true
+[tool.ty.src]
+include = ["src", "tests"]
+exclude = ["src/generated"]
+
+[tool.ty.analysis]
+respect-type-ignore-comments = true
+
+[tool.ty.rules]
+all = "error"
+
+[tool.ty.terminal]
+error-on-warning = true
+output-format = "concise"
 
 [tool.ruff]
 line-length = 100

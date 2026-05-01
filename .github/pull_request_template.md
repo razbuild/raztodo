@@ -11,7 +11,7 @@ Brief description of changes.
 - [ ] Tests pass (`pytest`)
 - [ ] Code is formatted (`black --check src/ tests/`)
 - [ ] Linting passes (`ruff check src/ tests/`)
-- [ ] Type checking passes (`mypy src/`)
+- [ ] Type checking passes (`ty check src/`)
 
 ## Related Issues
 Fixes #(issue number)
