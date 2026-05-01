@@ -15,7 +15,7 @@ class CompletionCMD:
         try:
             if shell in ["bash", "zsh"]:
                 # Minimal argcomplete shellcode; no router or use case initialization
-                import argcomplete
+                import argcomplete # type: ignore
 
                 print(argcomplete.shellcode(shell=shell, executables=["rt"]))
                 return 0

@@ -2,7 +2,7 @@ import sys
 from typing import Any
 
 try:
-    import argcomplete  # type: ignore[attr-defined]
+    import argcomplete # type: ignore
 except ImportError:
     argcomplete = None
 
@@ -31,7 +31,7 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
 
     # Hook argcomplete BEFORE parsing args
     if argcomplete is not None:
-        argcomplete.autocomplete(parser)  # type: ignore[attr-defined]
+        argcomplete.autocomplete(parser)
 
     args = None
 
