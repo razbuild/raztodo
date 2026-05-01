@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/razbuild/raztodo/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📚 Documentation
+    url: https://github.com/razbuild/raztodo#readme
+    about: Check the README for usage examples and API reference
+  - name: Security Policy
+    url: 🔐 https://github.com/razbuild/raztint/blob/master/SECURITY.md
+    about: Report security vulnerabilities here
