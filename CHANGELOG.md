@@ -1,4 +1,17 @@
 # Changelog
+## [0.3.0] - 2026-05-02
+
+### Added
+- CLI auto-complete feature ([#2](https://github.com/razbuild/raztodo/pull/2) by @Maswilik)
+
+### Changed
+- Minimum required Python version raised to 3.10
+- Replaced `mypy` with `ty` for static type checking
+
+### Docs
+- Documentation improved and updated
+
+---
 
 ## [0.2.1] - 2025-12-27
 
