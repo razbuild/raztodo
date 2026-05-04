@@ -1,4 +1,5 @@
 import os
+import sys
 
 os.environ["RAZTODO_COMPLETION"] = "1"
 
@@ -15,7 +16,7 @@ class CompletionCMD:
         try:
             if shell in ["bash", "zsh"]:
                 # Minimal argcomplete shellcode; no router or use case initialization
-                import argcomplete
+                import argcomplete  # type: ignore
 
                 print(argcomplete.shellcode(shell=shell, executables=["rt"]))
                 return 0
@@ -36,9 +37,14 @@ complete -c rt -f -a '(__rt_complete)'
             else:
                 print(f"Unsupported shell: {shell}")
                 return 1
-
+        except ImportError:
+            print(
+                "Module 'argcomplete' not installed. Please install it: pip install argcomplete",
+                file=sys.stderr,
+            )
+            return 1
         except Exception as e:
-            print("[✗] Unexpected error:", e)
+            print("Unexpected error:", e)
             return 1
 
 
