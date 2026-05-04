@@ -2,7 +2,7 @@
 ## [0.3.0] - 2026-05-02
 
 ### Added
-- CLI auto-complete feature ([#2](https://github.com/razbuild/raztodo/pull/2) by @Maswilik)
+- CLI auto-complete feature ([#2](https://github.com/razbuild/raztodo/pull/2) by [@MaswiliK](https://github.com/MaswiliK))
 
 ### Changed
 - Minimum required Python version raised to 3.10
