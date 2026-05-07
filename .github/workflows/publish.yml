@@ -20,7 +20,7 @@ jobs:
           python-version: "3.13"
 
       - name: Build package
-        run: uv build
+        run: uv publish -v wheels/*
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.14.0
