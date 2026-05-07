@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 - 2026-05-07
+## [0.4.0] - 2026-05-07
 
 ### Added
 - Migrate to uv for dependency management and tool installation
