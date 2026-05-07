@@ -14,17 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
 
-      - name: Setup Python
-        uses: actions/setup-python@v6.2.0
+      - name: Setup uv and Python
+        uses: astral-sh/setup-uv@v8.1.0
         with:
           python-version: "3.13"
-          allow-prereleases: true
 
       - name: Install build tools
-        run: pip install -U build
+        run: uv pip install -U build
 
       - name: Build package
         run: python -m build
 
-      - name: pypi-publish
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.14.0

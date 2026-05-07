@@ -4,25 +4,20 @@ This document provides guidelines for running tests and maintaining code quality
 
 ## Requirements
 
-This project requires **Python 3.14**.
-Older Python versions are **not supported** and will not pass tests or static analysis **mypy**, **ruff**, **pytest**.
+- This project requires **Python 3.10**.
+- [`uv`](https://docs.astral.sh/uv/) for environment management
 
-Install development dependencies:
+## Setup
 
-* Python >= 3.10
-* pytest
-* ty
-* black
-* ruff
-* coverage
-
-Install them using:
+Clone the repository and install development dependencies (pytest, ty, black, ruff, coverage, argcomplete):
 
 ```bash
-pip install pytest ty black ruff coverage
-# Or, if you cloned the project:
-pip install .[dev]
+git clone https://github.com/razbuild/raztodo.git
+cd raztodo
+uv sync --editable --group dev
 ```
+
+---
 
 ## Tools Used
 
@@ -33,29 +28,24 @@ pip install .[dev]
 
 ## Running Tests
 
-All tests are located in the `tests/` folder. Run tests from the project root directory:
+All tests are in the `tests/` folder. Run from the project root:
 
 ```bash
-# Run all tests with verbose output
-pytest -v
+# All tests (verbose)
+uv run pytest -v
 
-# Run all tests with concise output
-pytest -q
+# Quiet mode
+uv run pytest -q
 
-# Run specific test file
-pytest tests/test_example.py
+# Single test file
+uv run pytest tests/test_example.py
 
-# Run specific test function
-pytest tests/test_example.py::test_function_name
-```
+# Single test function
+uv run pytest tests/test_example.py::test_function_name
 
-### Organizing Tests
-
-Consider organizing tests by type:
-
-```bash
-pytest tests/domain
-pytest tests/infrastructure
+# By subfolder
+uv run pytest tests/domain
+uv run pytest tests/infrastructure
 ```
 
 ## Checking Test Coverage
@@ -63,9 +53,9 @@ pytest tests/infrastructure
 To see test coverage of your code:
 
 ```bash
-coverage run -m pytest
-coverage report -m
-coverage html  # optional: generates HTML report in htmlcov/ folder
+uv run coverage run -m pytest
+uv run coverage html
+uv run coverage report
 ```
 
 Open `htmlcov/index.html` in your browser to visualize coverage.
@@ -75,7 +65,7 @@ Open `htmlcov/index.html` in your browser to visualize coverage.
 Ensure type correctness using:
 
 ```bash
-ty check src/
+uv run ty check src/
 ```
 
 ## Formatting and Linting
@@ -83,13 +73,13 @@ ty check src/
 ### Code Formatting
 
 ```bash
-black src/ tests/
+uv run black src/ tests/
 ```
 
 ### Linting and Error Checking
 
 ```bash
-ruff check src/ tests/
+uv run ruff check --fix src/ tests/
 ```
 
 Fix any errors reported by ruff before committing code.

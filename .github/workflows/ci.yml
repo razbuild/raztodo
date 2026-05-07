@@ -20,24 +20,28 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
 
-      - name: Setup Python
-        uses: actions/setup-python@v6.2.0
+      - name: Setup uv and Python
+        uses: astral-sh/setup-uv@v8.1.0
         with:
-          python-version: "3.13"
-          allow-prereleases: true
-          cache: pip
+          version: "latest"
+          enable-cache: true
 
-      - name: Install package and dev tools
-        run: pip install ".[dev]"
+      - name: Install dev dependencies
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies with uv
+        run: uv sync --group dev
 
       - name: Black
-        run: black --check src tests
+        run: uv run black --check src tests
 
       - name: Ruff
-        run: ruff check src tests
+        run: uv run ruff check src tests
 
       - name: Type Checking
-        run: ty check src
+        run: uv run ty check src
 
   test:
     name: Test (${{ matrix.os }}, Python ${{ matrix.python-version }})
@@ -51,22 +55,27 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
 
-      - name: Setup Python
-        uses: actions/setup-python@v6.2.0
+      - name: Setup uv and Python
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Setup uv and Python
+        uses: astral-sh/setup-uv@v8.1.0
         with:
           python-version: ${{ matrix.python-version }}
-          allow-prereleases: true
 
       - name: Install dependencies
-        run: pip install -e ".[test,coverage]"
+        run: uv sync --group test --group coverage
 
       - name: Run tests
         run: |
-          coverage run -m pytest
-          coverage xml
-          coverage report
+          uv run coverage run -m pytest
+          uv run coverage xml
+          uv run coverage report
 
-      - name: Codecov
+      - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
         uses: codecov/codecov-action@v6.0.0
         with:

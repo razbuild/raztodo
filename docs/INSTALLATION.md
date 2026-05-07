@@ -51,31 +51,38 @@ cd raztodo
 
 Editable installation allows you to test changes locally without reinstalling the package.
 
-#### Using pip
-
+#### Install ‍uv (if not already installed)
 ```bash
-pip install -e .
+pip install uv
 ```
 
-#### Using pipx (optional)
-
+#### Install the project in editable 
 ```bash
-pipx install .
+uv sync --editable
 ```
+This will:
 
-> Using `pipx` for development is optional, mainly useful if you want to test the CLI in isolation.
+- Create a virtual environment `.venv`
 
+- Install the project in editable mode
+
+- Lock dependencies in `uv.lock`
 ---
 
 ## Installing Development Dependencies
 
-To contribute or run tests, install development dependencies:
+For testing, linting, and formatting:
 
 ```bash
-pip install -e .[dev]
+uv sync --group dev
 ```
 
-This ensures you have all packages for testing, linting, and formatting.
+Now you can run commands via uv run:
+
+```bash
+uv run pytest
+uv run ruff check .
+```
 
 ---
 
@@ -95,21 +102,22 @@ usage: raztodo [-h] [--version] COMMAND ...
 A command-line task manager powered by SQLite. Use one of the commands below to manage your todos.
 
 positional arguments:
-  COMMAND     Available commands
-    add       Create a new task
-    list      List all tasks
-    remove    Delete a task
-    update    Update an existing task
-    search    Search tasks by keyword
-    export    Export tasks to a JSON file
-    import    Import tasks from a JSON file
-    done      Mark a task as done or undone
-    migrate   Run database migration
-    clear     Delete all tasks
+  COMMAND       Available commands
+    add         Create a new task
+    list        List all tasks
+    remove      Delete a task
+    update      Update an existing task
+    search      Search tasks by keyword
+    export      Export tasks to a JSON file
+    import      Import tasks from a JSON file
+    done        Mark a task as done or undone
+    migrate     Run database migration
+    clear       Delete all tasks
+    completion  Output shell completion script for bash, zsh, or fish
 
 options:
-  -h, --help  show this help message and exit
-  --version   Show raztodo version information and exit
+  -h, --help    show this help message and exit
+  --version     Show raztodo version information and exit
 
 Examples:
   rt add 'Buy groceries' --priority H --due tomorrow

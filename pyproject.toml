@@ -1,9 +1,14 @@
 [project]
 name = "raztodo"
 version = "0.3.0"
-description = "A fast, minimal dependency command-line todo/task manager backed by SQLite "
+description = "A fast, minimal dependency command-line todo/task manager backed by SQLite"
 keywords = ["cli", "todo", "task", "command-line", "python"]
-authors = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
+authors = [
+    { name = "Raz", email = "real.raz.dev@gmail.com" }
+]
+maintainers = [
+    { name = "Raz", email = "real.raz.dev@gmail.com" }
+]
 license = "MIT"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
@@ -27,24 +32,21 @@ classifiers = [
 Homepage = "https://github.com/razbuild/raztodo"
 Documentation = "https://github.com/razbuild/raztodo#readme"
 Repository = "https://github.com/razbuild/raztodo"
-issues = "https://github.com/razbuild/raztodo/issues"
+Issues = "https://github.com/razbuild/raztodo/issues"
 Changelog = "https://github.com/razbuild/raztodo/releases"
 
 [project.scripts]
 rt = "raztodo.__main__:main"
 
-[project.optional-dependencies]
-test = ["pytest"]
-lint = ["ruff"]
-formatter = ["black"]
-typecheck = ["ty"]
-coverage = ["coverage"]
-completion = ["argcomplete"]
-dev = ["pytest", "ruff", "black", "ty", "coverage", "argcomplete"]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["pytest", "ruff", "black", "ty", "coverage", "argcomplete"]
+test = ["pytest"]
+coverage = ["coverage"]
+completion = ["argcomplete"]
 
 [tool.ty.src]
 include = ["src", "tests"]
@@ -55,8 +57,7 @@ respect-type-ignore-comments = true
 
 [tool.ty.rules]
 all = "error"
-unresolved-import = "ignore"
-possibly-missing-import = "ignore"
+
 
 [tool.ty.terminal]
 error-on-warning = true
@@ -94,10 +95,10 @@ omit = [
     "*/__pycache__/*",
     "*/__init__.py",
     "*/__main__.py",
-    "*/presentation/cli/helpers.py",  # Utility functions, tested indirectly
-    "*/presentation/cli/commands/*",  # CLI commands, tested via integration
-    "*/presentation/cli/entrypoint.py",  # CLI entry point, tested via integration
-    "*/presentation/cli/parser.py",  # CLI parser, tested via integration
+    "*/presentation/cli/helpers.py",
+    "*/presentation/cli/commands/*",
+    "*/presentation/cli/entrypoint.py",
+    "*/presentation/cli/parser.py",
 ]
 
 [tool.coverage.report]

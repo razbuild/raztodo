@@ -1,9 +1,9 @@
 import sys
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-try:
-    import argcomplete  # type: ignore
-except ImportError:
+if TYPE_CHECKING:
+    import argcomplete
+else:
     argcomplete = None
 
 from raztodo.domain.exceptions import RazTodoException
@@ -29,7 +29,6 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
     argv = argv or sys.argv[1:]
     parser = get_parser()
 
-    # Hook argcomplete BEFORE parsing args
     if argcomplete is not None:
         argcomplete.autocomplete(parser)
 

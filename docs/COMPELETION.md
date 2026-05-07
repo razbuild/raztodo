@@ -1,18 +1,18 @@
 # Shell Autocompletion
 
-`rt` ships with native shell autocompletion powered by [argcomplete](https://github.com/kislyuk/argcomplete).  
+**rt** ships with native shell autocompletion powered by [argcomplete](https://github.com/kislyuk/argcomplete).  
 Once enabled, you can press `<TAB>` to discover commands, subcommands, flags, and (where applicable) dynamic values.
 
 ## Prerequisites
 
-- `rt` must be installed in your environment (`pip install -e .` or from PyPI).
-- The optional dependency `argcomplete` is required. Install it alongside `rt`:
+- **rt** must be installed in your environment (`pip install -e .` or from **PyPI**).
+- The optional dependency `argcomplete` is required. Install it alongside **rt**:
 
 ```bash
-pip install raztodo[completion]
+uv sync --group completion
 ```
 
-If you installed rt without the extra, you can add it manually:
+If you installed **rt** without the extra, you can add it manually:
 
 ```bash
 pip install argcomplete
@@ -34,7 +34,7 @@ rt a<TAB>           # Completes to "add"
 rt update --<TAB>   # Shows available flags
 ```
 
-To make it permanent, add the eval line to your ~/.bashrc:
+To make it permanent, add the eval line to your `~/.bashrc`:
 
 ```bash
 echo 'eval "$(rt completion bash)"' >> ~/.bashrc
@@ -49,15 +49,15 @@ Enable for the current session:
 eval "$(rt completion zsh)"
 ```
 
-For permanent setup, add to ~/.zshrc:
+For permanent setup, add to `~/.zshrc`:
 
 ```bash
 echo 'eval "$(rt completion zsh)"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-Note: If you use compinit, you may need to ensure it runs after the eval.
-The generated script is compatible with standard Zsh completion.
+> Note: If you use compinit, you may need to ensure it runs after the eval.
+> The generated script is compatible with standard Zsh completion.
 
 ## Fish
 
@@ -76,9 +76,9 @@ rt completion fish > ~/.config/fish/completions/rt.fish
 ## How It Works
 
 · The completion command outputs a shell script that hooks into your shell’s completion system.
-· The script uses argcomplete to invoke rt internally with the _ARGCOMPLETE environment variable set.
-· During completion, rt skips heavy initialisation (the application container and router are not created), ensuring fast <TAB> responses.
-· A special RAZTODO_COMPLETION guard makes subparsers optional during completion, preventing unnecessary errors.
+· The script uses argcomplete to invoke **rt** internally with the _ARGCOMPLETE environment variable set.
+· During completion, **rt** skips heavy initialisation (the application container and router are not created), ensuring fast `<TAB>` responses.
+· A special `RAZTODO_COMPLETION` guard makes subparsers optional during completion, preventing unnecessary errors.
 
 ### Available Commands
 ```bash
@@ -98,8 +98,8 @@ Without eval/source, the shell does not register the completion handler.
 
 rt: command not found when pressing `<TAB>`.
 
-Make sure rt is in your PATH. If you installed with pip install --user, ensure ~/.local/bin is added to PATH.
-If you use python -m raztodo, replace rt with python -m raztodo in the eval command:
+Make sure **rt** is in your **PATH**. If you installed with `pip install --user`, ensure `~/.local/bin` is added to **PATH**.
+If you use `python -m raztodo`, replace rt with `python -m raztodo` in the eval command:
 
 ```bash
 eval "$(python -m raztodo completion bash)"
@@ -118,9 +118,9 @@ Install it:
 pip install argcomplete
 ```
 
-Or reinstall rt with the completion extra.
+Or reinstall **rt** with the completion extra.
 
 Uninstalling Completion
 
-Remove the eval line from your shell’s configuration file (~/.bashrc, ~/.zshrc) and restart your shell.
-For Fish, delete the file ~/.config/fish/completions/rt.fish.
+Remove the eval line from your shell’s configuration file `~/.bashrc` , `~/.zshrc` and restart your shell.
+For Fish, delete the file `~/.config/fish/completions/rt.fish`.
