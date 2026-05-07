@@ -1,6 +1,6 @@
 [project]
 name = "raztodo"
-version = "0.3.0"
+version = "0.4.0"
 description = "A fast, minimal dependency command-line todo/task manager backed by SQLite"
 keywords = ["cli", "todo", "task", "command-line", "python"]
 authors = [
