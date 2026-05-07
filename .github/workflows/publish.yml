@@ -2,8 +2,8 @@ name: Publish
 
 on:
   release:
-    types:
-      - created
+    types: [created]
+  workflow_dispatch:
 
 permissions: {}
 
@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up Python
-        uses:  actions/setup-python@v6.2.0
+        uses: actions/setup-python@v6.2.0
         with:
           python-version-file: ".python-version"
       - name: Install uv
@@ -32,4 +32,5 @@ jobs:
       - name: Build distribution
         run: uv build
       - name: Publish
+        if: github.event_name == 'release'
         run: uv publish
