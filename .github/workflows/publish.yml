@@ -19,11 +19,8 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install build tools
-        run: uv pip install -U build
-
       - name: Build package
-        run: python -m build
+        run: uv build
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.14.0
