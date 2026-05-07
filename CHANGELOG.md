@@ -1,4 +1,19 @@
 # Changelog
+
+## 0.4.0 - 2026-05-07
+
+### Added
+- Migrate to uv for dependency management and tool installation
+
+### Fixed
+- Bugs in completion_cmd and entrypoint
+
+### Changed
+- Rewrite CI/CD workflows to use uv (removed pr_test.py)
+- Update documentation with uv installation instructions
+
+---
+
 ## [0.3.0] - 2026-05-02
 
 ### Added
