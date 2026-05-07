@@ -1,26 +1,35 @@
-name: Publish to PyPI
+name: Publish
 
 on:
   release:
-    types: [published]
+    types:
+      - created
+
+permissions: {}
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment: pypi
     permissions:
       id-token: write
-
+      contents: read
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v6.0.2
-
-      - name: Setup uv and Python
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses:  actions/setup-python@v6.2.0
+        with:
+          python-version-file: ".python-version"
+      - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
-          python-version: "3.13"
-
-      - name: Build package
+          version: "0.11.4"
+      - name: Build distribution
         run: uv build
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.14.0
+      - name: Publish
+        run: uv publish
