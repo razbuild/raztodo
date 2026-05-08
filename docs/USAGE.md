@@ -257,7 +257,6 @@ These options work with all commands:
 
 | Option       | Description                   |
 |--------------|-------------------------------|
-| `--no-color` | Disable colored (ANSI) output |
 | `--db PATH`  | Use a custom database file    |
 | `--help`     | Show help message             |
 | `--version`  | Show version information      |

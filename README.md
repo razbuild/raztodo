@@ -170,6 +170,7 @@ export LOG_LEVEL="DEBUG"
 Complete documentation is available in the `docs/` directory:
 
 - 📦 **[Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)** — Install via pip, pipx, or from source
+- ⌨️ **[Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPELETION.md)** — Shell completion setup for bash, zsh, fish, and more
 - 🐳 **[Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)** — Run RazTodo using Docker with volume persistence
 - 📖 **[Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)** — Complete command reference with examples
 - ⚙️ **[Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)** — Environment variables and options

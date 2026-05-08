@@ -114,6 +114,7 @@ src/
         ├── cli
         │   ├── commands
         │   │   ├── clear_tasks_cmd.py
+        │   │   ├── completion_cmd.py
         │   │   ├── create_task_cmd.py
         │   │   ├── delete_task_cmd.py
         │   │   ├── export_task_cmd.py
@@ -129,6 +130,7 @@ src/
         │   ├── helpers.py
         │   ├── __init__.py
         │   ├── parser.py
+        │   ├── protocols.py
         │   └── router.py
         └── __init__.py
 ```
@@ -199,6 +201,7 @@ Handles **CLI user interaction**.
 - `router.py` – Routes commands  
 - `formatters.py` – Output formatting  
 - `helpers.py` – Utility functions
+- `protocols.py` – Defines `Command` protocol
 
 ### Commands
 
@@ -213,6 +216,7 @@ Handles **CLI user interaction**.
 | `import_task_cmd.py`    | Import tasks   |
 | `export_task_cmd.py`    | Export tasks   |
 | `migrate_tasks_cmd.py`  | DB migrations  |
+| `completion_cmd.py`     | Generate shell autocompletion  |
 
 ---
 

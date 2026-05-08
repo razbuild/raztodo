@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.1] - 2026-05-08
+
+### Fixed
+- Fixed incorrect data in examples and usage guide (tags, priority examples)
+- Fixed potential log formatting issue when logging exceptions in `__main__.py`
+
+### Added
+- Added helpful cross-reference links to the usage guide for faster navigation
+
+### Changed
+- Improved container lifecycle management to ensure cleanup even on errors
+- Enhanced error messages and logging consistency
+
+---
+
 ## [0.4.0] - 2026-05-07
 
 ### Added
