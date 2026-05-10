@@ -29,7 +29,7 @@ venv\Scripts\activate
 pip install uv
 
 # Install with dev dependencies
-uv sync
+uv sync --group dev
 ```
 
 ### 3. Verify Setup
