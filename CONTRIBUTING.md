@@ -25,8 +25,11 @@ source venv/bin/activate
 # Activate (Windows)
 venv\Scripts\activate
 
+# install uv
+pip install uv
+
 # Install with dev dependencies
-pip install -e .[dev]
+uv sync
 ```
 
 ### 3. Verify Setup
@@ -69,7 +72,7 @@ black --check src/ tests/
 ruff check src/ tests/
 
 # Type checking
-mypy src/
+ty check src/
 ```
 
 ### Fix Issues Automatically
@@ -218,7 +221,7 @@ Include:
 - Steps to reproduce
 - Expected vs actual behavior
 - OS and Python version
-- **RazTodo** version (`raztodo --version`)
+- **RazTodo** version (`rt --version`)
 
 ### Feature Requests
 
