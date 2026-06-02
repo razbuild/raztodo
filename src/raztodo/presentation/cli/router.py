@@ -84,25 +84,21 @@ class TaskRouter(HandlerProtocol):
         if not uc_key:
             raise ValueError(f"No usecase mapping for command: {name}")
 
-        if uc_key == "create":
-            return self.use_case_factory.create_create_task(self.storage)
-        elif uc_key == "remove":
-            return self.use_case_factory.create_delete_task(self.storage)
-        elif uc_key == "list":
-            return self.use_case_factory.create_list_tasks(self.storage)
-        elif uc_key == "update":
-            return self.use_case_factory.create_update_task(self.storage)
-        elif uc_key == "search":
-            return self.use_case_factory.create_search_tasks(self.storage)
-        elif uc_key == "export":
-            return self.use_case_factory.create_export_tasks(self.storage)
-        elif uc_key == "import":
-            return self.use_case_factory.create_import_tasks(self.storage)
-        elif uc_key == "mark_done":
-            return self.use_case_factory.create_mark_done(self.storage)
-        elif uc_key == "migrate":
-            return self.use_case_factory.create_migrate(self.connection_factory)
-        elif uc_key == "clear":
-            return self.use_case_factory.create_clear_tasks(self.storage)
-        else:
+        dispatch = {
+            "create": lambda: self.use_case_factory.create_create_task(self.storage),
+            "remove": lambda: self.use_case_factory.create_delete_task(self.storage),
+            "list": lambda: self.use_case_factory.create_list_tasks(self.storage),
+            "update": lambda: self.use_case_factory.create_update_task(self.storage),
+            "search": lambda: self.use_case_factory.create_search_tasks(self.storage),
+            "export": lambda: self.use_case_factory.create_export_tasks(self.storage),
+            "import": lambda: self.use_case_factory.create_import_tasks(self.storage),
+            "mark_done": lambda: self.use_case_factory.create_mark_done(self.storage),
+            "migrate": lambda: self.use_case_factory.create_migrate(self.connection_factory),
+            "clear": lambda: self.use_case_factory.create_clear_tasks(self.storage),
+        }
+
+        factory = dispatch.get(uc_key)
+        if factory is None:
             raise ValueError(f"UseCase factory not found for key: {uc_key}")
+
+        return factory()
