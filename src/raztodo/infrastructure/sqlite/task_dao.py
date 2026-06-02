@@ -46,7 +46,7 @@ class TaskDAO:
     ) -> None:
         if tags:
             query_parts.append("(" + " OR ".join("tags LIKE ?" for _ in tags) + ")")
-            params.extend(f"%{tag}%" for tag in tags)
+            params.extend(f'%"{tag}"%' for tag in tags)
 
     def fetch_all(
         self,

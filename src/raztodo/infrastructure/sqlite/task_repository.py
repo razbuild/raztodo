@@ -1,9 +1,8 @@
 import json
 import os
-import sqlite3
 from collections.abc import Callable
 from pathlib import Path
-from sqlite3 import Connection
+from sqlite3 import Connection, Error, IntegrityError
 from types import TracebackType
 from typing import Any, cast
 
@@ -14,7 +13,7 @@ from raztodo.infrastructure.logger import get_logger
 from raztodo.infrastructure.sqlite.task_dao import TaskDAO
 from raztodo.infrastructure.sqlite.task_mapper import row_to_task
 
-logger = get_logger("SQLiteTaskRepository")
+logger = get_logger(__name__)
 
 MAX_TITLE_LENGTH = 60
 MAX_DESCRIPTION_LENGTH = 200
@@ -24,10 +23,15 @@ VALID_PRIORITIES = {"", "L", "M", "H"}
 def validate_length(field_name: str, value: str | None, max_length: int) -> str:
     value = (value or "").strip()
     if not value and field_name == "title":
-        logger.warning("Attempt to add empty title")
+        logger.warning("Validation failed: '%s' is empty", field_name)
         raise RazTodoException(f"TaskValidationError: '{field_name}' cannot be empty")
     if len(value) > max_length:
-        logger.warning(f"Attempt to add too long {field_name}: {len(value)} characters")
+        logger.warning(
+            "Validation failed: '%s' too long (%d chars, max %d)",
+            field_name,
+            len(value),
+            max_length,
+        )
         raise RazTodoException(
             f"TaskValidationError: '{field_name}' too long (max {max_length}, got {len(value)})"
         )
@@ -37,7 +41,11 @@ def validate_length(field_name: str, value: str | None, max_length: int) -> str:
 def normalize_priority(priority: str | None) -> str:
     priority = (priority or "").upper().strip()
     if priority not in VALID_PRIORITIES:
-        logger.warning(f"Invalid priority: {priority}, using empty")
+        logger.warning(
+            "Invalid priority %r, expected one of %s — defaulting to empty",
+            priority,
+            VALID_PRIORITIES,
+        )
         return ""
     return priority
 
@@ -53,7 +61,7 @@ def ensure_writable_path(filepath: str) -> Path:
         try:
             dir_path.mkdir(parents=True, exist_ok=True)
         except OSError as e:
-            logger.error(f"Failed to create directory {dir_path}: {e}")
+            logger.exception("Failed to create directory %s", dir_path)
             raise RazTodoException(
                 f"FileOperationError: Cannot create directory {dir_path}"
             ) from e
@@ -103,10 +111,11 @@ class SQLiteTaskRepository(TaskRepository):
                 raise RazTodoException(
                     f"DuplicateTaskError: Task '{title}' already exists"
                 )
+            logger.info("Task created: id=%d, title=%r", task_id, title)
             return task_id
-        except sqlite3.IntegrityError as e:
+        except IntegrityError as e:
             raise RazTodoException(f"DuplicateTaskError: {e}") from e
-        except sqlite3.Error as e:
+        except Error as e:
             raise RazTodoException(f"DatabaseError during add_task: {e}") from e
 
     def get_tasks(
@@ -120,7 +129,6 @@ class SQLiteTaskRepository(TaskRepository):
         due_before: str | None = None,
         due_after: str | None = None,
     ) -> list[TaskEntity]:
-        # Pass arguments explicitly to avoid mypy errors with **kwargs unpacking
         rows = self._dao.fetch_all(
             limit=limit,
             offset=offset,
@@ -159,7 +167,7 @@ class SQLiteTaskRepository(TaskRepository):
             project = "__CLEAR__"
 
         try:
-            return self._dao.update(
+            affected = self._dao.update(
                 task_id,
                 title=title,
                 description=description,
@@ -168,13 +176,17 @@ class SQLiteTaskRepository(TaskRepository):
                 tags=tags,
                 project=project,
             )
-        except sqlite3.Error as e:
+            logger.info("Task updated: id=%d, rows_affected=%d", task_id, affected)
+            return affected
+        except Error as e:
             raise RazTodoException(
                 f"DatabaseError during update_task {task_id}: {e}"
             ) from e
 
     def remove_task(self, task_id: int) -> int:
-        return self._dao.delete(task_id)
+        affected = self._dao.delete(task_id)
+        logger.info("Task removed: id=%d, rows_affected=%d", task_id, affected)
+        return affected
 
     def search_tasks(
         self,
@@ -187,18 +199,26 @@ class SQLiteTaskRepository(TaskRepository):
             return []
 
         logger.info(
-            f"Searching for: {keyword} with priority={priority}, project={project}, tags={tags}"
+            "Searching tasks: keyword=%r, priority=%s, project=%s, tags=%s",
+            keyword,
+            priority,
+            project,
+            tags,
         )
 
-        # Pass arguments explicitly to avoid dict unpacking type errors
         rows = self._dao.search(
             keyword.strip(), priority=priority, project=project, tags=tags
         )
-        logger.info(f"Found {len(rows)} rows")
+
+        logger.info("Search for %r returned %d result(s)", keyword.strip(), len(rows))
         return [row_to_task(r) for r in rows]
 
     def mark_done(self, task_id: int, done: bool = True) -> int:
-        return self._dao.update(task_id, done=done)
+        affected = self._dao.update(task_id, done=done)
+        logger.info(
+            "Task %d marked as done=%s, rows_affected=%d", task_id, done, affected
+        )
+        return affected
 
     def export_tasks(self, filepath: str) -> bool:
         file_path = ensure_writable_path(filepath)
@@ -224,7 +244,7 @@ class SQLiteTaskRepository(TaskRepository):
                     ensure_ascii=False,
                     indent=2,
                 )
-            logger.info(f"Exported {len(tasks)} tasks to {filepath}")
+            logger.info("Exported %d tasks to %s", len(tasks), filepath)
             return True
         except Exception as e:
             raise RazTodoException(
@@ -251,7 +271,9 @@ class SQLiteTaskRepository(TaskRepository):
         count, errors = 0, []
         for idx, item in enumerate(data, start=1):
             if not isinstance(item, dict) or "title" not in item:
-                logger.warning(f"Skipping invalid item at index {idx}")
+                logger.warning(
+                    "Skipping item %d: not a dict or missing 'title' key", idx
+                )
                 continue
 
             task_data = cast(dict[str, Any], item)
@@ -268,9 +290,9 @@ class SQLiteTaskRepository(TaskRepository):
                 if new_id and "done" in task_data:
                     try:
                         self._dao.update(new_id, done=bool(task_data["done"]))
-                    except sqlite3.Error as e:
+                    except Error as e:
                         logger.warning(
-                            f"Failed to set done flag for task {new_id}: {e}"
+                            "Failed to set done flag for task %d: %s", new_id, e
                         )
                 count += 1
             except RazTodoException as e:
@@ -285,18 +307,19 @@ class SQLiteTaskRepository(TaskRepository):
                 f"Failed to import any tasks from {filepath}: {errors[:3]}"
             )
 
-        logger.info(f"Imported {count} tasks from {filepath}")
+        logger.info("Imported %d tasks from %s", count, filepath)
         return count
 
     def clear_all_tasks(self) -> int:
         try:
             count = self._dao.clear_all()
-            logger.info(f"Cleared {count} tasks from repository")
+            logger.info("Cleared %d tasks from repository", count)
             return count
-        except sqlite3.Error as e:
+        except Error as e:
             raise RazTodoException(f"DatabaseError during clear_all_tasks: {e}") from e
 
     def close(self) -> None:
         if self._conn:
+            logger.debug("Closing SQLite connection")
             self._conn.close()
             self._conn = None

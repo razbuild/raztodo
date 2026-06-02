@@ -30,6 +30,14 @@ A lightweight, cross-platform, privacy-first CLI task manager powered by SQLite.
 
 ---
 
+## Ecosystem
+
+RazTodo is part of the [RazBuild](https://github.com/razbuild) ecosystem of open-source developer tools.
+
+- [RazTint](https://github.com/razbuild/raztint) — Zero-dependency ANSI colors, icons, and terminal formatting utilities powering RazTodo's CLI experience.
+
+---
+
 ## Quick Start
 
 ### Installation

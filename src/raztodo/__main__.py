@@ -40,7 +40,7 @@ def main() -> int:
     try:
         return run_cli(router_factory=build_router)
     except Exception as e:
-        logger.exception("Unexpected error: %s", e)
+        logger.exception("Unexpected error")
         print(f"{err()} Unexpected error: {e}", file=sys.stderr)
         return 1
     finally:

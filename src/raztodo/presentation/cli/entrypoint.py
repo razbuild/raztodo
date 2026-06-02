@@ -12,7 +12,7 @@ from raztodo.presentation.cli.parser import get_parser
 from raztodo.presentation.cli.protocols import HandlerProtocol
 from raztodo.presentation.cli.router import TaskRouter
 
-logger = get_logger("entrypoint")
+logger = get_logger(__name__)
 
 
 def create_router(
@@ -56,7 +56,10 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
         return command_handler(args) or 0
 
     except KeyboardInterrupt:
-        logger.info(f"Command '{getattr(args, 'command', None)}' interrupted by user")
+        logger.info(
+            "Command interrupted by user. command=%s",
+            getattr(args, "command", None),
+        )
         print(f"\n{info()} Operation cancelled", file=sys.stderr)
         return 130
 
@@ -64,11 +67,11 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
         raise
 
     except RazTodoException as e:
-        logger.exception(f"Domain error: {e}")
+        logger.exception("Domain error")
         print(f"{err()} {e}", file=sys.stderr)
         return 1
 
     except Exception as e:
-        logger.exception(f"Unexpected error: {e}")
+        logger.exception("Unexpected error")
         print(f"{err()} Unexpected error: {e}", file=sys.stderr)
         return 1

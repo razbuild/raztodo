@@ -8,34 +8,34 @@ class UseCaseFactory(Protocol):
     """Protocol for creating use case instances."""
 
     def create_create_task(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_delete_task(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_list_tasks(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_update_task(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_search_tasks(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_export_tasks(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_import_tasks(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_mark_done(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_migrate(self, connection_factory: Callable[..., Any]) -> Any:
-        raise NotImplementedError
+        pass
 
     def create_clear_tasks(self, repo: TaskRepository) -> Any:
-        raise NotImplementedError
+        pass
 
 
 class DefaultUseCaseFactory:
