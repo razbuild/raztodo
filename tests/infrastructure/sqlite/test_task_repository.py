@@ -57,7 +57,7 @@ class TestSQLiteTaskRepository:
 
     def test_add_task_title_stripped(self, task_repo):
         """Test that title is stripped of whitespace."""
-        _task_id = task_repo.add_task("  Test Task  ")
+        task_repo.add_task("  Test Task  ")
         tasks = task_repo.get_tasks()
         assert len(tasks) == 1
         assert tasks[0].title == "Test Task"
