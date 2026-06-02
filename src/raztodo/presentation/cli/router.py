@@ -107,7 +107,7 @@ class TaskRouter(HandlerProtocol):
     def get_usecase(self, name: str) -> Any:
         """Get use case instance for the given command name."""
 
-        # System commands don't need a usecase.
+        # Only commands present in USECASE_MAP have a use case; others raise.
 
         uc_key = self.USECASE_MAP.get(name)
         if not uc_key:
