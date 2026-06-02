@@ -74,6 +74,8 @@ class ImportTasksUseCase:
                         inserted += 1
                         continue
                 except RazTodoException:
+                    # In upsert mode, add_task may fail (for example, on duplicates);
+                    # fall through to search and update an existing task instead.
                     pass
 
                 matches: list[TaskEntity] = [
