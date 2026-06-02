@@ -91,7 +91,7 @@ class TestSQLiteTaskRepository:
     def test_get_tasks_filter_done(self, task_repo):
         """Test filtering tasks by done status."""
         task_id1 = task_repo.add_task("Task 1")
-        _task_id2 = task_repo.add_task("Task 2")
+        task_repo.add_task("Task 2")
         task_repo.mark_done(task_id1, True)
 
         done_tasks = task_repo.get_tasks(done=True)
