@@ -15,7 +15,7 @@ class ImportTasksUseCase:
     def __init__(self, repo: TaskRepository) -> None:
         self.repo: TaskRepository = repo
 
-    def execute(self, filepath: str, upsert: bool = False) -> int | dict[str, int]:
+    def execute(self, filepath: str, upsert: bool = False) -> dict[str, int]:
         """
         Import tasks from a file, optionally updating existing tasks.
 
@@ -24,7 +24,7 @@ class ImportTasksUseCase:
             upsert: If True, update existing tasks with matching titles.
 
         Returns:
-            Number of tasks imported, or a dict with counts of inserted and updated tasks if upsert is True.
+            A dict with counts of inserted and updated tasks.
 
         Raises:
             RazTodoException: If file is missing, unreadable, JSON is invalid, or import fails.
@@ -38,7 +38,8 @@ class ImportTasksUseCase:
                 raise RazTodoException(f"Permission denied: Cannot read '{filepath}'")
 
             if not upsert:
-                return self.repo.import_tasks(filepath)
+                imported_count: int = self.repo.import_tasks(filepath)
+                return {"inserted": imported_count, "updated": 0}
 
             with open(filepath, encoding="utf-8") as f:
                 data: Any = json.load(f)
