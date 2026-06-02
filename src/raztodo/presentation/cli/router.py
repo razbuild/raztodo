@@ -51,7 +51,9 @@ class TaskRouter(HandlerProtocol):
         if not module_name:
             raise ValueError(f"Unknown command: {command_name}")
 
-        module = importlib.import_module(f"raztodo.presentation.cli.commands.{module_name}")
+        module = importlib.import_module(
+            f"raztodo.presentation.cli.commands.{module_name}"
+        )
 
         class_name = "".join(part.capitalize() for part in module_name.split("_"))
         attr = getattr(module, class_name, None)
@@ -89,7 +91,9 @@ class TaskRouter(HandlerProtocol):
             "export": lambda: self.use_case_factory.create_export_tasks(self.storage),
             "import": lambda: self.use_case_factory.create_import_tasks(self.storage),
             "mark_done": lambda: self.use_case_factory.create_mark_done(self.storage),
-            "migrate": lambda: self.use_case_factory.create_migrate(self.connection_factory),
+            "migrate": lambda: self.use_case_factory.create_migrate(
+                self.connection_factory
+            ),
             "clear": lambda: self.use_case_factory.create_clear_tasks(self.storage),
         }
 
