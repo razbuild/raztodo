@@ -85,7 +85,7 @@ class TestTaskDAO:
     def test_fetch_all_filter_done(self, dao):
         """Test filtering by done status."""
         task_id1 = dao.insert("Task 1")
-        _task_id2 = dao.insert("Task 2")
+        dao.insert("Task 2")
         dao.update(task_id1, done=True)
 
         done_rows = list(dao.fetch_all(done=True))
