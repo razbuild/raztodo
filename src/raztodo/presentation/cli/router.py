@@ -81,7 +81,7 @@ class TaskRouter(HandlerProtocol):
         # Only commands present in USECASE_MAP have a use case; others raise.
 
         uc_key = self.USECASE_MAP.get(name)
-        if not uc_key:
+        if uc_key is None:
             raise ValueError(f"No usecase mapping for command: {name}")
 
         dispatch = {
