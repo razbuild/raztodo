@@ -12,3 +12,6 @@ class HandlerProtocol(Protocol):
 
     def get_usecase(self, name: str) -> Any:
         pass
+
+    def get_usecase(self, name: str) -> Any:
+        pass
