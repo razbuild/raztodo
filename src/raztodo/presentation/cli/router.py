@@ -1,3 +1,4 @@
+import importlib
 from typing import Any, ClassVar
 
 from raztodo.application.use_case_factory import DefaultUseCaseFactory, UseCaseFactory
@@ -50,52 +51,22 @@ class TaskRouter(HandlerProtocol):
         if not module_name:
             raise ValueError(f"Unknown command: {command_name}")
 
-        cls: type[Command]
+        module = importlib.import_module(f"raztodo.presentation.cli.commands.{module_name}")
 
-        if command_name == "add":
-            from raztodo.presentation.cli.commands.create_task_cmd import CreateTaskCMD
+        cls: type[Command] | None = None
+        for attr_name in dir(module):
+            attr = getattr(module, attr_name)
+            if (
+                isinstance(attr, type)
+                and issubclass(attr, Command)
+                and attr is not Command
+                and attr_name.endswith("CMD")
+            ):
+                cls = attr
+                break
 
-            cls = CreateTaskCMD
-        elif command_name == "remove":
-            from raztodo.presentation.cli.commands.delete_task_cmd import DeleteTaskCMD
-
-            cls = DeleteTaskCMD
-        elif command_name == "list":
-            from raztodo.presentation.cli.commands.list_tasks_cmd import ListTasksCMD
-
-            cls = ListTasksCMD
-        elif command_name == "update":
-            from raztodo.presentation.cli.commands.update_task_cmd import UpdateTaskCMD
-
-            cls = UpdateTaskCMD
-        elif command_name == "search":
-            from raztodo.presentation.cli.commands.search_tasks_cmd import (
-                SearchTasksCMD,
-            )
-
-            cls = SearchTasksCMD
-        elif command_name == "export":
-            from raztodo.presentation.cli.commands.export_task_cmd import ExportTasksCMD
-
-            cls = ExportTasksCMD
-        elif command_name == "import":
-            from raztodo.presentation.cli.commands.import_task_cmd import ImportTasksCMD
-
-            cls = ImportTasksCMD
-        elif command_name == "done":
-            from raztodo.presentation.cli.commands.mark_task_done_cmd import DoneTaskCMD
-
-            cls = DoneTaskCMD
-        elif command_name == "migrate":
-            from raztodo.presentation.cli.commands.migrate_tasks_cmd import MigrateCMD
-
-            cls = MigrateCMD
-        elif command_name == "clear":
-            from raztodo.presentation.cli.commands.clear_tasks_cmd import ClearTasksCMD
-
-            cls = ClearTasksCMD
-        else:
-            raise ValueError(f"Unknown command: {command_name}")
+        if cls is None:
+            raise ValueError(f"No command class found for command: {command_name}")
 
         self._command_cache[command_name] = cls
         return cls
