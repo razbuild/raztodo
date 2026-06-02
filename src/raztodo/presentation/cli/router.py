@@ -53,21 +53,17 @@ class TaskRouter(HandlerProtocol):
 
         module = importlib.import_module(f"raztodo.presentation.cli.commands.{module_name}")
 
-        cls: type[Command] | None = None
-        for attr_name in dir(module):
-            attr = getattr(module, attr_name)
-            if (
-                isinstance(attr, type)
-                and issubclass(attr, Command)
-                and attr is not Command
-                and attr_name.endswith("CMD")
-            ):
-                cls = attr
-                break
-
-        if cls is None:
+        class_name = "".join(part.capitalize() for part in module_name.split("_"))
+        attr = getattr(module, class_name, None)
+        if (
+            attr is None
+            or not isinstance(attr, type)
+            or not issubclass(attr, Command)
+            or attr is Command
+        ):
             raise ValueError(f"No command class found for command: {command_name}")
 
+        cls: type[Command] = attr
         self._command_cache[command_name] = cls
         return cls
 
