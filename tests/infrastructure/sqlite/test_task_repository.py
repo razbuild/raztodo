@@ -244,7 +244,7 @@ class TestSQLiteTaskRepository:
 
     def test_priority_validation(self, task_repo):
         """Test that invalid priority is normalized."""
-        _task_id = task_repo.add_task("Task", priority="invalid")
+        task_repo.add_task("Task", priority="invalid")
         tasks = task_repo.get_tasks()
         assert tasks[0].priority == ""  # Invalid priority becomes empty
 
