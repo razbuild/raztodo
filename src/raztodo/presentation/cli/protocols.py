@@ -7,5 +7,11 @@ class Command(Protocol):
 
 
 class HandlerProtocol(Protocol):
-    def get_command_calss(self, name: str) -> type: ...
-    def get_usecase(self, name: str) -> Any: ...
+    def get_command_calss(self, name: str) -> type:
+        pass
+
+    def get_usecase(self, name: str) -> Any:
+        pass
+
+    def get_usecase(self, name: str) -> Any:
+        pass
