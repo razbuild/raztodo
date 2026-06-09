@@ -13,7 +13,6 @@ from raztodo.domain.task_entity import TaskEntity
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.presentation.web.app import app
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
