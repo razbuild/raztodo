@@ -18,6 +18,7 @@ from raztodo.presentation.web.app import app
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def make_task(
     id: int = 1,
     title: str = "Test task",
@@ -53,18 +54,31 @@ def mock_use_cases(
     import_tasks=None,
 ):
     """Return a dict of mock use case instances."""
-    list_uc     = MagicMock(); list_uc.execute.return_value     = list_tasks or []
-    create_uc   = MagicMock(); create_uc.execute.return_value   = create_task or 1
-    update_uc   = MagicMock(); update_uc.execute.return_value   = True
-    delete_uc   = MagicMock(); delete_uc.execute.return_value   = True
-    clear_uc    = MagicMock(); clear_uc.execute.return_value    = clear_tasks or 0
-    mark_uc     = MagicMock(); mark_uc.execute.return_value     = True
-    export_uc   = MagicMock(); export_uc.execute.return_value   = True
-    import_uc   = MagicMock(); import_uc.execute.return_value   = import_tasks or {"inserted": 0, "updated": 0}
+    list_uc = MagicMock()
+    list_uc.execute.return_value = list_tasks or []
+    create_uc = MagicMock()
+    create_uc.execute.return_value = create_task or 1
+    update_uc = MagicMock()
+    update_uc.execute.return_value = True
+    delete_uc = MagicMock()
+    delete_uc.execute.return_value = True
+    clear_uc = MagicMock()
+    clear_uc.execute.return_value = clear_tasks or 0
+    mark_uc = MagicMock()
+    mark_uc.execute.return_value = True
+    export_uc = MagicMock()
+    export_uc.execute.return_value = True
+    import_uc = MagicMock()
+    import_uc.execute.return_value = import_tasks or {"inserted": 0, "updated": 0}
     return {
-        "list": list_uc, "create": create_uc, "update": update_uc,
-        "delete": delete_uc, "clear": clear_uc, "mark": mark_uc,
-        "export": export_uc, "import": import_uc,
+        "list": list_uc,
+        "create": create_uc,
+        "update": update_uc,
+        "delete": delete_uc,
+        "clear": clear_uc,
+        "mark": mark_uc,
+        "export": export_uc,
+        "import": import_uc,
     }
 
 
@@ -77,14 +91,14 @@ def client():
     uc = mock_use_cases(list_tasks=tasks)
 
     app.dependency_overrides = {
-        deps.get_list_uc:     lambda: uc["list"],
-        deps.get_create_uc:   lambda: uc["create"],
-        deps.get_update_uc:   lambda: uc["update"],
-        deps.get_delete_uc:   lambda: uc["delete"],
-        deps.get_clear_uc:    lambda: uc["clear"],
+        deps.get_list_uc: lambda: uc["list"],
+        deps.get_create_uc: lambda: uc["create"],
+        deps.get_update_uc: lambda: uc["update"],
+        deps.get_delete_uc: lambda: uc["delete"],
+        deps.get_clear_uc: lambda: uc["clear"],
         deps.get_mark_done_uc: lambda: uc["mark"],
-        deps.get_export_uc:   lambda: uc["export"],
-        deps.get_import_uc:   lambda: uc["import"],
+        deps.get_export_uc: lambda: uc["export"],
+        deps.get_import_uc: lambda: uc["import"],
     }
     yield TestClient(app), uc
     app.dependency_overrides = {}
@@ -93,6 +107,7 @@ def client():
 # ---------------------------------------------------------------------------
 # GET / — HTML page
 # ---------------------------------------------------------------------------
+
 
 class TestIndexPage:
     def test_returns_html(self, client):
@@ -106,6 +121,7 @@ class TestIndexPage:
 # ---------------------------------------------------------------------------
 # GET /api/tasks
 # ---------------------------------------------------------------------------
+
 
 class TestListTasks:
     def test_returns_task_list(self, client):
@@ -147,6 +163,7 @@ class TestListTasks:
 # POST /api/tasks
 # ---------------------------------------------------------------------------
 
+
 class TestCreateTask:
     def test_creates_task_and_returns_201(self, client):
         c, uc = client
@@ -161,14 +178,17 @@ class TestCreateTask:
         c, uc = client
         uc["create"].execute.return_value = 5
         uc["list"].execute.return_value = [make_task(5, "Full task")]
-        c.post("/api/tasks", json={
-            "title": "Full task",
-            "description": "desc",
-            "priority": "H",
-            "due_date": "2025-12-31",
-            "tags": ["work"],
-            "project": "proj",
-        })
+        c.post(
+            "/api/tasks",
+            json={
+                "title": "Full task",
+                "description": "desc",
+                "priority": "H",
+                "due_date": "2025-12-31",
+                "tags": ["work"],
+                "project": "proj",
+            },
+        )
         uc["create"].execute.assert_called_once_with(
             title="Full task",
             description="desc",
@@ -204,6 +224,7 @@ class TestCreateTask:
 # PUT /api/tasks/{id}
 # ---------------------------------------------------------------------------
 
+
 class TestUpdateTask:
     def test_updates_task(self, client):
         c, uc = client
@@ -224,6 +245,7 @@ class TestUpdateTask:
 # DELETE /api/tasks/{id}
 # ---------------------------------------------------------------------------
 
+
 class TestDeleteTask:
     def test_deletes_task_returns_204(self, client):
         c, _ = client
@@ -240,6 +262,7 @@ class TestDeleteTask:
 # ---------------------------------------------------------------------------
 # POST /api/tasks/clear
 # ---------------------------------------------------------------------------
+
 
 class TestClearTasks:
     def test_clears_all_tasks(self, client):
@@ -259,6 +282,7 @@ class TestClearTasks:
 # ---------------------------------------------------------------------------
 # PATCH /api/tasks/{id}/done
 # ---------------------------------------------------------------------------
+
 
 class TestToggleDone:
     def test_toggles_pending_to_done(self, client):
@@ -291,6 +315,7 @@ class TestToggleDone:
 # GET /api/tasks/export
 # ---------------------------------------------------------------------------
 
+
 class TestExportTasks:
     def test_export_returns_json_file(self, client, tmp_path):
         c, uc = client
@@ -299,6 +324,7 @@ class TestExportTasks:
 
         def fake_export(path: str) -> bool:
             import shutil
+
             shutil.copy(str(export_file), path)
             return True
 
@@ -317,6 +343,7 @@ class TestExportTasks:
 # ---------------------------------------------------------------------------
 # POST /api/tasks/import
 # ---------------------------------------------------------------------------
+
 
 class TestImportTasks:
     def test_imports_tasks(self, client):

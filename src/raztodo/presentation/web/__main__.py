@@ -12,10 +12,8 @@ from __future__ import annotations
 def main() -> None:
     try:
         import uvicorn
-    except ImportError:
-        raise SystemExit(
-            "uvicorn is not installed. Run: uv sync --group web"
-        )
+    except ImportError as err:
+        raise SystemExit("uvicorn is not installed. Run: uv sync --group web") from err
 
     uvicorn.run(
         "raztodo.presentation.web.app:app",
