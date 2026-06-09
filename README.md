@@ -88,7 +88,7 @@ rt <Tab>
 rt add --<Tab>
 ```
 
-> 📖 For permanet setup and other shells (zsh, fish), see the [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPELETION.md)
+> 📖 For permanet setup and other shells (zsh, fish), see the [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
 
 ---
 
