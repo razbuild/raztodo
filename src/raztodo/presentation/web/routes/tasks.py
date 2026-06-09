@@ -86,9 +86,7 @@ def create_task(
         tasks = list_uc.execute()
         task = next((t for t in tasks if t.id == task_id), None)
         if task is None:
-            raise HTTPException(
-                status_code=500, detail="Task created but could not be retrieved"
-            )
+            raise HTTPException(status_code=500, detail="Task created but could not be retrieved")
         return _task_to_response(task)
     except RazTodoException as e:
         raise _domain_error(e) from e
@@ -162,13 +160,9 @@ def toggle_done(
 
 
 @router.get("/export")
-def export_tasks(
-    project: str | None = None, uc: Any = Depends(get_export_uc)
-) -> FileResponse:  # noqa: B008
+def export_tasks(project: str | None = None, uc: Any = Depends(get_export_uc)) -> FileResponse:  # noqa: B008
     try:
-        tmp = tempfile.NamedTemporaryFile(
-            suffix=".json", delete=False, mode="w", encoding="utf-8"
-        )  # noqa: SIM115
+        tmp = tempfile.NamedTemporaryFile(suffix=".json", delete=False, mode="w", encoding="utf-8")  # noqa: SIM115
         tmp.close()
         uc.execute(tmp.name)
         return FileResponse(
