@@ -9,7 +9,11 @@ maintainers = [
 license = "MIT"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
-dependencies = ["raztint"]
+dependencies = [
+    "fastapi>=0.136.3",
+    "raztint",
+    "uvicorn>=0.49.0",
+]
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -34,12 +38,14 @@ Changelog = "https://github.com/razbuild/raztodo/releases"
 
 [project.scripts]
 rt = "raztodo.__main__:main"
+rt-web = "raztodo.presentation.web.__main__:main"
 
 [build-system]
 requires = ["uv_build >= 0.11.7, <0.12.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
+web = ["fastapi", "uvicorn[standard]"]
 dev = ["pytest", "ruff", "black", "ty", "coverage", "argcomplete"]
 test = ["pytest"]
 coverage = ["coverage"]
