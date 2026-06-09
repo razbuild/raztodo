@@ -8,8 +8,6 @@ from raztodo.infrastructure.sqlite.task_repository import SQLiteTaskRepository
 
 
 class AppContainer:
-    """Dependency injection container for infrastructure components."""
-
     _repo_singleton: SQLiteTaskRepository | None
     _connection_factory: Callable[..., Any]
 
@@ -22,7 +20,6 @@ class AppContainer:
         self._repo_singleton = None
 
     def repo_singleton(self) -> SQLiteTaskRepository:
-        """Return a singleton instance of the task repository."""
         if self._repo_singleton is None:
             self._repo_singleton = SQLiteTaskRepository(
                 connection_factory=self._connection_factory
@@ -30,11 +27,13 @@ class AppContainer:
         return self._repo_singleton
 
     def connection_factory(self) -> Callable[..., Any]:
-        """Return the connection factory."""
         return self._connection_factory
 
     def close_singleton(self) -> None:
-        """Close and clear the singleton repository."""
         if self._repo_singleton:
             self._repo_singleton.close()
             self._repo_singleton = None
+
+
+def build_container() -> AppContainer:
+    return AppContainer()
