@@ -224,10 +224,6 @@ For detailed guidelines, see the shared [RazBuild contributing guide](https://gi
 
 MIT License
 
----
-
-## Support
-
-- 🐛 **Found a bug?** [Open an issue](https://github.com/razbuild/raztodo/issues)
-- 💡 **Have a suggestion?** [Open an issue](https://github.com/razbuild/raztodo/issues)
-- 📧 **Questions?** Check the [Documentation](https://github.com/razbuild/raztodo/blob/master/docs/)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/razbuild/.github/main/profile/svg/badge.svg" alt="Made by RazBuild" width="160">
+</div>
