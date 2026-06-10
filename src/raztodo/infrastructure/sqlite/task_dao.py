@@ -131,9 +131,7 @@ class TaskDAO:
 
         params.append(task_id)
         with self._conn:
-            cur = self._conn.execute(
-                f"UPDATE tasks SET {', '.join(updates)} WHERE id = ?", params
-            )
+            cur = self._conn.execute(f"UPDATE tasks SET {', '.join(updates)} WHERE id = ?", params)
             return cur.rowcount
 
     def delete(self, task_id: int) -> int:
@@ -160,11 +158,13 @@ class TaskDAO:
         fts_query = f'"{keyword_escaped}"*'  # Prefix search for better performance
 
         # Build query using FTS5 for O(log n) search
-        query_parts = ["""SELECT t.id, t.title, t.description, t.done, t.created_at, 
+        query_parts = [
+            """SELECT t.id, t.title, t.description, t.done, t.created_at, 
                t.priority, t.due_date, t.tags, t.project 
                FROM tasks t
                INNER JOIN tasks_fts fts ON t.id = fts.rowid
-               WHERE fts MATCH ?"""]
+               WHERE fts MATCH ?"""
+        ]
         params: list[Any] = [fts_query]
 
         # Add additional filters on the main table

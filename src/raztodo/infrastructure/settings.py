@@ -13,10 +13,7 @@ class Settings:
         if sys.platform == "win32" and os.getenv("GITHUB_ACTIONS") == "true":
             path = Path(tempfile.gettempdir()) / "raztodo"
         elif sys.platform == "win32":
-            path = (
-                Path(os.getenv("APPDATA", Path.home() / "AppData" / "Roaming"))
-                / "raztodo"
-            )
+            path = Path(os.getenv("APPDATA", Path.home() / "AppData" / "Roaming")) / "raztodo"
         elif sys.platform == "darwin":
             path = Path.home() / "Library" / "Application Support" / "raztodo"
         else:

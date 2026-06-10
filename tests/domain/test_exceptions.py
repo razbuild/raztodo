@@ -163,9 +163,7 @@ class TestInvalidFileFormatError:
 
     def test_default_message_with_filepath_and_format(self):
         """Test default message with filepath and format."""
-        error = InvalidFileFormatError(
-            filepath="/path/to/file.json", format_type="JSON"
-        )
+        error = InvalidFileFormatError(filepath="/path/to/file.json", format_type="JSON")
         assert "Invalid JSON format in file '/path/to/file.json'" in str(error)
         assert error.format_type == "JSON"
         assert error.filepath == "/path/to/file.json"

@@ -53,11 +53,7 @@ class TestImportTasksUseCase:
             use_case.execute(str(p))
 
         error_msg = str(exc_info.value).lower()
-        assert (
-            "json" in error_msg
-            or "format" in error_msg
-            or "expecting value" in error_msg
-        )
+        assert "json" in error_msg or "format" in error_msg or "expecting value" in error_msg
 
     def test_import_not_array(self, task_repo, tmp_path):
         """Test importing valid JSON that is not an array raises error."""

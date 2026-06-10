@@ -15,9 +15,7 @@ class TestUpdateTaskUseCase:
         result = use_case.execute(1, title="New Title")
 
         assert result is True
-        mock_repo.update_task.assert_called_once_with(
-            1, "New Title", None, None, None, None, None
-        )
+        mock_repo.update_task.assert_called_once_with(1, "New Title", None, None, None, None, None)
 
     def test_update_task_all_fields(self, mock_repo):
         """Test updating all task fields."""
@@ -47,6 +45,4 @@ class TestUpdateTaskUseCase:
         with pytest.raises(RazTodoException) as exc_info:
             use_case.execute(999, title="New Title")
 
-        assert (
-            "999" in str(exc_info.value) or "not found" in str(exc_info.value).lower()
-        )
+        assert "999" in str(exc_info.value) or "not found" in str(exc_info.value).lower()

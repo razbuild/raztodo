@@ -1,6 +1,6 @@
 [project]
 name = "raztodo"
-version = "0.4.1"
+version = "0.5.0"
 description = "A fast, minimal dependency command-line todo/task manager backed by SQLite"
 keywords = ["cli", "todo", "task", "command-line", "python"]
 maintainers = [
@@ -11,8 +11,8 @@ readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
 dependencies = [
     "fastapi>=0.136.3",
+    "httpx2>=2.3.0",
     "raztint",
-    "uvicorn>=0.49.0",
 ]
 
 classifiers = [
@@ -40,16 +40,24 @@ Changelog = "https://github.com/razbuild/raztodo/releases"
 rt = "raztodo.__main__:main"
 rt-web = "raztodo.presentation.web.__main__:main"
 
+[project.optional-dependencies]
+web = [
+    "fastapi>=0.136.3",
+    "uvicorn[standard]>=0.49.0",
+]
+completion = [
+    "argcomplete",
+]
+
 [build-system]
 requires = ["uv_build >= 0.11.7, <0.12.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-web = ["fastapi", "uvicorn[standard]"]
-dev = ["pytest", "ruff", "black", "ty", "coverage", "argcomplete"]
-test = ["pytest"]
+dev = ["pytest", "ruff", "ty", "coverage", "httpx2"]
+test = ["pytest", "httpx2"]
 coverage = ["coverage"]
-completion = ["argcomplete"]
+
 
 [tool.ty.src]
 include = ["src", "tests"]
@@ -60,7 +68,7 @@ respect-type-ignore-comments = true
 
 [tool.ty.rules]
 all = "error"
-
+unresolved-import = "ignore"
 
 [tool.ty.terminal]
 error-on-warning = true

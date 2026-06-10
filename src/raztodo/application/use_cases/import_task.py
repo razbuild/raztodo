@@ -105,6 +105,4 @@ class ImportTasksUseCase:
         except UnicodeDecodeError as e:
             raise RazTodoException(f"File encoding error in '{filepath}': {e}") from e
         except OSError as e:
-            raise RazTodoException(
-                f"I/O error while accessing '{filepath}': {e}"
-            ) from e
+            raise RazTodoException(f"I/O error while accessing '{filepath}': {e}") from e

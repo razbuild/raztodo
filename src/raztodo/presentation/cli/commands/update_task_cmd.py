@@ -23,12 +23,8 @@ def add_parser(sub: Any) -> None:
         ),
         formatter_class=CLIHelpFormatter,
     )
-    update.add_argument(
-        "id", type=int, metavar="ID", help="ID of the task to update (required)"
-    )
-    update.add_argument(
-        "--title", metavar="TEXT", help="New title for the task", default=None
-    )
+    update.add_argument("id", type=int, metavar="ID", help="ID of the task to update (required)")
+    update.add_argument("--title", metavar="TEXT", help="New title for the task", default=None)
     update.add_argument(
         "--desc",
         "--description",
@@ -44,7 +40,10 @@ def add_parser(sub: Any) -> None:
         help="New priority level: L (Low), M (Medium), H (High)",
     )
     update.add_argument(
-        "--due", "--due-date", metavar="DATE", help="New due date (format: YYYY-MM-DD)"
+        "--due",
+        "--due-date",
+        metavar="DATE",
+        help="New due date value (recommended format: YYYY-MM-DD)",
     )
     update.add_argument(
         "--tags",
@@ -52,9 +51,7 @@ def add_parser(sub: Any) -> None:
         metavar="TAGS",
         help="New tags (comma-separated, e.g., 'work,urgent')",
     )
-    update.add_argument(
-        "--project", metavar="NAME", help="New project or category name"
-    )
+    update.add_argument("--project", metavar="NAME", help="New project or category name")
     update.add_argument(
         "--json",
         action="store_true",

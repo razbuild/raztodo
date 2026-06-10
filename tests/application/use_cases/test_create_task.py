@@ -15,9 +15,7 @@ class TestCreateTaskUseCase:
         result = use_case.execute("Test Task", "Description")
 
         assert result == 1
-        mock_repo.add_task.assert_called_once_with(
-            "Test Task", "Description", "", None, None, None
-        )
+        mock_repo.add_task.assert_called_once_with("Test Task", "Description", "", None, None, None)
 
     def test_create_task_with_all_fields(self, mock_repo):
         """Test task creation with all optional fields."""
@@ -45,10 +43,7 @@ class TestCreateTaskUseCase:
         with pytest.raises(RazTodoException) as exc_info:
             use_case.execute("")
 
-        assert (
-            "title" in str(exc_info.value).lower()
-            or "empty" in str(exc_info.value).lower()
-        )
+        assert "title" in str(exc_info.value).lower() or "empty" in str(exc_info.value).lower()
 
     def test_create_task_whitespace_title(self, mock_repo):
         """Test creating task with whitespace-only title raises error."""
@@ -57,10 +52,7 @@ class TestCreateTaskUseCase:
         with pytest.raises(RazTodoException) as exc_info:
             use_case.execute("   ")
 
-        assert (
-            "title" in str(exc_info.value).lower()
-            or "empty" in str(exc_info.value).lower()
-        )
+        assert "title" in str(exc_info.value).lower() or "empty" in str(exc_info.value).lower()
 
     def test_create_task_title_too_long(self, mock_repo):
         """Test creating task with title exceeding max length."""
@@ -80,9 +72,7 @@ class TestCreateTaskUseCase:
 
         use_case.execute("  Test Task  ")
 
-        mock_repo.add_task.assert_called_once_with(
-            "Test Task", "", "", None, None, None
-        )
+        mock_repo.add_task.assert_called_once_with("Test Task", "", "", None, None, None)
 
     def test_create_task_duplicate_raises_error(self, mock_repo):
         """Test creating duplicate task raises error."""

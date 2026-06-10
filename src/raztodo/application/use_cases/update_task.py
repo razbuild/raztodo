@@ -43,7 +43,5 @@ class UpdateTaskUseCase:
             task_id, title, description, priority, due_date, tags, project
         )
         if not updated:
-            raise RazTodoException(
-                f"No task found with id {task_id} or no changes provided"
-            )
+            raise RazTodoException(f"No task found with id {task_id} or no changes provided")
         return True

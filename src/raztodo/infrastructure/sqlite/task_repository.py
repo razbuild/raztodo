@@ -62,9 +62,7 @@ def ensure_writable_path(filepath: str) -> Path:
             dir_path.mkdir(parents=True, exist_ok=True)
         except OSError as e:
             logger.exception("Failed to create directory %s", dir_path)
-            raise RazTodoException(
-                f"FileOperationError: Cannot create directory {dir_path}"
-            ) from e
+            raise RazTodoException(f"FileOperationError: Cannot create directory {dir_path}") from e
     if file_path.exists() and not os.access(str(file_path), os.W_OK):
         raise RazTodoException(f"FilePermissionError: Cannot write to file {file_path}")
     return file_path
@@ -97,20 +95,14 @@ class SQLiteTaskRepository(TaskRepository):
         project: str | None = None,
     ) -> int | None:
         title = validate_length("title", title, MAX_TITLE_LENGTH)
-        description = validate_length(
-            "description", description, MAX_DESCRIPTION_LENGTH
-        )
+        description = validate_length("description", description, MAX_DESCRIPTION_LENGTH)
         priority = normalize_priority(priority)
         tags = normalize_tags(tags)
 
         try:
-            task_id = self._dao.insert(
-                title, description, priority, due_date, tags, project
-            )
+            task_id = self._dao.insert(title, description, priority, due_date, tags, project)
             if not task_id:
-                raise RazTodoException(
-                    f"DuplicateTaskError: Task '{title}' already exists"
-                )
+                raise RazTodoException(f"DuplicateTaskError: Task '{title}' already exists")
             logger.info("Task created: id=%d, title=%r", task_id, title)
             return task_id
         except IntegrityError as e:
@@ -154,9 +146,7 @@ class SQLiteTaskRepository(TaskRepository):
         if title is not None:
             title = validate_length("title", title, MAX_TITLE_LENGTH)
         if description is not None:
-            description = validate_length(
-                "description", description, MAX_DESCRIPTION_LENGTH
-            )
+            description = validate_length("description", description, MAX_DESCRIPTION_LENGTH)
         if priority is not None:
             priority = normalize_priority(priority)
         if tags is not None:
@@ -179,9 +169,7 @@ class SQLiteTaskRepository(TaskRepository):
             logger.info("Task updated: id=%d, rows_affected=%d", task_id, affected)
             return affected
         except Error as e:
-            raise RazTodoException(
-                f"DatabaseError during update_task {task_id}: {e}"
-            ) from e
+            raise RazTodoException(f"DatabaseError during update_task {task_id}: {e}") from e
 
     def remove_task(self, task_id: int) -> int:
         affected = self._dao.delete(task_id)
@@ -206,18 +194,14 @@ class SQLiteTaskRepository(TaskRepository):
             tags,
         )
 
-        rows = self._dao.search(
-            keyword.strip(), priority=priority, project=project, tags=tags
-        )
+        rows = self._dao.search(keyword.strip(), priority=priority, project=project, tags=tags)
 
         logger.info("Search for %r returned %d result(s)", keyword.strip(), len(rows))
         return [row_to_task(r) for r in rows]
 
     def mark_done(self, task_id: int, done: bool = True) -> int:
         affected = self._dao.update(task_id, done=done)
-        logger.info(
-            "Task %d marked as done=%s, rows_affected=%d", task_id, done, affected
-        )
+        logger.info("Task %d marked as done=%s, rows_affected=%d", task_id, done, affected)
         return affected
 
     def export_tasks(self, filepath: str) -> bool:
@@ -247,9 +231,7 @@ class SQLiteTaskRepository(TaskRepository):
             logger.info("Exported %d tasks to %s", len(tasks), filepath)
             return True
         except Exception as e:
-            raise RazTodoException(
-                f"FileOperationError during export_tasks: {e}"
-            ) from e
+            raise RazTodoException(f"FileOperationError during export_tasks: {e}") from e
 
     def import_tasks(self, filepath: str) -> int:
         file_path = Path(filepath)
@@ -264,16 +246,12 @@ class SQLiteTaskRepository(TaskRepository):
             raise RazTodoException(f"InvalidFileFormatError: {e}") from e
 
         if not isinstance(data, list):
-            raise RazTodoException(
-                f"InvalidFileFormatError: Expected JSON array in {filepath}"
-            )
+            raise RazTodoException(f"InvalidFileFormatError: Expected JSON array in {filepath}")
 
         count, errors = 0, []
         for idx, item in enumerate(data, start=1):
             if not isinstance(item, dict) or "title" not in item:
-                logger.warning(
-                    "Skipping item %d: not a dict or missing 'title' key", idx
-                )
+                logger.warning("Skipping item %d: not a dict or missing 'title' key", idx)
                 continue
 
             task_data = cast(dict[str, Any], item)
@@ -291,9 +269,7 @@ class SQLiteTaskRepository(TaskRepository):
                     try:
                         self._dao.update(new_id, done=bool(task_data["done"]))
                     except Error as e:
-                        logger.warning(
-                            "Failed to set done flag for task %d: %s", new_id, e
-                        )
+                        logger.warning("Failed to set done flag for task %d: %s", new_id, e)
                 count += 1
             except RazTodoException as e:
                 errors.append(f"Item {idx}: {e}")
@@ -303,9 +279,7 @@ class SQLiteTaskRepository(TaskRepository):
                 continue
 
         if errors and count == 0:
-            raise RazTodoException(
-                f"Failed to import any tasks from {filepath}: {errors[:3]}"
-            )
+            raise RazTodoException(f"Failed to import any tasks from {filepath}: {errors[:3]}")
 
         logger.info("Imported %d tasks from %s", count, filepath)
         return count

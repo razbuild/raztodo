@@ -221,7 +221,7 @@ rt list
 
 ## Logging Configuration
 
-RazTodo includes built-in logging to help with debugging and monitoring. You can control the verbosity of log messages using the `LOG_LEVEL` environment variable.
+RazTodo configures internal Python logger levels via the `LOG_LEVEL` environment variable. By default it uses a `NullHandler`, so changing `LOG_LEVEL` affects logger configuration but does not, by itself, make logs appear on the console.
 
 ### Available Log Levels
 
@@ -256,44 +256,28 @@ export LOG_LEVEL="INFO"
 $env:LOG_LEVEL = "INFO"
 ```
 
-### Log Level Examples
-
-**Debug Mode (Most Verbose):**
+### Practical Notes
 
 ```bash
-LOG_LEVEL=DEBUG rt add "Test task"
-# Shows detailed information about:
-# - Database connections
-# - Query execution
-# - Internal state changes
+# Configure the internal logger level
+LOG_LEVEL=DEBUG rt list
 ```
 
-**Info Mode (Normal Monitoring):**
+This is mainly useful when:
 
-```bash
-LOG_LEVEL=INFO rt list
-# Shows general information about:
-# - Command execution
-# - Task operations
-# - Warnings
-```
+- you are embedding RazTodo in another Python process,
+- you have attached your own logging handlers,
+- or you are debugging with custom instrumentation.
 
-**Error Mode (Default - Quiet):**
-
-```bash
-# No LOG_LEVEL set, or explicitly:
-LOG_LEVEL=ERROR rt list
-# Only shows errors if something goes wrong
-# Perfect for normal daily use
-```
+For normal CLI usage, RazTodo does **not** print structured logs to stdout/stderr just because `LOG_LEVEL` is set.
 
 ### When to Use Each Level
 
-- **DEBUG**: When troubleshooting issues, developing, or need to see all internal operations
-- **INFO**: When you want to monitor normal operations without too much noise
-- **WARNING**: When you want to be notified about potential issues but not every detail
-- **ERROR**: For normal daily use - only shows problems (default)
-- **CRITICAL**: For minimal logging in production environments
+- **DEBUG**: For development or deep troubleshooting with custom logging handlers
+- **INFO**: For general operational logging in embedded/integrated environments
+- **WARNING**: To capture only warnings and above
+- **ERROR**: Default logger level for normal CLI usage
+- **CRITICAL**: For the most minimal logging configuration
 
 ---
 
@@ -328,7 +312,7 @@ Check your RazTodo version:
 
 ```bash
 rt --version
-# Output: raztodo 0.2.0
+# Output: raztodo 0.4.1
 ```
 
 This is useful for:

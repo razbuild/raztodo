@@ -27,7 +27,6 @@ class ExportTasksUseCase:
         success: bool = self.repo.export_tasks(filepath)
         if not success:
             raise RazTodoException(
-                f"Failed to export tasks to '{filepath}'. "
-                "Check file permissions and disk space."
+                f"Failed to export tasks to '{filepath}'. Check file permissions and disk space."
             )
         return True

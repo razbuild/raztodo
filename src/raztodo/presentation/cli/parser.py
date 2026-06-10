@@ -35,9 +35,9 @@ def get_parser() -> argparse.ArgumentParser:
         ),
         epilog=(
             "Examples:\n"
-            "  rt add 'Buy groceries' --priority H --due tomorrow\n"
+            "  rt add 'Buy groceries' --priority H --due 2024-12-31\n"
             "  rt list --priority H --pending\n"
-            "  rt update 1 --title 'New title' --done\n"
+            "  rt update 1 --title 'New title'\n"
             "  rt search 'meeting' --project work\n\n"
             "Tips:\n"
             "  • Show command help: rt <command> --help\n"

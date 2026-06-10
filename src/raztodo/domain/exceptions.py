@@ -89,9 +89,7 @@ class FileOperationError(RazTodoException):
 
     def __init__(self, filepath: str | None = None, message: str | None = None) -> None:
         self.filepath = filepath
-        super().__init__(
-            message or default_message("File operation failed", filepath=filepath)
-        )
+        super().__init__(message or default_message("File operation failed", filepath=filepath))
 
 
 class TaskFileNotFoundError(FileOperationError):
@@ -163,9 +161,7 @@ class DatabaseError(RazTodoException):
         message (Optional[str]): Custom message override.
     """
 
-    def __init__(
-        self, operation: str | None = None, message: str | None = None
-    ) -> None:
+    def __init__(self, operation: str | None = None, message: str | None = None) -> None:
         self.operation = operation
         super().__init__(
             message or default_message("Database operation failed", operation=operation)

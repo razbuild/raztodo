@@ -48,7 +48,7 @@ ENTRYPOINT ["sh", "-c", "rt \"$@\"", "--"]
 Build the image locally:
 ```bash
 docker build -t raztodo:local .
-````
+```
 
 Run raztodo and persist your tasks on the host (recommended):
 
@@ -72,7 +72,7 @@ Notes:
 1. Build image locally:
 ```bash
 docker build -t raztodo:test .
-````
+```
 2. Prepare host folder for database:
 ```bash
 mkdir -p ~/raztodo-data

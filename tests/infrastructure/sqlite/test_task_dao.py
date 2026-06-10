@@ -116,9 +116,7 @@ class TestTaskDAO:
         result = dao.update(task_id, title="New Title")
         assert result > 0
 
-        row = dao._conn.execute(
-            "SELECT title FROM tasks WHERE id = ?", (task_id,)
-        ).fetchone()
+        row = dao._conn.execute("SELECT title FROM tasks WHERE id = ?", (task_id,)).fetchone()
         assert row[0] == "New Title"
 
     def test_update_task_done(self, dao):
@@ -127,9 +125,7 @@ class TestTaskDAO:
         result = dao.update(task_id, done=True)
         assert result > 0
 
-        row = dao._conn.execute(
-            "SELECT done FROM tasks WHERE id = ?", (task_id,)
-        ).fetchone()
+        row = dao._conn.execute("SELECT done FROM tasks WHERE id = ?", (task_id,)).fetchone()
         assert row[0] == 1
 
     def test_update_task_clear_due_date(self, dao):
@@ -138,9 +134,7 @@ class TestTaskDAO:
         result = dao.update(task_id, due_date="__CLEAR__")
         assert result > 0
 
-        row = dao._conn.execute(
-            "SELECT due_date FROM tasks WHERE id = ?", (task_id,)
-        ).fetchone()
+        row = dao._conn.execute("SELECT due_date FROM tasks WHERE id = ?", (task_id,)).fetchone()
         assert row[0] is None
 
     def test_update_task_clear_project(self, dao):
@@ -149,9 +143,7 @@ class TestTaskDAO:
         result = dao.update(task_id, project="__CLEAR__")
         assert result > 0
 
-        row = dao._conn.execute(
-            "SELECT project FROM tasks WHERE id = ?", (task_id,)
-        ).fetchone()
+        row = dao._conn.execute("SELECT project FROM tasks WHERE id = ?", (task_id,)).fetchone()
         assert row[0] is None
 
     def test_update_task_no_changes(self, dao):

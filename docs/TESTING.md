@@ -4,17 +4,17 @@ This document provides guidelines for running tests and maintaining code quality
 
 ## Requirements
 
-- This project requires **Python 3.10**.
+- This project requires **Python 3.10+**.
 - [`uv`](https://docs.astral.sh/uv/) for environment management
 
 ## Setup
 
-Clone the repository and install development dependencies (pytest, ty, black, ruff, coverage, argcomplete):
+Clone the repository and install development dependencies (pytest, ty, ruff, coverage):
 
 ```bash
 git clone https://github.com/razbuild/raztodo.git
 cd raztodo
-uv sync --editable --group dev
+uv sync --editable --group dev --extra web
 ```
 
 ---
@@ -23,7 +23,7 @@ uv sync --editable --group dev
 
 * **Unit and Functional Testing:** [pytest](https://docs.pytest.org/)
 * **Type Checking:** [ty](https://astral.sh/)
-* **Formatting and Linting:** [black](https://black.readthedocs.io/) and [ruff](https://beta.ruff.rs/docs/)
+* **Formatting and Linting:** [ruff](https://docs.astral.sh/ruff/) for formatting and linting
 * **Test Coverage:** [coverage](https://coverage.readthedocs.io/)
 
 ## Running Tests
@@ -38,14 +38,15 @@ uv run pytest -v
 uv run pytest -q
 
 # Single test file
-uv run pytest tests/test_example.py
+uv run pytest tests/application/use_cases/test_create_task.py
 
 # Single test function
-uv run pytest tests/test_example.py::test_function_name
+uv run pytest tests/application/use_cases/test_create_task.py::TestCreateTaskUseCase::test_create_task_success
 
 # By subfolder
 uv run pytest tests/domain
 uv run pytest tests/infrastructure
+uv run pytest tests/presentation/web
 ```
 
 ## Checking Test Coverage
@@ -73,7 +74,7 @@ uv run ty check src/
 ### Code Formatting
 
 ```bash
-uv run black src/ tests/
+uv run ruff format src/ tests/
 ```
 
 ### Linting and Error Checking

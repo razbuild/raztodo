@@ -1,19 +1,15 @@
-"""Entry point for the RazTodo web UI.
-
-Run with:
-    rt-web
-or:
-    python -m raztodo.presentation.web
-"""
-
 from __future__ import annotations
 
 
 def main() -> None:
-    try:
-        import uvicorn
-    except ImportError as err:
-        raise SystemExit("uvicorn is not installed. Run: uv sync --group web") from err
+    import importlib.util
+
+    if importlib.util.find_spec("fastapi") is None or importlib.util.find_spec("uvicorn") is None:
+        raise SystemExit(
+            "Web dependencies are not installed. Install with: pip install 'raztodo[web]'"
+        )
+
+    import uvicorn  # type: ignore[import]
 
     uvicorn.run(
         "raztodo.presentation.web.app:app",

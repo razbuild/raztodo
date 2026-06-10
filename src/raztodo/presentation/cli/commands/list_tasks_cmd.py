@@ -34,9 +34,7 @@ def add_parser(sub: Any) -> None:
         metavar="LEVEL",
         help="Filter by priority level: L (Low), M (Medium), H (High)",
     )
-    listp.add_argument(
-        "--project", metavar="NAME", help="Filter by project or category name"
-    )
+    listp.add_argument("--project", metavar="NAME", help="Filter by project or category name")
     listp.add_argument(
         "--tags",
         "-t",

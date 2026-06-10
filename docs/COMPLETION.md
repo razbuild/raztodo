@@ -1,18 +1,25 @@
 # Shell Autocompletion
 
-**rt** ships with native shell autocompletion powered by [argcomplete](https://github.com/kislyuk/argcomplete).  
-Once enabled, you can press `<TAB>` to discover commands, subcommands, flags, and (where applicable) dynamic values.
+**rt** ships with native shell autocompletion for bash, zsh, and fish. Bash and zsh use [argcomplete](https://github.com/kislyuk/argcomplete); fish uses a lightweight built-in static completion script.
+Once enabled, you can press `<TAB>` to discover commands, subcommands, and flags.
 
 ## Prerequisites
 
 - **rt** must be installed in your environment (`pip install -e .` or from **PyPI**).
-- The optional dependency `argcomplete` is required. Install it alongside **rt**:
+- The optional `completion` extra is required for **bash/zsh** completion support. Fish completion works without it.
+- Install the extra alongside **rt** if you want bash/zsh completion:
 
 ```bash
-uv sync --group completion
+pip install "raztodo[completion]"
 ```
 
-If you installed **rt** without the extra, you can add it manually:
+For local development with uv:
+
+```bash
+uv sync --extra completion
+```
+
+If you prefer, you can also install the underlying package directly:
 
 ```bash
 pip install argcomplete
@@ -75,10 +82,10 @@ rt completion fish > ~/.config/fish/completions/rt.fish
 
 ## How It Works
 
-· The completion command outputs a shell script that hooks into your shell’s completion system.
-· The script uses argcomplete to invoke **rt** internally with the _ARGCOMPLETE environment variable set.
-· During completion, **rt** skips heavy initialisation (the application container and router are not created), ensuring fast `<TAB>` responses.
-· A special `RAZTODO_COMPLETION` guard makes subparsers optional during completion, preventing unnecessary errors.
+- `rt completion bash` and `rt completion zsh` output argcomplete-based shell code.
+- `rt completion fish` outputs a small built-in completion script and does not require `argcomplete`.
+- During completion, RazTodo avoids building the application router, keeping completion startup fast.
+- A `RAZTODO_COMPLETION` guard makes subparsers optional during completion.
 
 ### Available Commands
 ```bash
@@ -93,8 +100,8 @@ rt completion fish
 
 rt completion bash outputs a script, but `<TAB>` does nothing.
 
-You only printed the script. You must activate it with `eval "$(rt completion bash)"` or `source <(...)`.
-Without eval/source, the shell does not register the completion handler.
+You only printed the script. You must activate it with `eval "$(rt completion bash)"`.
+Without eval, the shell does not register the completion handler.
 
 rt: command not found when pressing `<TAB>`.
 
@@ -107,20 +114,24 @@ eval "$(python -m raztodo completion bash)"
 
 Completion works but is slow.
 
-Completion should be fast because the application container is not bootstrapped.
-If you experience slowness, check that you are using the latest version of argcomplete (≥3.0).
+Completion should be fast because RazTodo avoids building the full command router during completion.
+If you experience slowness with bash/zsh completion, check that you are using a recent version of argcomplete.
 
 argcomplete not found.
 
 Install it:
 
 ```bash
+pip install "raztodo[completion]"
+```
+
+Or install the underlying package directly:
+
+```bash
 pip install argcomplete
 ```
 
-Or reinstall **rt** with the completion extra.
-
-Uninstalling Completion
+## Uninstalling Completion
 
 Remove the eval line from your shell’s configuration file `~/.bashrc` , `~/.zshrc` and restart your shell.
 For Fish, delete the file `~/.config/fish/completions/rt.fish`.

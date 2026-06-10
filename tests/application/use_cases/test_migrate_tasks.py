@@ -105,9 +105,7 @@ class TestMigrateUseCase:
                     title TEXT NOT NULL
                 )
             """)
-            conn.execute(
-                "CREATE UNIQUE INDEX IF NOT EXISTS idx_tasks_title_unique ON tasks(title)"
-            )
+            conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_tasks_title_unique ON tasks(title)")
             conn.commit()
             conn.close()
 

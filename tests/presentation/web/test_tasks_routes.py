@@ -5,12 +5,13 @@ Uses FastAPI TestClient — no real server required.
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
+
 import pytest
 from fastapi.testclient import TestClient
 
-from raztodo.domain.task_entity import TaskEntity
 from raztodo.domain.exceptions import RazTodoException
+from raztodo.domain.task_entity import TaskEntity
 from raztodo.presentation.web.app import app
 
 # ---------------------------------------------------------------------------
@@ -115,6 +116,9 @@ class TestIndexPage:
         assert res.status_code == 200
         assert "text/html" in res.headers["content-type"]
         assert "RazTodo" in res.text
+        assert "Manage your local tasks from a lightweight web interface." in res.text
+        for emoji in ["⚡", "⬇", "⬆", "🗑", "📅", "📁", "✓", "↩"]:
+            assert emoji not in res.text
 
 
 # ---------------------------------------------------------------------------

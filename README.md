@@ -48,8 +48,13 @@ pipx install raztodo
 
 # Alternative: Install via pip
 pip install raztodo
+
+# Install the optional web UI
+pip install "raztodo[web]"
 ```
 
+> The base install provides the CLI. Install `raztodo[web]` if you also want the `rt-web` command.
+>
 > 📖 For more installation options (virtual environments, from source), see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
 
 ### Basic Usage
@@ -76,7 +81,12 @@ rt remove 1
 
 ### Shell Completion
 
-`rt` supports native `<Tab>` completion for bash, zsh and fish
+`rt` supports native `<Tab>` completion for bash, zsh and fish.
+For bash/zsh completion support, install the optional extra first:
+
+```bash
+pip install "raztodo[completion]"
+```
 
 **Quick activation (bash/zsh):**
 ```bash
@@ -88,7 +98,7 @@ rt <Tab>
 rt add --<Tab>
 ```
 
-> 📖 For permanet setup and other shells (zsh, fish), see the [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
+> 📖 For permanent setup and other shells (zsh, fish), see the [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
 
 ---
 
@@ -112,7 +122,7 @@ docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first do
 
 - 📝 **Task Management** — Create, update, delete, and organize tasks
 - 🏷️ **Tags & Projects** — Organize tasks with tags and project names
-- 🔍 **Full-Text Search** — Search across all task fields
+- 🔍 **Search** — Search task titles and descriptions with optional filters
 - 📅 **Due Dates & Priority** — Set deadlines and priority levels (L/M/H)
 - 💾 **Import/Export** — Backup and restore tasks via JSON
 - 🎨 **Colored Output** — Beautiful ANSI colors and icons
@@ -120,7 +130,7 @@ docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first do
 - 🚀 **Cross-Platform** — Works on Linux, macOS, and Windows
 - ⚡ **Fast Performance** — Lazy loading and optimized architecture
 - 🏗️ **Clean Architecture** — Maintainable and testable codebase
-- ✨ **Shell Autocompletion** — Tab completion fo bash, zsh, and fish
+- ✨ **Shell Autocompletion** — Tab completion for bash, zsh, and fish
 
 ---
 
@@ -138,7 +148,7 @@ docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first do
 | `import`  | Import from JSON         | `rt import backup.json`            |
 | `migrate` | Run database migration   | `rt migrate`                       |
 | `clear`   | Delete all tasks         | `rt clear --confirm`               |
-| `completion` | bash,zsh,fish  Shell type for completion         | `rt completion bash`               |
+| `completion` | Output shell completion script | `rt completion bash` |
 
 ```bash
 # Get help for any command
@@ -197,16 +207,16 @@ Contributions are welcome! Here's how you can help:
 3. **Make your changes** and ensure quality:
    ```bash
    # Run tests
-   pytest
-   
+   uv run pytest
+
    # Check code quality
-   ruff check src/ tests/
-   black --check src/ tests/
-   ty check src/
+   uv run ruff format --check src/ tests/
+   uv run ruff check src/ tests/
+   uv run ty check src/
    ```
 4. **Submit a pull request**
 
-For detailed guidelines, see the [Contributing Guide](https://github.com/razbuild/raztodo/blob/master/CONTRIBUTING.md).
+For detailed guidelines, see the shared [RazBuild contributing guide](https://github.com/razbuild/.github/blob/main/CONTRIBUTING.md).
 
 ---
 

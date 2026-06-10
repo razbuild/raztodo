@@ -26,6 +26,4 @@ class TestDeleteTaskUseCase:
         with pytest.raises(RazTodoException) as exc_info:
             use_case.execute(999)
 
-        assert (
-            "999" in str(exc_info.value) or "not found" in str(exc_info.value).lower()
-        )
+        assert "999" in str(exc_info.value) or "not found" in str(exc_info.value).lower()

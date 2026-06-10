@@ -32,6 +32,4 @@ class SearchTasksUseCase:
 
         if not keyword.strip():
             return []
-        return self.repo.search_tasks(
-            keyword, priority=priority, project=project, tags=tags
-        )
+        return self.repo.search_tasks(keyword, priority=priority, project=project, tags=tags)

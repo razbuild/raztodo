@@ -14,16 +14,12 @@ class AppContainer:
     def __init__(self, db_name: str | None = None) -> None:
         self.config = Settings()
         self.logger = get_logger("raztodo")
-        self._connection_factory = sqlite_connection_factory(
-            db_name or self.config.db_name
-        )
+        self._connection_factory = sqlite_connection_factory(db_name or self.config.db_name)
         self._repo_singleton = None
 
     def repo_singleton(self) -> SQLiteTaskRepository:
         if self._repo_singleton is None:
-            self._repo_singleton = SQLiteTaskRepository(
-                connection_factory=self._connection_factory
-            )
+            self._repo_singleton = SQLiteTaskRepository(connection_factory=self._connection_factory)
         return self._repo_singleton
 
     def connection_factory(self) -> Callable[..., Any]:

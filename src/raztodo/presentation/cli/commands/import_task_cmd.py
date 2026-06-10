@@ -52,9 +52,7 @@ class ImportTasksCMD:
                 if isinstance(res, dict):
                     output_json({"ok": True, **res, "filepath": args.filepath})
                 else:
-                    output_json(
-                        {"ok": True, "inserted": int(res), "filepath": args.filepath}
-                    )
+                    output_json({"ok": True, "inserted": int(res), "filepath": args.filepath})
             else:
                 if isinstance(res, dict):
                     inserted = res.get("inserted", 0)
@@ -71,9 +69,7 @@ class ImportTasksCMD:
                             json_mode=False,
                         )
                     else:
-                        output_success(
-                            "Import completed (no changes made)", json_mode=False
-                        )
+                        output_success("Import completed (no changes made)", json_mode=False)
                 else:
                     output_success(
                         f"Imported {res} task(s) successfully from {args.filepath}",

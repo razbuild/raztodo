@@ -18,9 +18,7 @@ def add_parser(sub: Any) -> None:
         ),
         formatter_class=CLIHelpFormatter,
     )
-    export.add_argument(
-        "filepath", metavar="FILE", help="Path to the output JSON file (required)"
-    )
+    export.add_argument("filepath", metavar="FILE", help="Path to the output JSON file (required)")
     export.add_argument(
         "--json",
         action="store_true",

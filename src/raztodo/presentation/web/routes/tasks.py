@@ -5,7 +5,7 @@ import os
 import tempfile
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from fastapi.responses import FileResponse
 
 from raztodo.domain.exceptions import RazTodoException
@@ -28,6 +28,11 @@ from raztodo.presentation.web.schemas import (
 )
 
 router = APIRouter(prefix="/api/tasks", tags=["tasks"])
+
+
+def _remove_file(path: str) -> None:
+    if os.path.exists(path):
+        os.unlink(path)
 
 
 def _task_to_response(task: Any) -> TaskResponse:
@@ -160,11 +165,15 @@ def toggle_done(
 
 
 @router.get("/export")
-def export_tasks(project: str | None = None, uc: Any = Depends(get_export_uc)) -> FileResponse:  # noqa: B008
+def export_tasks(
+    background_tasks: BackgroundTasks,
+    uc: Any = Depends(get_export_uc),  # noqa: B008
+) -> FileResponse:
     try:
         tmp = tempfile.NamedTemporaryFile(suffix=".json", delete=False, mode="w", encoding="utf-8")  # noqa: SIM115
         tmp.close()
         uc.execute(tmp.name)
+        background_tasks.add_task(_remove_file, tmp.name)
         return FileResponse(
             path=tmp.name,
             media_type="application/json",

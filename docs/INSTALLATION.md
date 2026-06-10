@@ -18,13 +18,30 @@ You can install **raztodo** using either `pip` or `pipx`. Choose the method that
 ### Using pip
 
 ```bash
+# CLI only
 pip install raztodo
+
+# CLI + optional web UI
+pip install "raztodo[web]"
+
+# CLI + bash/zsh completion support
+pip install "raztodo[completion]"
+
+# Install both optional extras
+pip install "raztodo[web,completion]"
 ```
 
 ### Using pipx
 
 ```bash
+# CLI only
 pipx install raztodo
+
+# CLI + optional web UI
+pipx install "raztodo[web]"
+
+# CLI + bash/zsh completion support
+pipx install "raztodo[completion]"
 ```
 ### Uninstall
 
@@ -58,7 +75,17 @@ pip install uv
 
 #### Install the project in editable 
 ```bash
+# CLI only
 uv sync --editable
+
+# CLI + optional web UI
+uv sync --editable --extra web
+
+# CLI + bash/zsh completion support
+uv sync --editable --extra completion
+
+# Install both optional extras
+uv sync --editable --extra web --extra completion
 ```
 This will:
 
@@ -74,7 +101,13 @@ This will:
 For testing, linting, and formatting:
 
 ```bash
-uv sync --group dev
+uv sync --group dev --extra web
+```
+
+If you are working on bash/zsh completion locally, add the completion extra too:
+
+```bash
+uv sync --group dev --extra web --extra completion
 ```
 
 Now you can run commands via uv run:
@@ -120,9 +153,9 @@ options:
   --version     Show raztodo version information and exit
 
 Examples:
-  rt add 'Buy groceries' --priority H --due tomorrow
+  rt add 'Buy groceries' --priority H --due 2024-12-31
   rt list --priority H --pending
-  rt update 1 --title 'New title' --done
+  rt update 1 --title 'New title'
   rt search 'meeting' --project work
 
 Tips:
@@ -131,3 +164,11 @@ Tips:
 ```
 
 If you see output like this, the installation was successful.
+
+To verify the optional web UI install, run:
+
+```bash
+rt-web
+```
+
+This starts the local web UI at `http://127.0.0.1:8000`. Press `Ctrl+C` to stop it.

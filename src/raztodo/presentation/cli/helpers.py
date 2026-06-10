@@ -78,11 +78,7 @@ def handle_command_error(
     json_data.update(json_extras)
 
     error_type: str | None = next(
-        (
-            mapped
-            for exc_class, mapped in ERROR_TYPE_PAIRS
-            if isinstance(error, exc_class)
-        ),
+        (mapped for exc_class, mapped in ERROR_TYPE_PAIRS if isinstance(error, exc_class)),
         None,
     )
 

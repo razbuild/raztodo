@@ -45,9 +45,7 @@ class DoneTaskCMD:
 
     def __call__(self, args: argparse.Namespace) -> int:
         try:
-            success: bool = self.uc.execute(
-                args.id, done=not getattr(args, "undo", False)
-            )
+            success: bool = self.uc.execute(args.id, done=not getattr(args, "undo", False))
             if success:
                 action: str = "undone" if getattr(args, "undo", False) else "completed"
                 output_success(

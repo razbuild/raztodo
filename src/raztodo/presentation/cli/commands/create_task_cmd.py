@@ -44,7 +44,7 @@ def add_parser(sub: Any) -> None:
         "--due",
         "--due-date",
         metavar="DATE",
-        help="Due date in YYYY-MM-DD format or relative text",
+        help="Due date value (recommended format: YYYY-MM-DD)",
     )
     add.add_argument(
         "--tags",

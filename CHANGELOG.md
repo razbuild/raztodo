@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.5.0] - 2026-06-10
+
+### Added
+- Added an optional FastAPI-powered web UI, including its test suite and CLI router test coverage, contributed ([#26](https://github.com/razbuild/raztodo/pull/26) by [@Lee123-hub33](https://github.com/Lee123-hub33)), available through the new `rt-web` entry point and the `raztodo[web]` extra
+- Added a lightweight single-page web interface for creating, listing, searching, completing, deleting, clearing, importing, and exporting tasks
+- Added a dedicated `src/raztodo/presentation/web/ui.py` module to keep the web UI HTML, CSS, and JavaScript separate from the FastAPI app wiring
+
+### Changed
+- Refactored the web app so `src/raztodo/presentation/web/app.py` focuses on FastAPI setup while UI rendering lives in a dedicated helper module
+- Improved CLI router command-class resolution to support command modules with different class naming patterns more reliably
+- Updated package metadata and installation options in `pyproject.toml`, including the `rt-web` script and optional `web` dependencies
+- Refreshed README and docs to document the optional web UI, revised installation flows, CLI usage examples, architecture notes, configuration guidance, and testing instructions
+- Updated CI to install and test with the `web` extra, keep coverage reporting in the workflow, and align the matrix with the current toolchain setup
+- Regenerated `uv.lock` to reflect the current dependency graph and optional extras
+
+### Fixed
+- Fixed and clarified several CLI help strings and examples, including due date guidance, update examples, and completion installation instructions
+- Improved consistency in some error/help messaging across CLI, use-case, and repository code paths
+
+### Tests
+- Expanded web route tests to cover the HTML index page and current API behavior
+- Updated existing application, domain, and infrastructure tests to align with the web UI and related refactors
+
+### Removed
+- Removed repository-local issue templates, pull request template, and top-level community policy files in favor of shared RazBuild documentation/resources
+
+---
+
 ## [0.4.1] - 2026-05-08
 
 ### Fixed

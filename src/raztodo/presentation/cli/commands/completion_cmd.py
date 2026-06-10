@@ -16,7 +16,7 @@ class CompletionCMD:
         try:
             if shell in ["bash", "zsh"]:
                 # Minimal argcomplete shellcode; no router or use case initialization
-                import argcomplete
+                import argcomplete  # type: ignore[import]
 
                 print(argcomplete.shellcode(shell=shell, executables=["rt"]))
                 return 0
@@ -39,7 +39,7 @@ complete -c rt -f -a '(__rt_complete)'
                 return 1
         except ImportError:
             print(
-                "Module 'argcomplete' not installed. Please install it: pip install argcomplete",
+                "Module 'argcomplete' not installed. Install with: pip install 'raztodo[completion]' or pip install argcomplete",
                 file=sys.stderr,
             )
             return 1
@@ -52,7 +52,5 @@ def add_parser(subparsers):
     parser = subparsers.add_parser(
         "completion", help="Output shell completion script for bash, zsh, or fish"
     )
-    parser.add_argument(
-        "shell", choices=["bash", "zsh", "fish"], help="Shell type for completion"
-    )
+    parser.add_argument("shell", choices=["bash", "zsh", "fish"], help="Shell type for completion")
     return parser
