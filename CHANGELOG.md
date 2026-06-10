@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1] - 2026-06-10
+
+### Fixed
+- Corrected dependency classification by ensuring FastAPI is only included in the optional web extra and not in core runtime dependencies
+
+---
+
 ## [0.5.0] - 2026-06-10
 
 ### Added
