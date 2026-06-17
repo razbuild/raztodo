@@ -2,11 +2,12 @@
   <img src="assets/RazTodo.svg" alt="RazTodo" width="400" />
   <br>
 
-![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?logoColor=ffffff&logoSize=auto&label=License&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&logo=githubactions&logoColor=ffffff&logoSize=auto&label=Build&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
-![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztodo?logo=codecov&logoColor=ffffff&logoSize=auto&label=Coverage&labelColor=1b1b1b&color=ba0000&cacheSeconds=3600)
-![PyPI - Version](https://img.shields.io/pypi/v/raztodo?pypiBaseUrl=https%3A%2F%2Fpypi.org&logo=pypi&logoColor=ffffff&logoSize=auto&label=PyPi&labelColor=1b1b1b&color=ba0000&cacheSeconds=3600)
-![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Frazbuild%2Fraztodo%2Fmain%2Fpyproject.toml&logo=python&logoColor=ffffff&logoSize=auto&label=Python&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
+[![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/master/LICENSE)
+[![PyPI Version](https://img.shields.io/pypi/v/raztodo)](https://pypi.org/project/raztodo/)
+[![CI](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml)](https://github.com/razbuild/raztodo/actions/workflows/ci.yml)
+[![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztodo)](https://codecov.io/gh/razbuild/raztodo)
+[![Python Versions](https://img.shields.io/pypi/pyversions/raztodo)](https://pypi.org/project/raztodo/)
+[![PyPI Downloads](https://static.pepy.tech/badge/raztodo)](https://pepy.tech/project/raztodo)
 
   <p>A lightweight, cross-platform, privacy-first CLI task manager powered by SQLite.</p>
 </div>
