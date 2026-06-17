@@ -1,4 +1,6 @@
-![Logo](https://raw.githubusercontent.com/razbuild/raztodo/master/assets/logo.png)
+<div align="center">
+  <img src="assets/RazTodo.svg" alt="RazTint" width="400" />
+  <br><br>
 
 ![GitHub License](https://img.shields.io/github/license/razbuild/raztodo?logoColor=ffffff&logoSize=auto&label=License&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml?branch=master&event=push&logo=githubactions&logoColor=ffffff&logoSize=auto&label=Build&labelColor=1b1b1b&color=ab0000&cacheSeconds=3600)
