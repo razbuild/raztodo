@@ -1,5 +1,6 @@
 import importlib
 from typing import Any, ClassVar
+
 from typing_extensions import override
 
 from raztodo.application.use_case_factory import DefaultUseCaseFactory, UseCaseFactory

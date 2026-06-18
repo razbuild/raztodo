@@ -4,7 +4,9 @@ from collections.abc import Callable
 from pathlib import Path
 from sqlite3 import Connection, Error, IntegrityError
 from types import TracebackType
-from typing_extensions import Any, cast, override
+from typing import cast
+
+from typing_extensions import Any, override
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
