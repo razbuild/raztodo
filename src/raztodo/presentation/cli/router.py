@@ -1,5 +1,6 @@
 import importlib
 from typing import Any, ClassVar
+from typing_extensions import override
 
 from raztodo.application.use_case_factory import DefaultUseCaseFactory, UseCaseFactory
 from raztodo.presentation.cli.protocols import Command, HandlerProtocol
@@ -97,6 +98,7 @@ class TaskRouter(HandlerProtocol):
         """Get command class for the given command name."""
         return self._get_command_class_lazy(name)
 
+    @override
     def get_usecase(self, name: str) -> Any:
         """Get use case instance for the given command name."""
 
