@@ -1,6 +1,6 @@
 <div align="center">
   <img src="assets/RazTodo.svg" alt="RazTodo" width="400" />
-  <br>
+  <br><br>
 
 [![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/master/LICENSE)
 [![PyPI Version](https://img.shields.io/pypi/v/raztodo)](https://pypi.org/project/raztodo/)
@@ -13,6 +13,8 @@
 </div>
 
 ---
+
+## Preview
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/preview.gif" alt="Preview">
