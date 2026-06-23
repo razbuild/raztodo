@@ -9,8 +9,12 @@ document.addEventListener("click", (event) => {
 
   const action = button.dataset.action;
   if (action === "save-edit") {
-    const taskId = button.dataset.taskId;
-    saveEdit(taskId);
+    const taskIdRaw = button.dataset.taskId;
+    if (!/^\d+$/.test(taskIdRaw || "")) {
+      setStatus("Invalid task id.", true);
+      return;
+    }
+    saveEdit(taskIdRaw);
   } else if (action === "cancel-edit") {
     cancelEdit();
   }
