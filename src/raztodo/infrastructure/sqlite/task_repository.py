@@ -4,9 +4,7 @@ from collections.abc import Callable
 from pathlib import Path
 from sqlite3 import Connection, Error, IntegrityError
 from types import TracebackType
-from typing import cast
-
-from typing_extensions import Any, override
+from typing import Any, cast
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
@@ -87,7 +85,6 @@ class SQLiteTaskRepository(TaskRepository):
     ) -> None:
         self.close()
 
-    @override
     def add_task(
         self,
         title: str,
@@ -113,7 +110,6 @@ class SQLiteTaskRepository(TaskRepository):
         except Error as e:
             raise RazTodoException(f"DatabaseError during add_task: {e}") from e
 
-    @override
     def get_tasks(
         self,
         limit: int | None = None,
@@ -137,7 +133,6 @@ class SQLiteTaskRepository(TaskRepository):
         )
         return [row_to_task(r) for r in rows]
 
-    @override
     def update_task(
         self,
         task_id: int,
@@ -176,13 +171,11 @@ class SQLiteTaskRepository(TaskRepository):
         except Error as e:
             raise RazTodoException(f"DatabaseError during update_task {task_id}: {e}") from e
 
-    @override
     def remove_task(self, task_id: int) -> int:
         affected = self._dao.delete(task_id)
         logger.info("Task removed: id=%d, rows_affected=%d", task_id, affected)
         return affected
 
-    @override
     def search_tasks(
         self,
         keyword: str,
@@ -206,13 +199,11 @@ class SQLiteTaskRepository(TaskRepository):
         logger.info("Search for %r returned %d result(s)", keyword.strip(), len(rows))
         return [row_to_task(r) for r in rows]
 
-    @override
     def mark_done(self, task_id: int, done: bool = True) -> int:
         affected = self._dao.update(task_id, done=done)
         logger.info("Task %d marked as done=%s, rows_affected=%d", task_id, done, affected)
         return affected
 
-    @override
     def export_tasks(self, filepath: str) -> bool:
         file_path = ensure_writable_path(filepath)
         try:
@@ -242,7 +233,6 @@ class SQLiteTaskRepository(TaskRepository):
         except Exception as e:
             raise RazTodoException(f"FileOperationError during export_tasks: {e}") from e
 
-    @override
     def import_tasks(self, filepath: str) -> int:
         file_path = Path(filepath)
         if not file_path.exists():
@@ -294,7 +284,6 @@ class SQLiteTaskRepository(TaskRepository):
         logger.info("Imported %d tasks from %s", count, filepath)
         return count
 
-    @override
     def clear_all_tasks(self) -> int:
         try:
             count = self._dao.clear_all()

@@ -1,7 +1,7 @@
 import argparse
 import os
-from importlib import metadata
 
+from raztodo.infrastructure.version import get_version
 from raztodo.presentation.cli.commands import (
     clear_tasks_cmd,
     completion_cmd,
@@ -15,13 +15,6 @@ from raztodo.presentation.cli.commands import (
     search_tasks_cmd,
     update_task_cmd,
 )
-
-
-def _get_version() -> str:
-    try:
-        return metadata.version("raztodo")
-    except metadata.PackageNotFoundError:
-        return "unknown"
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -48,7 +41,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--version",
         action="version",
-        version=f"%(prog)s {_get_version()}",
+        version=f"%(prog)s {get_version()}",
         help="Show raztodo version information and exit",
     )
 

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RazTodo</title>
+        <link rel="stylesheet" href="/static/style.css" />
+    </head>
+    <body>
+        <main class="container">
+            <header class="page-header">
+                <h1>RazTodo</h1>
+                <p>Manage your local tasks from a lightweight web interface.</p>
+            </header>
+
+            <section class="panel" aria-labelledby="create-task-heading">
+                <h2 id="create-task-heading">Create task</h2>
+                <div class="form-grid">
+                    <div class="field full-width">
+                        <label for="new-title">Title</label>
+                        <input
+                            id="new-title"
+                            type="text"
+                            placeholder="Task title (required)"
+                        />
+                    </div>
+                    <div class="field full-width">
+                        <label for="new-desc">Description</label>
+                        <input
+                            id="new-desc"
+                            type="text"
+                            placeholder="Optional description"
+                        />
+                    </div>
+                    <div class="field">
+                        <label for="new-priority">Priority</label>
+                        <select id="new-priority">
+                            <option value="">None</option>
+                            <option value="H">High</option>
+                            <option value="M">Medium</option>
+                            <option value="L">Low</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="new-due">Due date</label>
+                        <input id="new-due" type="date" />
+                    </div>
+                    <div class="field">
+                        <label for="new-tags">Tags</label>
+                        <input
+                            id="new-tags"
+                            type="text"
+                            placeholder="work, urgent"
+                        />
+                    </div>
+                    <div class="field">
+                        <label for="new-project">Project</label>
+                        <input
+                            id="new-project"
+                            type="text"
+                            placeholder="Project name"
+                        />
+                    </div>
+                </div>
+                <div class="actions-row" style="margin-top: 1rem">
+                    <button type="button" onclick="addTask()">Add task</button>
+                </div>
+            </section>
+
+            <section class="panel" aria-labelledby="search-heading">
+                <h2 id="search-heading">Search</h2>
+                <div class="search-row">
+                    <input
+                        id="search-input"
+                        type="text"
+                        placeholder="Search titles and descriptions"
+                        oninput="loadTasks()"
+                    />
+                </div>
+            </section>
+
+            <section class="panel" aria-labelledby="tools-heading">
+                <h2 id="tools-heading">Tools</h2>
+                <div class="actions-row">
+                    <button
+                        type="button"
+                        class="secondary"
+                        onclick="exportTasks()"
+                    >
+                        Export JSON
+                    </button>
+                    <button
+                        type="button"
+                        class="secondary"
+                        onclick="openImportPicker()"
+                    >
+                        Import JSON
+                    </button>
+                    <button
+                        type="button"
+                        class="secondary danger"
+                        onclick="clearTasks()"
+                    >
+                        Clear all
+                    </button>
+                    <input
+                        id="import-file"
+                        type="file"
+                        accept=".json,application/json"
+                        style="display: none"
+                        onchange="importTasks(this)"
+                    />
+                </div>
+            </section>
+
+            <section class="panel" aria-labelledby="task-list-heading">
+                <h2 id="task-list-heading">Tasks</h2>
+                <div id="status-msg" aria-live="polite"></div>
+                <ul id="task-list" class="task-list"></ul>
+            </section>
+        </main>
+        <script src="/static/app.js" defer></script>
+    </body>
+</html>

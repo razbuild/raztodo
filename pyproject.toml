@@ -1,11 +1,9 @@
 [project]
 name = "raztodo"
-version = "0.5.1"
-description = "A fast, minimal dependency command-line todo/task manager backed by SQLite"
-keywords = ["cli", "todo", "task", "command-line", "python"]
-maintainers = [
-    { name = "Raz", email = "real.raz.dev@gmail.com" }
-]
+version = "0.6.0"
+description = "A fast, local-first task manager with a CLI and an optional web UI, backed by SQLite"
+keywords = ["cli", "todo", "task-manager", "sqlite", "productivity", "web-ui", "local-first"]
+maintainers = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
 license = "MIT"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
@@ -25,6 +23,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 
+
 [project.urls]
 Homepage = "https://github.com/razbuild/raztodo"
 Documentation = "https://github.com/razbuild/raztodo#readme"
@@ -32,9 +31,11 @@ Repository = "https://github.com/razbuild/raztodo"
 Issues = "https://github.com/razbuild/raztodo/issues"
 Changelog = "https://github.com/razbuild/raztodo/releases"
 
+
 [project.scripts]
 rt = "raztodo.__main__:main"
 rt-web = "raztodo.presentation.web.__main__:main"
+
 
 [project.optional-dependencies]
 web = [
@@ -46,9 +47,11 @@ completion = [
     "argcomplete",
 ]
 
+
 [build-system]
 requires = ["uv_build >= 0.11.7, <0.12.0"]
 build-backend = "uv_build"
+
 
 [dependency-groups]
 dev = ["pytest", "ruff", "ty", "coverage", "httpx2"]
@@ -56,43 +59,11 @@ test = ["pytest", "httpx2"]
 coverage = ["coverage"]
 
 
-[tool.ty.src]
-include = ["src", "tests"]
-exclude = ["src/generated"]
-
-[tool.ty.analysis]
-respect-type-ignore-comments = true
-
-[tool.ty.rules]
-all = "error"
-unresolved-import = "ignore"
-
-[tool.ty.terminal]
-error-on-warning = true
-output-format = "concise"
-
-[tool.ruff]
-line-length = 100
-src = ["src"]
-exclude = [
-    ".git",
-    "__pycache__",
-    "build",
-    "dist",
-    ".venv",
-    "env",
-    "downloads",
-    "*.egg-info",
-]
-
-[tool.ruff.lint]
-select = ["F", "E", "I", "N", "UP", "RUF", "B", "SIM"]
-ignore = ["E501", "N818", "RUF019"]
-
 [tool.pytest.ini_options]
 addopts = ["--strict-config", "--strict-markers"]
 xfail_strict = true
 filterwarnings = ["error"]
+
 
 [tool.coverage.run]
 branch = true
@@ -108,6 +79,7 @@ omit = [
     "*/presentation/cli/entrypoint.py",
     "*/presentation/cli/parser.py",
 ]
+
 
 [tool.coverage.report]
 exclude_also = [

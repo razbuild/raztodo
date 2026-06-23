@@ -1,0 +1,15 @@
+[src]
+include = ["src", "tests"]
+exclude = ["src/generated"]
+
+[analysis]
+respect-type-ignore-comments = true
+
+[rules]
+all = "error"
+unresolved-import = "ignore"
+missing-override-decorator = "ignore"
+
+[terminal]
+error-on-warning = true
+output-format = "concise"

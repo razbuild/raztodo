@@ -1,0 +1,17 @@
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+    "env",
+    "downloads",
+    "*.egg-info",
+]
+
+line-length = 100
+indent-width = 4
+
+[lint]
+select = ["F", "E", "I", "N", "UP", "RUF", "B", "SIM"]
+ignore = ["E501", "N818", "RUF019"]
