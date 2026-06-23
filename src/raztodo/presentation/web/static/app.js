@@ -9,8 +9,12 @@ document.addEventListener("click", (event) => {
 
   const action = button.dataset.action;
   if (action === "save-edit") {
-    const taskId = button.dataset.taskId;
-    saveEdit(taskId);
+    const taskIdRaw = button.dataset.taskId;
+    if (!/^\d+$/.test(taskIdRaw || "")) {
+      setStatus("Invalid task id.", true);
+      return;
+    }
+    saveEdit(taskIdRaw);
   } else if (action === "cancel-edit") {
     cancelEdit();
   }
@@ -297,15 +301,20 @@ async function exportTasks() {
   try {
     const response = await fetch(`${API}/export`);
     if (!response.ok) {
-      throw new Error("Export failed.");
+      const statusText = response.statusText ? `: ${response.statusText}` : "";
+      throw new Error(`Export failed (HTTP ${response.status}${statusText}).`);
     }
     const blob = await response.blob();
     const link = document.createElement("a");
     const objectUrl = URL.createObjectURL(blob);
     link.href = objectUrl;
     link.download = "raztodo_export.json";
+    document.body.appendChild(link);
     link.click();
-    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    window.setTimeout(() => {
+      URL.revokeObjectURL(objectUrl);
+      link.remove();
+    }, 0);
     setStatus("Tasks exported.");
   } catch (error) {
     setStatus(error.message, true);
