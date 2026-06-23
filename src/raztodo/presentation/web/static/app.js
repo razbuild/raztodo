@@ -304,8 +304,12 @@ async function exportTasks() {
     const objectUrl = URL.createObjectURL(blob);
     link.href = objectUrl;
     link.download = "raztodo_export.json";
+    document.body.appendChild(link);
     link.click();
-    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    window.setTimeout(() => {
+      URL.revokeObjectURL(objectUrl);
+      link.remove();
+    }, 0);
     setStatus("Tasks exported.");
   } catch (error) {
     setStatus(error.message, true);
