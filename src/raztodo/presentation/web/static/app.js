@@ -3,19 +3,6 @@ let statusTimer = null;
 let editingTaskId = null;
 let lastTasks = [];
 
-document.addEventListener("click", (event) => {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  const action = button.dataset.action;
-  if (action === "save-edit") {
-    const taskId = button.dataset.taskId;
-    saveEdit(taskId);
-  } else if (action === "cancel-edit") {
-    cancelEdit();
-  }
-});
-
 function setStatus(message, isError = false) {
   const element = document.getElementById("status-msg");
   element.textContent = message;
@@ -125,8 +112,8 @@ function renderTask(task) {
         </div>
 
         <div class="actions-row">
-          <button type="button" data-action="save-edit" data-task-id="${esc(String(task.id))}">Save</button>
-          <button type="button" class="secondary" data-action="cancel-edit">Cancel</button>
+          <button type="button" onclick="saveEdit(${task.id})">Save</button>
+          <button type="button" class="secondary" onclick="cancelEdit()">Cancel</button>
         </div>
       </li>
     `;
@@ -163,23 +150,21 @@ function renderTask(task) {
         <div class="task-actions">
           <button
             type="button"
-            class="js-toggle-done"
-            data-task-id="${esc(String(task.id))}"
-            data-task-done="${task.done ? "true" : "false"}">
+            onclick="toggleDone(${task.id}, ${task.done})">
             ${task.done ? "Undo" : "Mark done"}
           </button>
 
           <button
             type="button"
-            class="secondary js-start-edit"
-            data-task-id="${esc(String(task.id))}">
+            class="secondary"
+            onclick="startEdit(${task.id})">
             Edit
           </button>
 
           <button
             type="button"
-            class="secondary danger js-delete-task"
-            data-task-id="${esc(String(task.id))}">
+            class="secondary danger"
+            onclick="deleteTask(${task.id})">
             Delete
           </button>
         </div>
@@ -305,7 +290,7 @@ async function exportTasks() {
     link.href = objectUrl;
     link.download = "raztodo_export.json";
     link.click();
-    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    URL.revokeObjectURL(objectUrl);
     setStatus("Tasks exported.");
   } catch (error) {
     setStatus(error.message, true);
