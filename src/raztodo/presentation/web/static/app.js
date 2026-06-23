@@ -150,21 +150,23 @@ function renderTask(task) {
         <div class="task-actions">
           <button
             type="button"
-            onclick="toggleDone(${task.id}, ${task.done})">
+            class="js-toggle-done"
+            data-task-id="${esc(String(task.id))}"
+            data-task-done="${task.done ? "true" : "false"}">
             ${task.done ? "Undo" : "Mark done"}
           </button>
 
           <button
             type="button"
-            class="secondary"
-            onclick="startEdit(${task.id})">
+            class="secondary js-start-edit"
+            data-task-id="${esc(String(task.id))}">
             Edit
           </button>
 
           <button
             type="button"
-            class="secondary danger"
-            onclick="deleteTask(${task.id})">
+            class="secondary danger js-delete-task"
+            data-task-id="${esc(String(task.id))}">
             Delete
           </button>
         </div>
