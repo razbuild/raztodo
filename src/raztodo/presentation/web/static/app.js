@@ -290,7 +290,7 @@ async function exportTasks() {
     link.href = objectUrl;
     link.download = "raztodo_export.json";
     link.click();
-    URL.revokeObjectURL(objectUrl);
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
     setStatus("Tasks exported.");
   } catch (error) {
     setStatus(error.message, true);
