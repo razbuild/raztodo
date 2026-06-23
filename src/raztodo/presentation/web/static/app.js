@@ -3,6 +3,19 @@ let statusTimer = null;
 let editingTaskId = null;
 let lastTasks = [];
 
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const action = button.dataset.action;
+  if (action === "save-edit") {
+    const taskId = button.dataset.taskId;
+    saveEdit(taskId);
+  } else if (action === "cancel-edit") {
+    cancelEdit();
+  }
+});
+
 function setStatus(message, isError = false) {
   const element = document.getElementById("status-msg");
   element.textContent = message;
@@ -112,8 +125,8 @@ function renderTask(task) {
         </div>
 
         <div class="actions-row">
-          <button type="button" onclick="saveEdit(${task.id})">Save</button>
-          <button type="button" class="secondary" onclick="cancelEdit()">Cancel</button>
+          <button type="button" data-action="save-edit" data-task-id="${esc(String(task.id))}">Save</button>
+          <button type="button" class="secondary" data-action="cancel-edit">Cancel</button>
         </div>
       </li>
     `;
