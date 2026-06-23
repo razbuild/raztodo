@@ -1,5 +1,7 @@
 const API = "/api/tasks";
 let statusTimer = null;
+let editingTaskId = null;
+let lastTasks = [];
 
 function setStatus(message, isError = false) {
   const element = document.getElementById("status-msg");
@@ -45,9 +47,80 @@ function renderBadge(label, className = "") {
 }
 
 function renderTask(task) {
+  if (editingTaskId === task.id) {
+    return `
+      <li class="task-item" id="task-${task.id}">
+        <div class="form-grid">
+
+          <div class="field full-width">
+            <label>Title</label>
+            <input
+              id="edit-title-${task.id}"
+              type="text"
+              value="${esc(task.title)}"
+            />
+          </div>
+
+          <div class="field full-width">
+            <label>Description</label>
+            <input
+              id="edit-desc-${task.id}"
+              type="text"
+              value="${esc(task.description || "")}"
+            />
+          </div>
+
+          <div class="field">
+            <label>Priority</label>
+            <select id="edit-priority-${task.id}">
+              <option value="" ${!task.priority ? "selected" : ""}>None</option>
+              <option value="H" ${task.priority === "H" ? "selected" : ""}>High</option>
+              <option value="M" ${task.priority === "M" ? "selected" : ""}>Medium</option>
+              <option value="L" ${task.priority === "L" ? "selected" : ""}>Low</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Due date</label>
+            <input
+              id="edit-due-${task.id}"
+              type="date"
+              value="${task.due_date || ""}"
+            />
+          </div>
+
+          <div class="field">
+            <label>Tags</label>
+            <input
+              id="edit-tags-${task.id}"
+              type="text"
+              value="${esc((task.tags || []).join(", "))}"
+            />
+          </div>
+
+          <div class="field">
+            <label>Project</label>
+            <input
+              id="edit-project-${task.id}"
+              type="text"
+              value="${esc(task.project || "")}"
+            />
+          </div>
+
+        </div>
+
+        <div class="actions-row">
+          <button type="button" onclick="saveEdit(${task.id})">Save</button>
+          <button type="button" class="secondary" onclick="cancelEdit()">Cancel</button>
+        </div>
+      </li>
+    `;
+  }
+
   const description = task.description
     ? `<p class="task-desc">${esc(task.description)}</p>`
     : "";
+
   const badges = [
     task.priority
       ? renderBadge(
@@ -71,16 +144,37 @@ function renderTask(task) {
           <h3 class="task-title">${esc(task.title)}</h3>
           ${description}
         </div>
+
         <div class="task-actions">
-          <button type="button" onclick="toggleDone(${task.id}, ${task.done})">${task.done ? "Undo" : "Mark done"}</button>
-          <button type="button" class="secondary danger" onclick="deleteTask(${task.id})">Delete</button>
+          <button
+            type="button"
+            onclick="toggleDone(${task.id}, ${task.done})">
+            ${task.done ? "Undo" : "Mark done"}
+          </button>
+
+          <button
+            type="button"
+            class="secondary"
+            onclick="startEdit(${task.id})">
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="secondary danger"
+            onclick="deleteTask(${task.id})">
+            Delete
+          </button>
         </div>
       </div>
+
       <div class="task-meta">${badges}</div>
-    </li>`;
+    </li>
+  `;
 }
 
 function renderTasks(tasks) {
+  lastTasks = tasks;
   const taskList = document.getElementById("task-list");
   if (!tasks.length) {
     taskList.innerHTML = '<li class="empty-state">No tasks found.</li>';
@@ -226,6 +320,49 @@ async function importTasks(input) {
     setStatus(error.message, true);
   } finally {
     input.value = "";
+  }
+}
+
+function startEdit(id) {
+  editingTaskId = id;
+  renderTasks(lastTasks);
+}
+
+function cancelEdit() {
+  editingTaskId = null;
+  renderTasks(lastTasks);
+}
+
+async function saveEdit(id) {
+  const payload = {
+    title: document.getElementById(`edit-title-${id}`).value.trim(),
+    description: document.getElementById(`edit-desc-${id}`).value.trim(),
+    priority: document.getElementById(`edit-priority-${id}`).value || null,
+    due_date: document.getElementById(`edit-due-${id}`).value || null,
+    tags: document
+      .getElementById(`edit-tags-${id}`)
+      .value.split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean),
+    project: document.getElementById(`edit-project-${id}`).value.trim() || null,
+  };
+
+  if (!payload.title) {
+    setStatus("Title is required.", true);
+    return;
+  }
+
+  try {
+    await api(`${API}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    editingTaskId = null;
+    setStatus("Task updated.");
+    await loadTasks();
+  } catch (error) {
+    setStatus(error.message, true);
   }
 }
 
