@@ -297,7 +297,8 @@ async function exportTasks() {
   try {
     const response = await fetch(`${API}/export`);
     if (!response.ok) {
-      throw new Error("Export failed.");
+      const statusText = response.statusText ? `: ${response.statusText}` : "";
+      throw new Error(`Export failed (HTTP ${response.status}${statusText}).`);
     }
     const blob = await response.blob();
     const link = document.createElement("a");
