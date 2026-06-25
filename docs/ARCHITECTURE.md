@@ -68,52 +68,83 @@ sequenceDiagram
 
 ```text
 src/
-└── raztodo/
-    ├── application/
-    │   ├── use_case_factory.py
-    │   └── use_cases/
-    │       ├── clear_tasks.py
-    │       ├── create_task.py
-    │       ├── delete_task.py
-    │       ├── export_task.py
-    │       ├── import_task.py
-    │       ├── list_tasks.py
-    │       ├── mark_task_done.py
-    │       ├── migrate_tasks.py
-    │       ├── search_tasks.py
-    │       └── update_task.py
-    ├── domain/
-    │   ├── exceptions.py
-    │   ├── task_entity.py
-    │   └── task_repository.py
-    ├── infrastructure/
-    │   ├── container.py
-    │   ├── logger.py
-    │   ├── settings.py
-    │   └── sqlite/
-    │       ├── connection.py
-    │       ├── migrations.py
-    │       ├── task_dao.py
-    │       ├── task_mapper.py
-    │       ├── task_repository.py
-    │       └── task_schema.py
-    ├── presentation/
-    │   ├── cli/
-    │   │   ├── commands/
-    │   │   ├── entrypoint.py
-    │   │   ├── formatters.py
-    │   │   ├── helpers.py
-    │   │   ├── parser.py
-    │   │   ├── protocols.py
-    │   │   └── router.py
-    │   └── web/
-    │       ├── __main__.py
-    │       ├── app.py
-    │       ├── dependencies.py
-    │       ├── routes/
-    │       │   └── tasks.py
-    │       └── schemas.py
-    └── __main__.py
+└── raztodo
+    ├── application
+    │   ├── __init__.py
+    │   ├── use_case_factory.py
+    │   └── use_cases
+    │       ├── clear_tasks.py
+    │       ├── create_task.py
+    │       ├── delete_task.py
+    │       ├── export_task.py
+    │       ├── import_task.py
+    │       ├── __init__.py
+    │       ├── list_tasks.py
+    │       ├── mark_task_done.py
+    │       ├── migrate_tasks.py
+    │       ├── search_tasks.py
+    │       └── update_task.py
+    ├── domain
+    │   ├── exceptions.py
+    │   ├── __init__.py
+    │   ├── task_entity.py
+    │   └── task_repository.py
+    ├── infrastructure
+    │   ├── container.py
+    │   ├── __init__.py
+    │   ├── logger.py
+    │   ├── settings.py
+    │   ├── sqlite
+    │   │   ├── connection.py
+    │   │   ├── __init__.py
+    │   │   ├── migrations.py
+    │   │   ├── task_dao.py
+    │   │   ├── task_mapper.py
+    │   │   ├── task_repository.py
+    │   │   └── task_schema.py
+    │   └── version.py
+    ├── __init__.py
+    ├── __main__.py
+    └── presentation
+        ├── cli
+        │   ├── commands
+        │   │   ├── clear_tasks_cmd.py
+        │   │   ├── completion_cmd.py
+        │   │   ├── create_task_cmd.py
+        │   │   ├── delete_task_cmd.py
+        │   │   ├── export_task_cmd.py
+        │   │   ├── import_task_cmd.py
+        │   │   ├── __init__.py
+        │   │   ├── list_tasks_cmd.py
+        │   │   ├── mark_task_done_cmd.py
+        │   │   ├── migrate_tasks_cmd.py
+        │   │   ├── search_tasks_cmd.py
+        │   │   └── update_task_cmd.py
+        │   ├── entrypoint.py
+        │   ├── formatters.py
+        │   ├── helpers.py
+        │   ├── __init__.py
+        │   ├── parser.py
+        │   ├── protocols.py
+        │   └── router.py
+        ├── __init__.py
+        └── web
+            ├── app.py
+            ├── dependencies.py
+            ├── __init__.py
+            ├── __main__.py
+            ├── routes
+            │   ├── __init__.py
+            │   └── tasks.py
+            ├── schemas.py
+            ├── static
+            │   ├── app.js
+            │   ├── favicon.ico
+            │   ├── favicon.png
+            │   └── style.css
+            ├── templates
+            │   └── index.html
+            └── ui.py   # legacy helpers (no longer contains embedded frontend)
 ```
 
 ---
@@ -191,15 +222,23 @@ Important files:
 
 **Directory:** `src/raztodo/presentation/web/`
 
-The optional web interface uses FastAPI.
+optional FastAPI-based web interface (API + lightweight frontend)
 
 Important files:
 
 - `__main__.py` — launches the local Uvicorn server
-- `app.py` — FastAPI app plus the embedded HTML UI
+- `app.py` — FastAPI application setup, API wiring, and static/template configuration
+- `ui.py` — legacy module (kept for backward compatibility only)
+- `static/` — frontend assets (JavaScript, CSS)
+- `templates/` — HTML templates rendered by FastAPI
 - `routes/tasks.py` — JSON API endpoints under `/api/tasks`
 - `schemas.py` — request/response models
 - `dependencies.py` — use-case wiring for the API layer
+
+The web layer is split into two logical parts:
+
+- **API layer** — FastAPI routes and schemas handling JSON-based task operations
+- **Frontend layer** — static assets (JavaScript, CSS) and HTML templates rendered by FastAPI
 
 The web UI is optional and only available when RazTodo is installed with the `web` extra.
 
@@ -232,7 +271,7 @@ This keeps behavior checks close to the layer they validate.
 
 RazTodo’s architecture separates task logic from storage and interface concerns:
 
-- the **domain** models the problem,
-- the **application** layer implements workflows,
-- the **infrastructure** layer handles persistence/configuration,
-- and the **presentation** layer exposes both CLI and web access.
+- the domain models the problem space
+- the application layer orchestrates workflows
+- the infrastructure layer handles persistence and system integration
+- the presentation layer handles CLI and HTTP/API + web UI rendering
