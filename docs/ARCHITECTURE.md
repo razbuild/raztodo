@@ -222,7 +222,7 @@ Important files:
 
 **Directory:** `src/raztodo/presentation/web/`
 
-optional FastAPI-based web interface (API + lightweight frontend)
+Optional FastAPI-based web interface (API + lightweight frontend)
 
 Important files:
 
