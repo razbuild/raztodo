@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.6.0] - 2026-06-25
+
+### Added
+
+* Added `--clear-priority`, `--clear-due`, `--clear-tags`, and `--clear-project` flags to the `rt update` command for explicitly removing optional fields from a task
+
+### Changed
+
+* Redesigned the web UI with a side panel layout for inline task editing, keeping the task list visible while editing
+* Split `ui.py` into separate static files: `static/style.css`, `static/app.js`, and `templates/index.html`, served via FastAPI `StaticFiles`
+* Migrated `ruff` and `ty` configuration out of `pyproject.toml` into dedicated `ruff.toml` and `ty.toml` files
+* Added `infrastructure/version.py` as the single source of truth for the package version across CLI and web
+* Updated README and `pyproject.toml` metadata
+
+### Fixed
+
+* Fixed `None` values sent from the web UI not clearing optional fields (`due_date`, `project`, `priority`, `tags`) on task update
+* Fixed a bug where `typing_extensions` was not installed on fresh installs
+* Fixed an infinite loop caused by `renderTasks` being called recursively instead of `renderTask` in the task list renderer
+* Fixed `edit-panel` not closing after a successful save in the web UI
+
+---
+
 ## [0.5.1] - 2026-06-10
 
 ### Fixed
