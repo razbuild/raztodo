@@ -17,7 +17,15 @@
 ## Preview
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/preview.gif" alt="Preview">
+  <img src="assets/preview.gif" width="700" alt="CLI Demo">
+</p>
+
+<p align="center">
+  <img src="assets/web-preview.png" width="700" alt="Web UI Demo">
+</p>
+
+<p align="center">
+  <i>Fast CLI + optional Web UI powered by FastAPI</i>
 </p>
 
 ---
