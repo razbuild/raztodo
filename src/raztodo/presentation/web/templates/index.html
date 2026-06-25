@@ -5,120 +5,248 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>RazTodo</title>
         <link rel="stylesheet" href="/static/style.css" />
+        <link rel="icon" href="/static/favicon.ico" />
     </head>
     <body>
-        <main class="container">
-            <header class="page-header">
-                <h1>RazTodo</h1>
-                <p>Manage your local tasks from a lightweight web interface.</p>
-            </header>
+        <div id="toast" aria-live="polite" aria-atomic="true"></div>
 
-            <section class="panel" aria-labelledby="create-task-heading">
-                <h2 id="create-task-heading">Create task</h2>
-                <div class="form-grid">
-                    <div class="field full-width">
-                        <label for="new-title">Title</label>
-                        <input
-                            id="new-title"
-                            type="text"
-                            placeholder="Task title (required)"
+        <main class="app-shell">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <span class="logo-icon">
+                        <img
+                            src="/static/favicon.png"
+                            alt="RazTodo logo"
+                            width="46"
                         />
-                    </div>
-                    <div class="field full-width">
-                        <label for="new-desc">Description</label>
-                        <input
-                            id="new-desc"
-                            type="text"
-                            placeholder="Optional description"
-                        />
-                    </div>
-                    <div class="field">
-                        <label for="new-priority">Priority</label>
-                        <select id="new-priority">
-                            <option value="">None</option>
-                            <option value="H">High</option>
-                            <option value="M">Medium</option>
-                            <option value="L">Low</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="new-due">Due date</label>
-                        <input id="new-due" type="date" />
-                    </div>
-                    <div class="field">
-                        <label for="new-tags">Tags</label>
-                        <input
-                            id="new-tags"
-                            type="text"
-                            placeholder="work, urgent"
-                        />
-                    </div>
-                    <div class="field">
-                        <label for="new-project">Project</label>
-                        <input
-                            id="new-project"
-                            type="text"
-                            placeholder="Project name"
-                        />
-                    </div>
+                    </span>
+                    <span class="logo-text">RazTodo</span>
                 </div>
-                <div class="actions-row" style="margin-top: 1rem">
-                    <button type="button" onclick="addTask()">Add task</button>
-                </div>
-            </section>
 
-            <section class="panel" aria-labelledby="search-heading">
-                <h2 id="search-heading">Search</h2>
-                <div class="search-row">
-                    <input
-                        id="search-input"
-                        type="text"
-                        placeholder="Search titles and descriptions"
-                        oninput="loadTasks()"
-                    />
-                </div>
-            </section>
-
-            <section class="panel" aria-labelledby="tools-heading">
-                <h2 id="tools-heading">Tools</h2>
-                <div class="actions-row">
-                    <button
-                        type="button"
-                        class="secondary"
-                        onclick="exportTasks()"
+                <nav class="sidebar-nav">
+                    <section
+                        class="nav-section"
+                        aria-labelledby="create-task-heading"
                     >
-                        Export JSON
-                    </button>
-                    <button
-                        type="button"
-                        class="secondary"
-                        onclick="openImportPicker()"
-                    >
-                        Import JSON
-                    </button>
-                    <button
-                        type="button"
-                        class="secondary danger"
-                        onclick="clearTasks()"
-                    >
-                        Clear all
-                    </button>
-                    <input
-                        id="import-file"
-                        type="file"
-                        accept=".json,application/json"
-                        style="display: none"
-                        onchange="importTasks(this)"
-                    />
-                </div>
-            </section>
+                        <h2 class="nav-section-title" id="create-task-heading">
+                            New task
+                        </h2>
 
-            <section class="panel" aria-labelledby="task-list-heading">
-                <h2 id="task-list-heading">Tasks</h2>
-                <div id="status-msg" aria-live="polite"></div>
-                <ul id="task-list" class="task-list"></ul>
+                        <div class="form-stack">
+                            <input
+                                id="new-title"
+                                type="text"
+                                placeholder="Task title"
+                                class="input-primary"
+                            />
+                            <input
+                                id="new-desc"
+                                type="text"
+                                placeholder="Description (optional)"
+                            />
+
+                            <div class="form-row">
+                                <div class="field">
+                                    <label for="new-priority">Priority</label>
+                                    <select id="new-priority">
+                                        <option value="">None</option>
+                                        <option value="H">High</option>
+                                        <option value="M">Medium</option>
+                                        <option value="L">Low</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label for="new-due">Due date</label>
+                                    <input id="new-due" type="date" />
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="field">
+                                    <label for="new-tags">Tags</label>
+                                    <input
+                                        id="new-tags"
+                                        type="text"
+                                        placeholder="work, urgent"
+                                    />
+                                </div>
+                                <div class="field">
+                                    <label for="new-project">Project</label>
+                                    <input
+                                        id="new-project"
+                                        type="text"
+                                        placeholder="Project name"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="btn-primary"
+                                onclick="addTask()"
+                            >
+                                Add task
+                            </button>
+                        </div>
+                    </section>
+
+                    <div class="nav-divider"></div>
+
+                    <section class="nav-section" aria-labelledby="search-heading">
+                        <h2 class="nav-section-title" id="search-heading">Search</h2>
+                        <div class="search-wrap">
+                        <div class="search-wrap">
+                            <svg
+                                class="search-icon"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                            <input
+                                id="search-input"
+                                type="text"
+                                placeholder="Search tasks…"
+                                oninput="loadTasks()"
+                            />
+                        </div>
+                    </section>
+
+                    <div class="nav-divider"></div>
+
+                    <section
+                        class="nav-section"
+                        aria-labelledby="tools-heading"
+                    >
+                        <h2 class="nav-section-title" id="tools-heading">
+                            Tools
+                        </h2>
+                        <div class="tool-buttons">
+                            <button
+                                type="button"
+                                class="btn-ghost"
+                                onclick="exportTasks()"
+                            >
+                                <svg
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M10 13.333V3.333M10 13.333L6.667 10M10 13.333L13.333 10M3.333 16.667H16.667"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                Export JSON
+                            </button>
+                            <button
+                                type="button"
+                                class="btn-ghost"
+                                onclick="openImportPicker()"
+                            >
+                                <svg
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M10 3.333V13.333M10 3.333L6.667 6.667M10 3.333L13.333 6.667M3.333 16.667H16.667"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                Import JSON
+                            </button>
+                            <button
+                                type="button"
+                                class="btn-ghost btn-danger-ghost"
+                                onclick="clearTasks()"
+                            >
+                                <svg
+                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M2.5 5H4.167H17.5M6.667 5V3.333C6.667 2.873 7.04 2.5 7.5 2.5H12.5C12.96 2.5 13.333 2.873 13.333 3.333V5M15.833 5L15 15.833C15 16.754 14.254 17.5 13.333 17.5H6.667C5.746 17.5 5 16.754 5 15.833L4.167 5H15.833Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                Clear all
+                            </button>
+                        </div>
+                        <input
+                            id="import-file"
+                            type="file"
+                            accept=".json,application/json"
+                            style="display: none"
+                            onchange="importTasks(this)"
+                        />
+                    </section>
+                </nav>
+            </aside>
+
+            <section class="main-content" aria-labelledby="task-list-heading">
+                <div class="main-header">
+                    <h1 id="task-list-heading">Tasks</h1>
+                    <span id="task-count" class="task-count"></span>
+                    <div
+                        class="filter-tabs"
+                        role="tablist"
+                        aria-label="Filter tasks"
+                    >
+                        <button
+                            class="filter-tab active"
+                            data-filter="all"
+                            onclick="setFilter('all')"
+                            role="tab"
+                            aria-selected="true"
+                        >
+                            All
+                        </button>
+                        <button
+                            class="filter-tab"
+                            data-filter="pending"
+                            onclick="setFilter('pending')"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            Pending
+                        </button>
+                        <button
+                            class="filter-tab"
+                            data-filter="done"
+                            onclick="setFilter('done')"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            Done
+                        </button>
+                    </div>
+                </div>
+                <ul id="task-list" class="task-list" role="list"></ul>
             </section>
         </main>
+
         <script src="/static/app.js" defer></script>
     </body>
 </html>

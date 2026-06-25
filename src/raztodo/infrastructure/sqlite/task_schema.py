@@ -58,14 +58,10 @@ INDEXES = [
     "CREATE INDEX IF NOT EXISTS idx_tasks_due_date ON tasks(due_date)",
     "CREATE INDEX IF NOT EXISTS idx_tasks_project ON tasks(project)",
     "CREATE INDEX IF NOT EXISTS idx_tasks_done ON tasks(done)",
-    # Indexes for O(log n) search optimization
     "CREATE INDEX IF NOT EXISTS idx_tasks_title_search ON tasks(title)",
     "CREATE INDEX IF NOT EXISTS idx_tasks_description_search ON tasks(description)",
 ]
 
-# FTS5 virtual table for full-text search (O(log n))
-# When using content='tasks', SQLite automatically maintains the FTS table.
-# Manual triggers are NOT needed and can cause database corruption.
 CREATE_FTS_TABLE = """
 CREATE VIRTUAL TABLE IF NOT EXISTS tasks_fts USING fts5(
     id UNINDEXED,

@@ -123,7 +123,12 @@ class TaskDAO:
         add_update("done", done, transform=lambda x: 1 if x else 0)
         add_update("priority", priority)
         add_update("due_date", due_date)
-        add_update("tags", json.dumps(tags) if tags is not None else None)
+        if tags is not None:
+            if tags:
+                updates.append("tags = ?")
+                params.append(json.dumps(tags))
+            else:
+                updates.append("tags = NULL")
         add_update("project", project)
 
         if not updates:
@@ -159,8 +164,8 @@ class TaskDAO:
 
         # Build query using FTS5 for O(log n) search
         query_parts = [
-            """SELECT t.id, t.title, t.description, t.done, t.created_at, 
-               t.priority, t.due_date, t.tags, t.project 
+            """SELECT t.id, t.title, t.description, t.done, t.created_at,
+               t.priority, t.due_date, t.tags, t.project
                FROM tasks t
                INNER JOIN tasks_fts fts ON t.id = fts.rowid
                WHERE fts MATCH ?"""

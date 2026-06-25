@@ -109,10 +109,10 @@ def update_task(
             task_id,
             title=body.title,
             description=body.description,
-            priority=body.priority,
-            due_date=body.due_date,
-            tags=body.tags,
-            project=body.project,
+            priority=body.priority if body.priority is not None else "",
+            due_date=body.due_date if body.due_date is not None else "",
+            tags=body.tags if body.tags is not None else [],
+            project=body.project if body.project is not None else "",
         )
         tasks = list_uc.execute()
         task = next((t for t in tasks if t.id == task_id), None)

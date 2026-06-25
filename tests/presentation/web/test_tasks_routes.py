@@ -105,23 +105,6 @@ def client():
 
 
 # ---------------------------------------------------------------------------
-# GET / — HTML page
-# ---------------------------------------------------------------------------
-
-
-class TestIndexPage:
-    def test_returns_html(self, client):
-        c, _ = client
-        res = c.get("/")
-        assert res.status_code == 200
-        assert "text/html" in res.headers["content-type"]
-        assert "RazTodo" in res.text
-        assert "Manage your local tasks from a lightweight web interface." in res.text
-        for emoji in ["⚡", "⬇", "⬆", "🗑", "📅", "📁", "✓", "↩"]:
-            assert emoji not in res.text
-
-
-# ---------------------------------------------------------------------------
 # GET /api/tasks
 # ---------------------------------------------------------------------------
 

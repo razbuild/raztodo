@@ -1,5 +1,3 @@
-"""HTML page renderer for the RazTodo web UI."""
-
 from __future__ import annotations
 
 from pathlib import Path

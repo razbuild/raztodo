@@ -149,11 +149,13 @@ class SQLiteTaskRepository(TaskRepository):
             description = validate_length("description", description, MAX_DESCRIPTION_LENGTH)
         if priority is not None:
             priority = normalize_priority(priority)
+            if priority == "":
+                priority = "__CLEAR__"
         if tags is not None:
             tags = normalize_tags(tags)
-        if due_date == "":
+        if due_date is not None and due_date == "":
             due_date = "__CLEAR__"
-        if project == "":
+        if project is not None and project == "":
             project = "__CLEAR__"
 
         try:

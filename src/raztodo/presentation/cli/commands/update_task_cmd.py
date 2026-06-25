@@ -19,7 +19,9 @@ def add_parser(sub: Any) -> None:
             "Examples:\n"
             "  rt update 1 --title 'Updated title'\n"
             "  rt update 5 --priority H --due 2024-12-31\n"
-            "  rt update 3 --tags work,urgent --project client"
+            "  rt update 3 --tags work,urgent --project client\n"
+            "  rt update 2 --clear-priority --clear-due\n"
+            "  rt update 4 --clear-tags --clear-project"
         ),
         formatter_class=CLIHelpFormatter,
     )
@@ -52,6 +54,29 @@ def add_parser(sub: Any) -> None:
         help="New tags (comma-separated, e.g., 'work,urgent')",
     )
     update.add_argument("--project", metavar="NAME", help="New project or category name")
+
+    # clear flags
+    update.add_argument(
+        "--clear-priority",
+        action="store_true",
+        help="Remove priority from the task",
+    )
+    update.add_argument(
+        "--clear-due",
+        action="store_true",
+        help="Remove due date from the task",
+    )
+    update.add_argument(
+        "--clear-tags",
+        action="store_true",
+        help="Remove all tags from the task",
+    )
+    update.add_argument(
+        "--clear-project",
+        action="store_true",
+        help="Remove project from the task",
+    )
+
     update.add_argument(
         "--json",
         action="store_true",
@@ -67,15 +92,37 @@ class UpdateTaskCMD:
 
     def __call__(self, args: argparse.Namespace) -> int:
         try:
-            tags: list[str] = parse_tags(getattr(args, "tags", None)) or []
-            due_date: str | None = getattr(args, "due", None)
-            project: str | None = getattr(args, "project", None)
+            # priority: None = don't change, "" = clear, "L/M/H" = set
+            if getattr(args, "clear_priority", False):
+                priority: str | None = ""
+            else:
+                priority = getattr(args, "priority", None)
+
+            # due_date: None = don't change, "" = clear, "YYYY-MM-DD" = set
+            if getattr(args, "clear_due", False):
+                due_date: str | None = ""
+            else:
+                due_date = getattr(args, "due", None)
+
+            # project: None = don't change, "" = clear, "name" = set
+            if getattr(args, "clear_project", False):
+                project: str | None = ""
+            else:
+                project = getattr(args, "project", None)
+
+            # tags: None = don't change, [] = clear, [...] = set
+            if getattr(args, "clear_tags", False):
+                tags: list[str] | None = []
+            elif getattr(args, "tags", None) is not None:
+                tags = parse_tags(args.tags) or []
+            else:
+                tags = None
 
             success: bool = self.uc.execute(
                 args.id,
                 getattr(args, "title", None),
                 getattr(args, "desc", None),
-                getattr(args, "priority", None),
+                priority,
                 due_date,
                 tags,
                 project,
@@ -87,7 +134,6 @@ class UpdateTaskCMD:
                     id=args.id,
                 )
                 return 0
-
             from raztodo.domain.exceptions import TaskNotFoundError
 
             raise TaskNotFoundError(

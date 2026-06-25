@@ -1,24 +1,29 @@
 const API = "/api/tasks";
-let statusTimer = null;
+let toastTimer = null;
 let editingTaskId = null;
 let lastTasks = [];
+let currentFilter = "all";
 
 function setStatus(message, isError = false) {
-  const element = document.getElementById("status-msg");
-  element.textContent = message;
-  element.className = isError ? "error" : "";
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.className = isError ? "error" : "";
 
-  if (statusTimer !== null) {
-    clearTimeout(statusTimer);
+  if (toastTimer !== null) {
+    clearTimeout(toastTimer);
+    toast.classList.remove("show");
   }
 
-  if (message) {
-    statusTimer = window.setTimeout(() => {
-      element.textContent = "";
-      element.className = "";
-      statusTimer = null;
-    }, 3000);
-  }
+  if (!message) return;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add("show"));
+  });
+
+  toastTimer = window.setTimeout(() => {
+    toast.classList.remove("show");
+    toastTimer = null;
+  }, 3000);
 }
 
 async function api(path, options = {}) {
@@ -29,9 +34,7 @@ async function api(path, options = {}) {
       .catch(() => ({ detail: response.statusText }));
     throw new Error(payload.detail || response.statusText);
   }
-  if (response.status === 204) {
-    return null;
-  }
+  if (response.status === 204) return null;
   return response.json();
 }
 
@@ -51,138 +54,125 @@ function renderBadge(label, className = "") {
 function renderTask(task) {
   if (editingTaskId === task.id) {
     return `
-      <li class="task-item" id="task-${task.id}">
-        <div class="form-grid">
-
-          <div class="field full-width">
-            <label>Title</label>
-            <input
-              id="edit-title-${task.id}"
-              type="text"
-              value="${esc(task.title)}"
-            />
-          </div>
-
-          <div class="field full-width">
-            <label>Description</label>
-            <input
-              id="edit-desc-${task.id}"
-              type="text"
-              value="${esc(task.description || "")}"
-            />
-          </div>
-
-          <div class="field">
-            <label>Priority</label>
-            <select id="edit-priority-${task.id}">
-              <option value="" ${!task.priority ? "selected" : ""}>None</option>
-              <option value="H" ${task.priority === "H" ? "selected" : ""}>High</option>
-              <option value="M" ${task.priority === "M" ? "selected" : ""}>Medium</option>
-              <option value="L" ${task.priority === "L" ? "selected" : ""}>Low</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Due date</label>
-            <input
-              id="edit-due-${task.id}"
-              type="date"
-              value="${task.due_date || ""}"
-            />
-          </div>
-
-          <div class="field">
-            <label>Tags</label>
-            <input
-              id="edit-tags-${task.id}"
-              type="text"
-              value="${esc((task.tags || []).join(", "))}"
-            />
-          </div>
-
-          <div class="field">
-            <label>Project</label>
-            <input
-              id="edit-project-${task.id}"
-              type="text"
-              value="${esc(task.project || "")}"
-            />
-          </div>
-
+<li class="task-item" id="task-${task.id}">
+    <div class="edit-form">
+        <input id="edit-title-${task.id}" type="text" value="${esc(task.title)}" placeholder="Title" class="input-primary" onkeydown="if(event.key==='Enter') saveEdit(${task.id})" />
+        <input id="edit-desc-${task.id}"  type="text" value="${esc(task.description || "")}" placeholder="Description" />
+        <div class="form-row">
+            <div class="field">
+                <label>Priority</label>
+                <select id="edit-priority-${task.id}">
+                    <option value=""  ${!task.priority ? "selected" : ""}>None</option>
+                    <option value="H" ${task.priority === "H" ? "selected" : ""}>High</option>
+                    <option value="M" ${task.priority === "M" ? "selected" : ""}>Medium</option>
+                    <option value="L" ${task.priority === "L" ? "selected" : ""}>Low</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Due date</label>
+                <input id="edit-due-${task.id}" type="date" value="${task.due_date || ""}" />
+            </div>
+            <div class="field">
+                <label>Tags</label>
+                <input id="edit-tags-${task.id}" type="text" value="${esc((task.tags || []).join(", "))}" />
+            </div>
+            <div class="field">
+                <label>Project</label>
+                <input id="edit-project-${task.id}" type="text" value="${esc(task.project || "")}" />
+            </div>
         </div>
-
-        <div class="actions-row">
-          <button type="button" onclick="saveEdit(${task.id})">Save</button>
-          <button type="button" class="secondary" onclick="cancelEdit()">Cancel</button>
+        <div class="edit-actions">
+            <button type="button" class="btn-save"   onclick="saveEdit(${task.id})">Save</button>
+            <button type="button" class="btn-cancel" onclick="cancelEdit()">Cancel</button>
         </div>
-      </li>
-    `;
+    </div>
+</li>`;
   }
 
   const description = task.description
     ? `<p class="task-desc">${esc(task.description)}</p>`
     : "";
 
+  const today = new Date().toISOString().slice(0, 10);
+  const isOverdue = task.due_date && !task.done && task.due_date < today;
+
   const badges = [
     task.priority
       ? renderBadge(
-          `Priority ${task.priority}`,
+          `${task.priority === "H" ? "High" : task.priority === "M" ? "Medium" : "Low"} priority`,
           `priority-${task.priority.toLowerCase()}`,
         )
       : "",
-    task.due_date ? renderBadge(`Due ${task.due_date}`) : "",
-    task.project ? renderBadge(`Project ${task.project}`) : "",
+    isOverdue
+      ? renderBadge("Overdue", "overdue")
+      : task.due_date
+        ? renderBadge(`Due ${task.due_date}`)
+        : "",
+    task.project ? renderBadge(task.project, "project") : "",
     task.tags && task.tags.length
-      ? renderBadge(`Tags ${task.tags.join(", ")}`)
+      ? renderBadge(task.tags.join(", "), "tag")
       : "",
   ]
     .filter(Boolean)
     .join("");
 
+  const doneLabel = task.done ? "Undo" : "Done";
+
   return `
-    <li class="task-item${task.done ? " done" : ""}" id="task-${task.id}">
-      <div class="task-topline">
+<li class="task-item${task.done ? " done" : ""}" id="task-${task.id}">
+    <div class="task-topline">
         <div class="task-title-block">
-          <h3 class="task-title">${esc(task.title)}</h3>
-          ${description}
+            <h3 class="task-title">${esc(task.title)}</h3>
+            ${description}
         </div>
-
         <div class="task-actions">
-          <button
-            type="button"
-            onclick="toggleDone(${task.id}, ${task.done})">
-            ${task.done ? "Undo" : "Mark done"}
-          </button>
-
-          <button
-            type="button"
-            class="secondary"
-            onclick="startEdit(${task.id})">
-            Edit
-          </button>
-
-          <button
-            type="button"
-            class="secondary danger"
-            onclick="deleteTask(${task.id})">
-            Delete
-          </button>
+            <button type="button" class="btn-done" onclick="toggleDone(${task.id}, ${task.done})">${doneLabel}</button>
+            <button type="button" onclick="startEdit(${task.id})">Edit</button>
+            <button type="button" class="btn-delete" onclick="deleteTask(${task.id})">Delete</button>
         </div>
-      </div>
+    </div>
+    ${badges ? `<div class="task-meta">${badges}</div>` : ""}
+</li>`;
+}
 
-      <div class="task-meta">${badges}</div>
-    </li>
-  `;
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll(".filter-tab").forEach((btn) => {
+    const active = btn.dataset.filter === filter;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-selected", active);
+  });
+  renderTasks(lastTasks);
 }
 
 function renderTasks(tasks) {
   lastTasks = tasks;
+  const filtered =
+    currentFilter === "pending"
+      ? tasks.filter((t) => !t.done)
+      : currentFilter === "done"
+        ? tasks.filter((t) => t.done)
+        : tasks;
   const taskList = document.getElementById("task-list");
-  if (!tasks.length) {
-    taskList.innerHTML = '<li class="empty-state">No tasks found.</li>';
+  const countEl = document.getElementById("task-count");
+
+  if (countEl) {
+    const pending = tasks.filter((t) => !t.done).length;
+    countEl.textContent = tasks.length
+      ? `${pending} pending · ${tasks.length} total`
+      : "";
+  }
+
+  if (!filtered.length) {
+    taskList.innerHTML = `
+<li class="empty-state">
+    <span class="empty-state-icon">✓</span>
+    ${currentFilter === "done" ? "No completed tasks yet." : currentFilter === "pending" ? "No pending tasks — all done!" : "No tasks yet. Add one to get started."}
+</li>`;
     return;
   }
-  taskList.innerHTML = tasks.map(renderTask).join("");
+
+  taskList.innerHTML = filtered.map(renderTask).join("");
 }
 
 function getCreatePayload() {
@@ -194,7 +184,7 @@ function getCreatePayload() {
     tags: document
       .getElementById("new-tags")
       .value.split(",")
-      .map((tag) => tag.trim())
+      .map((t) => t.trim())
       .filter(Boolean),
     project: document.getElementById("new-project").value.trim() || null,
   };
@@ -225,7 +215,6 @@ async function addTask() {
     setStatus("Title is required.", true);
     return;
   }
-
   try {
     await api(API, {
       method: "POST",
@@ -233,6 +222,7 @@ async function addTask() {
       body: JSON.stringify(payload),
     });
     resetCreateForm();
+    document.getElementById("new-title").focus();
     setStatus("Task added.");
     await loadTasks();
   } catch (error) {
@@ -240,10 +230,19 @@ async function addTask() {
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const titleInput = document.getElementById("new-title");
+  if (titleInput) {
+    titleInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addTask();
+    });
+  }
+});
+
 async function toggleDone(id, currentDone) {
   try {
     await api(`${API}/${id}/done`, { method: "PATCH" });
-    setStatus(currentDone ? "Task marked as pending." : "Task marked as done.");
+    setStatus(currentDone ? "Marked as pending." : "Marked as done.");
     await loadTasks();
   } catch (error) {
     setStatus(error.message, true);
@@ -251,10 +250,7 @@ async function toggleDone(id, currentDone) {
 }
 
 async function deleteTask(id) {
-  if (!confirm("Delete this task?")) {
-    return;
-  }
-
+  if (!confirm("Delete this task?")) return;
   try {
     await api(`${API}/${id}`, { method: "DELETE" });
     setStatus("Task deleted.");
@@ -265,10 +261,7 @@ async function deleteTask(id) {
 }
 
 async function clearTasks() {
-  if (!confirm("Delete all tasks? This cannot be undone.")) {
-    return;
-  }
-
+  if (!confirm("Delete all tasks? This cannot be undone.")) return;
   try {
     await api(`${API}/clear`, { method: "POST" });
     setStatus("All tasks cleared.");
@@ -281,9 +274,7 @@ async function clearTasks() {
 async function exportTasks() {
   try {
     const response = await fetch(`${API}/export`);
-    if (!response.ok) {
-      throw new Error("Export failed.");
-    }
+    if (!response.ok) throw new Error("Export failed.");
     const blob = await response.blob();
     const link = document.createElement("a");
     const objectUrl = URL.createObjectURL(blob);
@@ -291,7 +282,7 @@ async function exportTasks() {
     link.download = "raztodo_export.json";
     link.click();
     URL.revokeObjectURL(objectUrl);
-    setStatus("Tasks exported.");
+    setStatus("Exported.");
   } catch (error) {
     setStatus(error.message, true);
   }
@@ -303,10 +294,7 @@ function openImportPicker() {
 
 async function importTasks(input) {
   const file = input.files[0];
-  if (!file) {
-    return;
-  }
-
+  if (!file) return;
   try {
     const content = await file.text();
     const result = await api(`${API}/import`, {
@@ -314,9 +302,7 @@ async function importTasks(input) {
       headers: { "Content-Type": "application/json" },
       body: content,
     });
-    setStatus(
-      `Imported ${result.inserted} new and ${result.updated} updated task(s).`,
-    );
+    setStatus(`Imported ${result.inserted} new, ${result.updated} updated.`);
     await loadTasks();
   } catch (error) {
     setStatus(error.message, true);
@@ -328,6 +314,13 @@ async function importTasks(input) {
 function startEdit(id) {
   editingTaskId = id;
   renderTasks(lastTasks);
+  requestAnimationFrame(() => {
+    const el = document.getElementById(`edit-title-${id}`);
+    if (el) {
+      el.focus();
+      el.select();
+    }
+  });
 }
 
 function cancelEdit() {
@@ -344,7 +337,7 @@ async function saveEdit(id) {
     tags: document
       .getElementById(`edit-tags-${id}`)
       .value.split(",")
-      .map((tag) => tag.trim())
+      .map((t) => t.trim())
       .filter(Boolean),
     project: document.getElementById(`edit-project-${id}`).value.trim() || null,
   };
