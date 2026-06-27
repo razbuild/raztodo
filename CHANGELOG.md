@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.1] - 2026-06-27
+
+### Added
+
+* Added additional test coverage for the web layer
+
+### Changed
+
+* Improved project documentation and expanded README clarity
+* Refactored and cleaned up `pyproject.toml` structure and formatting
+* Updated project description metadata in `pyproject.toml`
+
+---
+
 ## [0.6.0] - 2026-06-25
 
 ### Added
