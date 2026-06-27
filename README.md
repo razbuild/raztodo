@@ -17,11 +17,21 @@
 
 ## Preview
 
-### CLI
-<img src="assets/preview.gif" width="700">
+<p align="center">
+  <b>CLI</b>
+</p>
 
-### Web UI
-<img src="assets/web-preview.png" width="700">
+<p align="center">
+  <img src="https://github.com/razbuild/raztodo/raw/master/assets/preview.gif" width="700">
+</p>
+
+<p align="center">
+  <b>Web UI</b>
+</p>
+
+<p align="center">
+  <img src="https://github.com/razbuild/raztodo/raw/master/assets/web-preview.png" width="700">
+</p>
 
 <p align="center">
   <i>CLI + optional Web UI powered by FastAPI</i>
