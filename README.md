@@ -2,69 +2,47 @@
   <img src="assets/RazTodo.svg" alt="RazTodo" width="400" />
   <br><br>
 
-[![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/master/LICENSE)
 [![PyPI Version](https://img.shields.io/pypi/v/raztodo)](https://pypi.org/project/raztodo/)
+[![PyPI Downloads](https://static.pepy.tech/badge/raztodo)](https://pepy.tech/project/raztodo/)
+
 [![CI](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml)](https://github.com/razbuild/raztodo/actions/workflows/ci.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztodo)](https://codecov.io/gh/razbuild/raztodo)
-[![Python Versions](https://img.shields.io/pypi/pyversions/raztodo)](https://pypi.org/project/raztodo/)
-[![PyPI Downloads](https://static.pepy.tech/badge/raztodo)](https://pepy.tech/project/raztodo)
 
-  <p>A fast, local-first task manager with a CLI and an optional web UI, backed by SQLite.</p>
+[![Python Versions](https://img.shields.io/pypi/pyversions/raztodo)](https://pypi.org/project/raztodo/)
+
+  <p>A modular task manager with a shared core, where CLI, web UI, and shell completion are optional components.</p>
 </div>
 
 ---
 
 ## Preview
 
-<p align="center">
-  <img src="assets/preview.gif" width="700" alt="CLI Demo">
-</p>
+| CLI | Web UI |
+|-----|--------|
+| ![CLI Demo](https://github.com/razbuild/raztodo/blob/master/assets/preview.gif) | ![Web UI Demo](https://github.com/razbuild/raztodo/blob/master/assets/web-preview.png) |
 
 <p align="center">
-  <img src="assets/web-preview.png" width="700" alt="Web UI Demo">
-</p>
-
-<p align="center">
-  <i>Fast CLI + optional Web UI powered by FastAPI</i>
+  <i>CLI + optional Web UI powered by FastAPI</i>
 </p>
 
 ---
 
-## Why RazTodo?
+## Why RazTodo
 
-**Lightweight & Fast** — Single runtime dependency, SQLite-powered, optimized for speed  
-**Privacy-First** — Your data stays local, no cloud, no tracking  
-**Developer-Friendly** — Clean Architecture, well-tested, type-safe, modern Python  
-**Simple & Powerful** — Intuitive CLI with an optional web UI  
-**Cross-Platform** — Works on Linux, macOS, and Windows  
+RazTodo is a local-first task manager built around a shared core engine with optional interfaces (CLI, Web UI, and shell completion).
 
----
-
-## Ecosystem
-
-RazTodo is part of the [RazBuild](https://github.com/razbuild) ecosystem of open-source developer tools.
-
-- [RazTint](https://github.com/razbuild/raztint) — Zero-dependency ANSI colors, icons, and terminal formatting utilities powering RazTodo's CLI output.
-
----
-
-## Installation
-
-```bash
-# Recommended: isolated environment via pipx
-pipx install raztodo
-
-# Or via pip
-pip install raztodo
-
-# With optional web UI
-pip install "raztodo[web]"
-
-# With shell completion support
-pip install "raztodo[completion]"
+```
+CLI ─┐
+     ├── Core Engine ─── SQLite
+Web ─┘
 ```
 
-> 📖 For virtual environment and source installation, see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
+All interfaces share a single SQLite database, enabling instant synchronization without external services or accounts.
+
+The design follows three principles:
+- Separation of concerns — core logic is interface-agnostic  
+- Local-first storage — all data remains on the user’s machine  
+- Composable interfaces — CLI, Web UI, and shell tooling are optional layers
 
 ---
 
@@ -74,7 +52,7 @@ pip install "raztodo[completion]"
 
 ```bash
 # Add a task
-rt add "Buy groceries" --priority H --due 2026-12-31
+rt add "Prepare weekly groceries" --priority H --due 2026-12-31
 
 # List all tasks
 rt list
@@ -86,7 +64,7 @@ rt done 1
 rt search "groceries"
 
 # Update
-rt update 1 --title "Buy groceries and milk"
+rt update 1 --title "Weekly groceries: milk, vegetables, essentials"
 
 # Delete
 rt remove 1
@@ -94,12 +72,19 @@ rt remove 1
 
 ### Web UI
 
+#### Start the server:
+
 ```bash
-# Requires raztodo[web]
 rt-web
 ```
+Then open `http://127.0.0.1:8000`.
 
-Opens a single-page interface in your browser for creating, listing, searching, completing, deleting, importing, and exporting tasks.
+> [!NOTE]
+> Runs locally only (not exposed to the internet)  
+> Single-user design with no authentication layer  
+> CLI and Web UI share one SQLite database (real-time sync)  
+> Local-first architecture optimized for personal use  
+> Built with FastAPI + lightweight static frontend
 
 ### Shell Completion
 
@@ -112,19 +97,25 @@ Supports bash, zsh, and fish. For permanent setup see the [Completion Guide](htt
 
 ---
 
-## Features
+## Installation
 
-- 📝 **Task Management** — Create, update, complete, and delete tasks
-- 🏷️ **Tags & Projects** — Organize tasks with tags and project names
-- 🔍 **Search** — Filter by keyword with optional scope controls
-- 📅 **Due Dates & Priority** — Deadlines and priority levels (L/M/H)
-- 💾 **Import/Export** — Backup and restore via JSON
-- 🌐 **Web UI** — Optional single-page FastAPI interface via `rt-web`
-- 🎨 **Colored Output** — ANSI colors and icons via RazTint
-- 🗄️ **SQLite Storage** — No external services required
-- 🚀 **Cross-Platform** — Linux, macOS, and Windows
-- ⚡ **Fast** — Lazy loading and optimized query layer
-- ✨ **Shell Autocompletion** — Tab completion for bash, zsh, and fish
+```bash
+# Recommended (pipx)
+pipx install raztodo
+
+# No-install (uv)
+uvx --from raztodo rt
+
+# Standard install
+pip install raztodo
+
+# Web UI (optional)
+pip install "raztodo[web]"
+
+# Shell completion (optional)
+pip install "raztodo[completion]"
+```
+For virtual environment and source installation, see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
 
 ---
 
@@ -149,7 +140,7 @@ rt --help
 rt add --help
 ```
 
-> 📖 See the [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md) for full command documentation.
+📖 See the [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md) for full command documentation.
 
 ---
 
@@ -165,54 +156,79 @@ export RAZTODO_DB="/path/to/custom.db"
 export LOG_LEVEL="DEBUG"
 ```
 
+> [!TIP]
 > 📖 See the [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
 
 ---
 
 ## Docker
-
 ```bash
 docker build -t raztodo:local .
 docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first task"
 ```
+> [!NOTE]
+> kept CLI-only to minimize image size and dependencies
 
+> [!TIP]
 > 📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
 
 ---
 
 ## Documentation
 
-- 📦 [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
-- ⌨️ [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
-- 🐳 [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
-- 📖 [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
-- ⚙️ [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
-- 🏗️ [Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md)
-- 🧪 [Testing](https://github.com/razbuild/raztodo/blob/master/docs/TESTING.md)
-- 📝 [Changelog](https://github.com/razbuild/raztodo/blob/master/CHANGELOG.md)
+Core:
+  - 📦 [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
+  - 📖 [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
+  - ⚙️ [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
+
+Advanced:
+  - ⌨️ [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
+  - 🐳 [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
+  - 🏗️ [Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md)
+  - 🧪 [Testing](https://github.com/razbuild/raztodo/blob/master/docs/TESTING.md)
+  - 📝 [Changelog](https://github.com/razbuild/raztodo/blob/master/CHANGELOG.md)
+
+---
+
+## Ecosystem
+
+RazTodo is part of the [RazBuild](https://github.com/razbuild) ecosystem of open-source developer tools.
+
+- [RazTint](https://github.com/razbuild/raztint) — Zero-dependency ANSI colors, icons, and terminal formatting utilities powering RazTodo's CLI output.
 
 ---
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Make your changes and verify quality:
-   ```bash
-   uv run pytest
-   uv run ruff format --check src/ tests/
-   uv run ruff check src/ tests/
-   uv run ty check src/
-   ```
-4. Submit a pull request
+```bash
+git clone https://github.com/razbuild/raztodo
+cd raztodo
+uv sync
+```
 
-See the shared [RazBuild contributing guide](https://github.com/razbuild/.github/blob/main/CONTRIBUTING.md) for detailed guidelines.
+## Quality checks
+
+```
+uv run pytest
+uv run ruff check src/ tests/
+uv run ruff format src/ tests/
+uv run ty check src/
+```
+
+## Workflow
+
+1. Create feature branch
+2. Implement changes
+3. Ensure tests pass
+4. Submit PR
+
+See [CONTRIBUTING](https://github.com/razbuild/.github/blob/main/CONTRIBUTING.md) guide for details.
 
 ---
 
 ## License
 
-MIT License
+[![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/master/LICENSE)
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/razbuild/.github/main/profile/svg/badge.svg" alt="Made by RazBuild" width="160">

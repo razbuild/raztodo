@@ -1,8 +1,3 @@
-"""
-Tests for the RazTodo web API (presentation/web/routes/tasks.py)
-Uses FastAPI TestClient — no real server required.
-"""
-
 from __future__ import annotations
 
 from unittest.mock import MagicMock
@@ -14,10 +9,6 @@ from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
 from raztodo.presentation.web.app import app
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 
 def make_task(
     id: int = 1,
@@ -28,7 +19,7 @@ def make_task(
     due_date: str | None = None,
     tags: list[str] | None = None,
     project: str | None = None,
-    created_at: str = "2024-01-01 00:00:00",
+    created_at: str = "2026-01-01 00:00:00",
 ) -> TaskEntity:
     return TaskEntity(
         id=id,

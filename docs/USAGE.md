@@ -115,21 +115,37 @@ rt update <id> [options]
 ```
 
 | Option | Short | Description |
-|--------|-------|-------------|
-| `--title TEXT` |  | New title |
-| `--desc TEXT`, `--description TEXT` |  | New description |
+|--------|:-----:|-------------|
+| `--title TEXT` | — | New title |
+| `--desc TEXT`, `--description TEXT` | — | New description |
 | `--priority LEVEL` | `-p` | New priority: `L`, `M`, `H` |
-| `--due DATE`, `--due-date DATE` |  | New due date value. `YYYY-MM-DD` is recommended. |
+| `--due DATE`, `--due-date DATE` | — | New due date. `YYYY-MM-DD` is recommended. |
 | `--tags TAGS` | `-t` | New tags (comma-separated) |
-| `--project NAME` |  | New project/category |
-| `--json` |  | Output result as JSON |
+| `--project NAME` | — | New project/category |
+| `--clear-priority` | — | Remove the task priority |
+| `--clear-due` | — | Remove the due date |
+| `--clear-tags` | — | Remove all tags |
+| `--clear-project` | — | Remove the project/category |
+| `--json` | — | Output the result as JSON |
 
 Examples:
 
 ```bash
 rt update 1 --title "Updated title"
-rt update 5 --priority H --due 2024-12-31
+rt update 5 --priority H --due 2026-12-31
 rt update 3 --tags work,urgent --project client
+
+# Clear values
+rt update 7 --clear-priority
+rt update 7 --clear-due
+rt update 7 --clear-tags
+rt update 7 --clear-project
+
+# Mix update and clear options
+rt update 10 --title "Refactor CLI" --clear-tags --priority M
+
+# Output as JSON
+rt update 2 --priority L --json
 ```
 
 ---

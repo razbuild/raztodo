@@ -1,28 +1,26 @@
 [project]
 name = "raztodo"
-version = "0.6.0"
-description = "A fast, local-first task manager with a CLI and an optional web UI, backed by SQLite"
-keywords = ["cli", "todo", "task-manager", "sqlite", "productivity", "web-ui", "local-first"]
-maintainers = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
-license = "MIT"
+version = "0.6.1"
+description = "Modular task manager with a shared core and optional CLI, web UI, and shell completion components."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
-dependencies = ["raztint"]
-
+license = "MIT"
+maintainers = [{ name = "Raz", email = "real.raz.dev@gmail.com" }]
+keywords = ["cli", "todo", "task-manager", "sqlite", "productivity", "web-ui", "local-first"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: End Users/Desktop",
     "Operating System :: OS Independent",
+    "Environment :: Console",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
-    "Environment :: Console",
     "Topic :: Utilities",
 ]
-
+dependencies = ["raztint"]
 
 [project.urls]
 Homepage = "https://github.com/razbuild/raztodo"
@@ -31,11 +29,9 @@ Repository = "https://github.com/razbuild/raztodo"
 Issues = "https://github.com/razbuild/raztodo/issues"
 Changelog = "https://github.com/razbuild/raztodo/releases"
 
-
 [project.scripts]
 rt = "raztodo.__main__:main"
 rt-web = "raztodo.presentation.web.__main__:main"
-
 
 [project.optional-dependencies]
 web = [
@@ -47,23 +43,19 @@ completion = [
     "argcomplete",
 ]
 
-
 [build-system]
 requires = ["uv_build >= 0.11.24, < 0.12.0"]
 build-backend = "uv_build"
-
 
 [dependency-groups]
 dev = ["pytest", "ruff", "ty", "coverage", "httpx2"]
 test = ["pytest", "httpx2"]
 coverage = ["coverage"]
 
-
 [tool.pytest.ini_options]
 addopts = ["--strict-config", "--strict-markers"]
 xfail_strict = true
 filterwarnings = ["error"]
-
 
 [tool.coverage.run]
 branch = true
@@ -79,7 +71,6 @@ omit = [
     "*/presentation/cli/entrypoint.py",
     "*/presentation/cli/parser.py",
 ]
-
 
 [tool.coverage.report]
 exclude_also = [
