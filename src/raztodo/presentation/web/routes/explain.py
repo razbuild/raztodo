@@ -28,8 +28,8 @@ def explain_task(
             for token in uc.stream(task_id, mode=mode):
                 safe = token.replace("\n", "\\n")
                 yield f"data: {safe}\n\n"
-        except RazTodoException as exc:
-            yield f"event: error\ndata: {exc}\n\n"
+        except RazTodoException as _exc:
+            yield "event: error\ndata: An internal error occurred.\n\n"
         finally:
             yield "data: [DONE]\n\n"
 
