@@ -1,6 +1,6 @@
 [project]
 name = "raztodo"
-version = "0.6.1"
+version = "0.7.0"
 description = "Modular task manager with a shared core and optional CLI, web UI, and shell completion components."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
@@ -40,6 +40,12 @@ web = [
     "httpx2>=2.4.0",
 ]
 completion = [
+    "argcomplete",
+]
+all = [
+    "fastapi>=0.138.0",
+    "uvicorn[standard]>=0.49.0",
+    "httpx2>=2.4.0",
     "argcomplete",
 ]
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.0] - 2026-07-01
+
+### Added
+- Added `rt explain` command (and corresponding web UI modal with Summary / Deep Analysis / Action Plan modes) powered by a new `ExplainTaskUseCase` and Ollama LLM integration
+- Added `get_task` method to `TaskRepository` (and SQLite implementation) for fetching a single task by ID
+- Added `all` extra in `pyproject.toml` to install web + completion dependencies together
+- Added test coverage for `ExplainTaskUseCase` factory wiring, the new `Settings.resolve_db_path` / `data_dir` behavior, and the FastAPI app's index route, static mount, and router registration (including the new `explain` route)
+
+### Changed
+- Refactored `Settings`: replaced `db_path` property and private `_resolve_data_dir` with a public `resolve_data_dir()` helper, a `data_dir` property that now creates the directory on access, and a new `resolve_db_path()` method for resolving relative/absolute DB paths
+- `AppContainer` and `sqlite_connection_factory` now work with a resolved `Path` instead of a raw db name string, with path resolution centralized in `Settings`
+- Reorganized web static assets into `static/css/`, `static/js/`, and `static/img/` subfolders
+- Replaced `ui.py`'s `render_index_html()` with direct `FileResponse` serving of `templates/index.html`, returning a 500 error if the template file is missing
+- Reworked test suites for settings/connection (`TestDefaultDataDir` → `TestSettings`) and the web app (`test_app.py`) to match the new `Settings`-based path resolution and file-based index serving
+- Bumped `fastapi` to 0.138.2 and `raztint` to 0.8.2
+
+### Removed
+- Removed `tests/presentation/web/test_ui.py` along with the deleted `ui.py` module
+- Removed standalone `default_data_dir()` function and its tests (folded into `Settings`)
+- 
+---
+
 ## [0.6.1] - 2026-06-27
 
 ### Added
