@@ -6,7 +6,7 @@ from raztodo.infrastructure.container import AppContainer
 from raztodo.infrastructure.logger import get_logger
 from raztodo.presentation.cli.entrypoint import create_router, run_cli
 
-logger = get_logger("__main__")
+logger = get_logger(__name__)
 
 
 class LazyRouterBuilder:
