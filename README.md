@@ -75,6 +75,9 @@ rt done 1
 # Search
 rt search "groceries"
 
+# Get AI explanation of a task
+rt explain 1 --short
+
 # Update
 rt update 1 --title "Weekly groceries: milk, vegetables, essentials"
 
@@ -97,6 +100,7 @@ Then open `http://127.0.0.1:8000`.
 > CLI and Web UI share one SQLite database (real-time sync)  
 > Local-first architecture optimized for personal use  
 > Built with FastAPI + lightweight static frontend
+> AI-powered task explanations (Summary / Deep Analysis / Action Plan) via Ollama
 
 ### Shell Completion
 
@@ -126,6 +130,9 @@ pip install "raztodo[web]"
 
 # Shell completion (optional)
 pip install "raztodo[completion]"
+
+# Everything (web + completion)
+pip install "raztodo[all]"
 ```
 For virtual environment and source installation, see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
 
@@ -146,6 +153,7 @@ For virtual environment and source installation, see the [Installation Guide](ht
 | `migrate`    | Run database migrations                | `rt migrate`                        |
 | `clear`      | Delete all tasks                       | `rt clear --confirm`                |
 | `completion` | Output shell completion script         | `rt completion bash`                |
+| `explain`    | Get an AI explanation of a task        | `rt explain 1 --plan`               |
 
 ```bash
 rt --help
