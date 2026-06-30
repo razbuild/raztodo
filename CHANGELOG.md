@@ -19,7 +19,6 @@
 ### Removed
 - Removed `tests/presentation/web/test_ui.py` along with the deleted `ui.py` module
 - Removed standalone `default_data_dir()` function and its tests (folded into `Settings`)
-- 
 ---
 
 ## [0.6.1] - 2026-06-27
