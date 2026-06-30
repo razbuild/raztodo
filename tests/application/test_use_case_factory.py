@@ -4,6 +4,7 @@ from raztodo.application.use_case_factory import DefaultUseCaseFactory
 from raztodo.application.use_cases.clear_tasks import ClearTasksUseCase
 from raztodo.application.use_cases.create_task import CreateTaskUseCase
 from raztodo.application.use_cases.delete_task import DeleteTaskUseCase
+from raztodo.application.use_cases.explain_task import ExplainTaskUseCase
 from raztodo.application.use_cases.export_task import ExportTasksUseCase
 from raztodo.application.use_cases.import_task import ImportTasksUseCase
 from raztodo.application.use_cases.list_tasks import ListTasksUseCase
@@ -30,6 +31,7 @@ class TestUseCaseFactory:
             (factory.create_import_tasks(mock_repo), ImportTasksUseCase),
             (factory.create_mark_done(mock_repo), MarkDoneUseCase),
             (factory.create_clear_tasks(mock_repo), ClearTasksUseCase),
+            (factory.create_explain_task(mock_repo), ExplainTaskUseCase),
         ]
 
         for instance, expected_cls in use_cases:

@@ -97,73 +97,6 @@ def create_task(
         raise _domain_error(e) from e
 
 
-@router.put("/{task_id}", response_model=TaskResponse)
-def update_task(
-    task_id: int,
-    body: TaskUpdate,
-    list_uc: Any = Depends(get_list_uc),  # noqa: B008
-    update_uc: Any = Depends(get_update_uc),  # noqa: B008
-) -> TaskResponse:
-    try:
-        update_uc.execute(
-            task_id,
-            title=body.title,
-            description=body.description,
-            priority=body.priority if body.priority is not None else "",
-            due_date=body.due_date if body.due_date is not None else "",
-            tags=body.tags if body.tags is not None else [],
-            project=body.project if body.project is not None else "",
-        )
-        tasks = list_uc.execute()
-        task = next((t for t in tasks if t.id == task_id), None)
-        if task is None:
-            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
-        return _task_to_response(task)
-    except RazTodoException as e:
-        raise _domain_error(e) from e
-
-
-@router.delete("/{task_id}", status_code=204)
-def delete_task(
-    task_id: int,
-    uc: Any = Depends(get_delete_uc),  # noqa: B008
-) -> None:
-    try:
-        uc.execute(task_id)
-    except RazTodoException as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
-
-
-@router.post("/clear", response_model=ClearResponse)
-def clear_tasks(uc: Any = Depends(get_clear_uc)) -> ClearResponse:  # noqa: B008
-    try:
-        deleted: int = uc.execute(confirmed=True)
-        return ClearResponse(deleted=deleted)
-    except RazTodoException as e:
-        raise _domain_error(e) from e
-
-
-@router.patch("/{task_id}/done", response_model=TaskResponse)
-def toggle_done(
-    task_id: int,
-    list_uc: Any = Depends(get_list_uc),  # noqa: B008
-    mark_uc: Any = Depends(get_mark_done_uc),  # noqa: B008
-) -> TaskResponse:
-    try:
-        tasks = list_uc.execute()
-        task = next((t for t in tasks if t.id == task_id), None)
-        if task is None:
-            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
-        mark_uc.execute(task_id, done=not task.done)
-        tasks = list_uc.execute()
-        task = next((t for t in tasks if t.id == task_id), None)
-        if task is None:
-            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
-        return _task_to_response(task)
-    except RazTodoException as e:
-        raise _domain_error(e) from e
-
-
 @router.get("/export")
 def export_tasks(
     background_tasks: BackgroundTasks,
@@ -209,3 +142,70 @@ def import_tasks(
         tmp.close()
         if os.path.exists(tmp.name):
             os.unlink(tmp.name)
+
+
+@router.post("/clear", response_model=ClearResponse)
+def clear_tasks(uc: Any = Depends(get_clear_uc)) -> ClearResponse:  # noqa: B008
+    try:
+        deleted: int = uc.execute(confirmed=True)
+        return ClearResponse(deleted=deleted)
+    except RazTodoException as e:
+        raise _domain_error(e) from e
+
+
+@router.put("/{task_id}", response_model=TaskResponse)
+def update_task(
+    task_id: int,
+    body: TaskUpdate,
+    list_uc: Any = Depends(get_list_uc),  # noqa: B008
+    update_uc: Any = Depends(get_update_uc),  # noqa: B008
+) -> TaskResponse:
+    try:
+        update_uc.execute(
+            task_id,
+            title=body.title,
+            description=body.description,
+            priority=body.priority if body.priority is not None else "",
+            due_date=body.due_date if body.due_date is not None else "",
+            tags=body.tags if body.tags is not None else [],
+            project=body.project if body.project is not None else "",
+        )
+        tasks = list_uc.execute()
+        task = next((t for t in tasks if t.id == task_id), None)
+        if task is None:
+            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+        return _task_to_response(task)
+    except RazTodoException as e:
+        raise _domain_error(e) from e
+
+
+@router.delete("/{task_id}", status_code=204)
+def delete_task(
+    task_id: int,
+    uc: Any = Depends(get_delete_uc),  # noqa: B008
+) -> None:
+    try:
+        uc.execute(task_id)
+    except RazTodoException as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@router.patch("/{task_id}/done", response_model=TaskResponse)
+def toggle_done(
+    task_id: int,
+    list_uc: Any = Depends(get_list_uc),  # noqa: B008
+    mark_uc: Any = Depends(get_mark_done_uc),  # noqa: B008
+) -> TaskResponse:
+    try:
+        tasks = list_uc.execute()
+        task = next((t for t in tasks if t.id == task_id), None)
+        if task is None:
+            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+        mark_uc.execute(task_id, done=not task.done)
+        tasks = list_uc.execute()
+        task = next((t for t in tasks if t.id == task_id), None)
+        if task is None:
+            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+        return _task_to_response(task)
+    except RazTodoException as e:
+        raise _domain_error(e) from e

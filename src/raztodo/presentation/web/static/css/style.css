@@ -503,6 +503,26 @@ select option {
     color: #f87171;
 }
 
+.task-actions .btn-edit {
+    color: rgba(96, 165, 250, 0.8);
+    border-color: rgba(96, 165, 250, 0.2);
+}
+
+.task-actions .btn-edit:hover {
+    background: rgba(96, 165, 250, 0.08);
+    color: #60a5fa;
+}
+
+.task-actions .btn-explain {
+    color: rgba(168, 85, 247, 0.8);
+    border-color: rgba(168, 85, 247, 0.2);
+}
+
+.task-actions .btn-explain:hover {
+    background: rgba(168, 85, 247, 0.08);
+    color: #a855f7;
+}
+
 /* ── Badges ────────────────────────────────────────── */
 .task-meta {
     display: flex;
@@ -646,6 +666,164 @@ select option {
 }
 .task-list::-webkit-scrollbar-track {
     background: transparent;
+}
+
+/* ── Explain modal ─────────────────────────────────── */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+}
+.modal-backdrop.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    width: 100%;
+    max-width: 560px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    transform: translateY(8px);
+    transition: transform 180ms ease;
+}
+.modal-backdrop.open .modal {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+.modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+}
+.modal-close {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-sm);
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    transition:
+        background var(--t),
+        color var(--t);
+    flex-shrink: 0;
+}
+.modal-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.modal-modes {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 20px 0;
+    flex-shrink: 0;
+}
+.mode-btn {
+    padding: 5px 14px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-input);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background var(--t),
+        color var(--t),
+        border-color var(--t);
+}
+.mode-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+.mode-btn.active {
+    background: var(--accent-subtle);
+    border-color: rgba(192, 57, 43, 0.3);
+    color: var(--accent-hover);
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--bg-elevated) transparent;
+}
+
+.explain-loading {
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.explain-loading::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border-input);
+    border-top-color: var(--text-secondary);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.explain-result {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.75;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.explain-error {
+    font-size: 14px;
+    color: var(--red);
+    padding: 12px 14px;
+    background: rgba(248, 113, 113, 0.08);
+    border-radius: var(--r-sm);
+    border: 1px solid rgba(248, 113, 113, 0.15);
 }
 
 /* ── Responsive ────────────────────────────────────── */

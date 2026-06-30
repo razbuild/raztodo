@@ -90,6 +90,14 @@ class TaskDAO:
         cur = self._conn.execute(query, params)
         return cur.fetchall()
 
+    def fetch_by_id(self, task_id: int) -> Row | None:
+        cur = self._conn.execute(
+            "SELECT id, title, description, done, created_at, priority, due_date, tags, project "
+            "FROM tasks WHERE id = ?",
+            (task_id,),
+        )
+        return cur.fetchone()
+
     def update(
         self,
         task_id: int,

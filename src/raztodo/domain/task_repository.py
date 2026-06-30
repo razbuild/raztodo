@@ -66,6 +66,19 @@ class TaskRepository(ABC):
         pass
 
     @abstractmethod
+    def get_task(self, task_id: int) -> TaskEntity | None:
+        """
+        Retrieves a single task by its ID.
+
+        Args:
+            task_id (int): Unique identifier of the task.
+
+        Returns:
+            TaskEntity | None: The matching task, or None if not found.
+        """
+        pass
+
+    @abstractmethod
     def update_task(
         self,
         task_id: int,

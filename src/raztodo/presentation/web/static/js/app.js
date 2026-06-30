@@ -126,9 +126,24 @@ function renderTask(task) {
             ${description}
         </div>
         <div class="task-actions">
-            <button type="button" class="btn-done" onclick="toggleDone(${task.id}, ${task.done})">${doneLabel}</button>
-            <button type="button" onclick="startEdit(${task.id})">Edit</button>
-            <button type="button" class="btn-delete" onclick="deleteTask(${task.id})">Delete</button>
+            <button type="button" class="btn-done" onclick="toggleDone(${task.id}, ${task.done})">
+                ${doneLabel}
+            </button>
+
+            <button
+                type="button"
+                class="btn-explain"
+                onclick="openExplain(${task.id})">
+                Explain
+            </button>
+
+            <button type="button" class="btn-edit" onclick="startEdit(${task.id})">
+                Edit
+            </button>
+
+            <button type="button" class="btn-delete" onclick="deleteTask(${task.id})">
+                Delete
+            </button>
         </div>
     </div>
     ${badges ? `<div class="task-meta">${badges}</div>` : ""}
@@ -362,3 +377,127 @@ async function saveEdit(id) {
 }
 
 loadTasks();
+
+// ── Explain modal ────────────────────────────────────
+
+let explainCurrentId = null;
+let explainCurrentMode = "short";
+let explainController = null;
+
+const MODES = {
+  short: "Summary",
+  deep: "Deep Analysis",
+  plan: "Action Plan",
+};
+
+function openExplain(taskId) {
+  const task = lastTasks.find((t) => t.id === taskId);
+  explainCurrentId = taskId;
+  explainCurrentMode = "short";
+
+  document.getElementById("modal-title").textContent = task
+    ? task.title
+    : `Task #${taskId}`;
+
+  document.querySelectorAll(".mode-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.mode === "short");
+  });
+
+  document.getElementById("explain-backdrop").classList.add("open");
+  _fetchExplain();
+}
+
+function closeExplain() {
+  if (explainController) {
+    explainController.abort();
+    explainController = null;
+  }
+  document.getElementById("explain-backdrop").classList.remove("open");
+  explainCurrentId = null;
+}
+
+function switchMode(mode) {
+  if (mode === explainCurrentMode) return;
+  if (explainController) {
+    explainController.abort();
+    explainController = null;
+  }
+  explainCurrentMode = mode;
+  document.querySelectorAll(".mode-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.mode === mode);
+  });
+  _fetchExplain();
+}
+
+async function _fetchExplain() {
+  const body = document.getElementById("explain-body");
+  const label = MODES[explainCurrentMode];
+
+  body.innerHTML = `<div class="explain-loading">LLM ${label} …</div><pre class="explain-result" id="explain-text" style="display:none"></pre>`;
+
+  const textEl = document.getElementById("explain-text");
+
+  explainController = new AbortController();
+
+  try {
+    const response = await fetch(
+      `${API}/${explainCurrentId}/explain?mode=${explainCurrentMode}`,
+      { signal: explainController.signal },
+    );
+
+    if (!response.ok) {
+      const err = await response
+        .json()
+        .catch(() => ({ detail: response.statusText }));
+      body.innerHTML = `<div class="explain-error">${esc(err.detail || "Request failed")}</div>`;
+      return;
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let started = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue;
+
+        const token = line.slice(6);
+        if (token === "[DONE]") break;
+
+        if (!started) {
+          document.querySelector(".explain-loading").style.display = "none";
+          textEl.style.display = "";
+          started = true;
+        }
+
+        textEl.textContent += token.replace(/\\n/g, "\n");
+      }
+
+      if (lines.some((l) => l === "data: [DONE]")) break;
+    }
+  } catch (err) {
+    if (err.name === "AbortError") return;
+    body.innerHTML = `<div class="explain-error">${esc(err.message)}</div>`;
+  } finally {
+    explainController = null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("explain-backdrop").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeExplain();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeExplain();
+  });
+});

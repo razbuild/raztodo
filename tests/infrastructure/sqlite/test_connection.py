@@ -3,16 +3,13 @@ from pathlib import Path
 
 import pytest
 
-from raztodo.infrastructure.sqlite.connection import (
-    default_data_dir,
-    sqlite_connection_factory,
-)
+from raztodo.infrastructure.settings import Settings
+from raztodo.infrastructure.sqlite.connection import sqlite_connection_factory
 
 
 @pytest.fixture
 def temp_db(tmp_path):
-    """Fixture to provide a temporary database path."""
-    return str(tmp_path / "test.db")
+    return tmp_path / "test.db"
 
 
 class TestConnectionFactory:
@@ -73,35 +70,42 @@ class TestConnectionFactory:
         conn.close()
 
 
-class TestDefaultDataDir:
-    """Test cases for default_data_dir function."""
-
-    def test_default_data_dir_linux(self, monkeypatch):
-        """Test default data dir on Linux."""
+class TestSettings:
+    def test_linux_data_dir(self, monkeypatch):
         monkeypatch.setattr("sys.platform", "linux")
-        path = default_data_dir()
-        expected = Path.home() / ".local/share/raztodo"
-        assert path == expected
 
-    def test_default_data_dir_custom_app_name(self, monkeypatch):
-        """Test default data dir with custom app name."""
-        monkeypatch.setattr("sys.platform", "linux")
-        path = default_data_dir("myapp")
-        expected = Path.home() / ".local/share/myapp"
-        assert path == expected
+        settings = Settings()
 
-    def test_default_data_dir_windows(self, monkeypatch):
-        """Test default data dir on Windows."""
+        assert settings.data_dir == Path.home() / ".local/share/raztodo"
+
+    def test_windows_data_dir(self, monkeypatch):
         monkeypatch.setattr("sys.platform", "win32")
         monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
         monkeypatch.setenv("APPDATA", "/tmp/appdata")
 
-        path = default_data_dir("myapp")
-        assert path == Path("/tmp/appdata/myapp")
+        settings = Settings()
 
-    def test_default_data_dir_macos(self, monkeypatch):
-        """Test default data dir on macOS."""
+        assert settings.data_dir == Path("/tmp/appdata/raztodo")
+
+    def test_macos_data_dir(self, monkeypatch):
         monkeypatch.setattr("sys.platform", "darwin")
-        path = default_data_dir("myapp")
-        expected = Path.home() / "Library/Application Support/myapp"
-        assert path == expected
+
+        settings = Settings()
+
+        assert settings.data_dir == Path.home() / "Library/Application Support/raztodo"
+
+    def test_resolve_db_path(self, monkeypatch):
+        monkeypatch.setattr("sys.platform", "linux")
+
+        settings = Settings()
+
+        assert settings.resolve_db_path("tasks.db") == (
+            Path.home() / ".local/share/raztodo/tasks.db"
+        )
+
+    def test_absolute_db_path(self):
+        settings = Settings()
+
+        path = Path("/tmp/test.db")
+
+        assert settings.resolve_db_path(str(path)) == path

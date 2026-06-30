@@ -37,6 +37,9 @@ class UseCaseFactory(Protocol):
     def create_clear_tasks(self, repo: TaskRepository) -> Any:
         pass
 
+    def create_explain_task(self, repo: TaskRepository) -> Any:
+        pass
+
 
 class DefaultUseCaseFactory:
     """Default implementation of UseCaseFactory with lazy imports."""
@@ -90,3 +93,8 @@ class DefaultUseCaseFactory:
         from raztodo.application.use_cases.clear_tasks import ClearTasksUseCase
 
         return ClearTasksUseCase(repo)
+
+    def create_explain_task(self, repo: TaskRepository) -> Any:
+        from raztodo.application.use_cases.explain_task import ExplainTaskUseCase
+
+        return ExplainTaskUseCase(repo)

@@ -17,6 +17,7 @@ class TaskRouter(HandlerProtocol):
         "done": "mark_task_done_cmd",
         "migrate": "migrate_tasks_cmd",
         "clear": "clear_tasks_cmd",
+        "explain": "explain_task_cmd",
     }
 
     USECASE_MAP: ClassVar[dict[str, str]] = {
@@ -30,6 +31,7 @@ class TaskRouter(HandlerProtocol):
         "done": "mark_done",
         "migrate": "migrate",
         "clear": "clear",
+        "explain": "explain",
     }
 
     def __init__(
@@ -117,6 +119,7 @@ class TaskRouter(HandlerProtocol):
             "mark_done": lambda: self.use_case_factory.create_mark_done(self.storage),
             "migrate": lambda: self.use_case_factory.create_migrate(self.connection_factory),
             "clear": lambda: self.use_case_factory.create_clear_tasks(self.storage),
+            "explain": lambda: self.use_case_factory.create_explain_task(self.storage),
         }
 
         factory = dispatch.get(uc_key)

@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>RazTodo</title>
-        <link rel="stylesheet" href="/static/style.css" />
-        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="stylesheet" href="/static/css/style.css" />
+        <link rel="icon" href="/static/img/favicon.ico" />
     </head>
     <body>
         <div id="toast" aria-live="polite" aria-atomic="true"></div>
@@ -15,7 +15,7 @@
                 <div class="sidebar-header">
                     <span class="logo-icon">
                         <img
-                            src="/static/favicon.png"
+                            src="/static/img/favicon.ico"
                             alt="RazTodo logo"
                             width="46"
                         />
@@ -92,9 +92,13 @@
 
                     <div class="nav-divider"></div>
 
-                    <section class="nav-section" aria-labelledby="search-heading">
-                        <h2 class="nav-section-title" id="search-heading">Search</h2>
-                        <div class="search-wrap">
+                    <section
+                        class="nav-section"
+                        aria-labelledby="search-heading"
+                    >
+                        <h2 class="nav-section-title" id="search-heading">
+                            Search
+                        </h2>
                         <div class="search-wrap">
                             <svg
                                 class="search-icon"
@@ -246,7 +250,50 @@
                 <ul id="task-list" class="task-list" role="list"></ul>
             </section>
         </main>
-
-        <script src="/static/app.js" defer></script>
+        <div
+            id="explain-backdrop"
+            class="modal-backdrop"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+        >
+            <div class="modal">
+                <div class="modal-header">
+                    <span class="modal-title" id="modal-title"></span>
+                    <button
+                        class="modal-close"
+                        onclick="closeExplain()"
+                        aria-label="Close"
+                    >
+                        ✕
+                    </button>
+                </div>
+                <div class="modal-modes">
+                    <button
+                        class="mode-btn active"
+                        data-mode="short"
+                        onclick="switchMode('short')"
+                    >
+                        Summary
+                    </button>
+                    <button
+                        class="mode-btn"
+                        data-mode="deep"
+                        onclick="switchMode('deep')"
+                    >
+                        Deep Analysis
+                    </button>
+                    <button
+                        class="mode-btn"
+                        data-mode="plan"
+                        onclick="switchMode('plan')"
+                    >
+                        Action Plan
+                    </button>
+                </div>
+                <div class="modal-body" id="explain-body"></div>
+            </div>
+        </div>
+        <script src="/static/js/app.js" defer></script>
     </body>
 </html>

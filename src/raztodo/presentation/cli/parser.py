@@ -7,6 +7,7 @@ from raztodo.presentation.cli.commands import (
     completion_cmd,
     create_task_cmd,
     delete_task_cmd,
+    explain_task_cmd,
     export_task_cmd,
     import_task_cmd,
     list_tasks_cmd,
@@ -67,5 +68,6 @@ def get_parser() -> argparse.ArgumentParser:
     migrate_tasks_cmd.add_parser(sub)
     clear_tasks_cmd.add_parser(sub)
     completion_cmd.add_parser(sub)
+    explain_task_cmd.add_parser(sub)
 
     return parser

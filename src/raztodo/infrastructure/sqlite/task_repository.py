@@ -133,6 +133,10 @@ class SQLiteTaskRepository(TaskRepository):
         )
         return [row_to_task(r) for r in rows]
 
+    def get_task(self, task_id: int) -> TaskEntity | None:
+        row = self._dao.fetch_by_id(task_id)
+        return row_to_task(row) if row else None
+
     def update_task(
         self,
         task_id: int,
