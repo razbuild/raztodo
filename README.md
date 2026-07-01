@@ -10,7 +10,8 @@
 
 [![Python Versions](https://img.shields.io/pypi/pyversions/raztodo)](https://pypi.org/project/raztodo/)
 
-  <p>A modular task manager with a shared core, where CLI, web UI, and shell completion are optional components.</p>
+  <p>A local-first task manager for developers with a native CLI,
+  optional Web UI, shell completion, and local AI assistance.</p>
 </div>
 
 ---
@@ -52,9 +53,9 @@ Web ─┘
 All interfaces share a single SQLite database, enabling instant synchronization without external services or accounts.
 
 The design follows three principles:
-- Separation of concerns — core logic is interface-agnostic  
-- Local-first storage — all data remains on the user’s machine  
-- Composable interfaces — CLI, Web UI, and shell tooling are optional layers
+- Separation of concerns: core logic is interface-agnostic  
+- Local-first storage: all data remains on the user’s machine  
+- Composable interfaces: CLI, Web UI, and shell tooling are optional layers
 
 ---
 
