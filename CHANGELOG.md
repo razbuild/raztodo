@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.1] - 2026-07-01
+
+### Fixed
+- Fixed shell completion initialization by relying on Argcomplete's `_ARGCOMPLETE` environment variable instead of a custom `RAZTODO_COMPLETION` flag
+- Fixed optional `argcomplete` import at CLI startup to work correctly when shell completion support is not installed
+- Prevented internal exception messages from being exposed by the web explain streaming endpoint
+
+### Changed
+- Updated the project description and wording in the README
+- Relaxed `ty`'s `invalid-assignment` diagnostic configuration
+
+---
+
 ## [0.7.0] - 2026-07-01
 
 ### Added
@@ -19,6 +32,7 @@
 ### Removed
 - Removed `tests/presentation/web/test_ui.py` along with the deleted `ui.py` module
 - Removed standalone `default_data_dir()` function and its tests (folded into `Settings`)
+
 ---
 
 ## [0.6.1] - 2026-06-27
