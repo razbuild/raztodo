@@ -1,7 +1,4 @@
-import os
 import sys
-
-os.environ["RAZTODO_COMPLETION"] = "1"
 
 # Precompute a static command list for instant completions
 COMMANDS = "add list update done remove search export import migrate clear completion"

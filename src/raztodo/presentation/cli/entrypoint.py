@@ -1,9 +1,9 @@
 import sys
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
-if TYPE_CHECKING:
+try:
     import argcomplete
-else:
+except ImportError:
     argcomplete = None
 
 from raztodo.domain.exceptions import RazTodoException

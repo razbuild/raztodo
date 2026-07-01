@@ -46,9 +46,7 @@ def get_parser() -> argparse.ArgumentParser:
         help="Show raztodo version information and exit",
     )
 
-    sub_required = True
-    if os.environ.get("RAZTODO_COMPLETION") == "1":
-        sub_required = False
+    sub_required = os.environ.get("_ARGCOMPLETE") != "1"
 
     sub = parser.add_subparsers(
         dest="command",

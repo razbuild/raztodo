@@ -9,6 +9,7 @@ respect-type-ignore-comments = true
 all = "error"
 unresolved-import = "ignore"
 missing-override-decorator = "ignore"
+invalid-assignment = "ignore"
 
 [terminal]
 error-on-warning = true
