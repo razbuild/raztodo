@@ -147,6 +147,7 @@ positional arguments:
     migrate     Run database migration
     clear       Delete all tasks
     completion  Output shell completion script for bash, zsh, or fish
+    explain     Explain a task using AI (requires Ollama)
 
 options:
   -h, --help    show this help message and exit
