@@ -45,7 +45,7 @@ rt add --help
 
 ## Commands
 
-### `add` — Create a New Task
+### `add` Create a New Task
 
 Create a new task with a title and optional metadata.
 
@@ -72,7 +72,7 @@ rt add "Buy milk" --project shopping
 
 ---
 
-### `list` — List Tasks
+### `list` List Tasks
 
 List tasks with optional filtering, sorting, and pagination.
 
@@ -106,7 +106,7 @@ rt list --limit 10 --offset 20
 
 ---
 
-### `update` — Update a Task
+### `update` Update a Task
 
 Update one or more fields of an existing task.
 
@@ -116,17 +116,17 @@ rt update <id> [options]
 
 | Option | Short | Description |
 |--------|:-----:|-------------|
-| `--title TEXT` | — | New title |
-| `--desc TEXT`, `--description TEXT` | — | New description |
+| `--title TEXT` | | New title |
+| `--desc TEXT`, `--description TEXT` | | New description |
 | `--priority LEVEL` | `-p` | New priority: `L`, `M`, `H` |
-| `--due DATE`, `--due-date DATE` | — | New due date. `YYYY-MM-DD` is recommended. |
+| `--due DATE`, `--due-date DATE` | | New due date. `YYYY-MM-DD` is recommended. |
 | `--tags TAGS` | `-t` | New tags (comma-separated) |
-| `--project NAME` | — | New project/category |
-| `--clear-priority` | — | Remove the task priority |
-| `--clear-due` | — | Remove the due date |
-| `--clear-tags` | — | Remove all tags |
-| `--clear-project` | — | Remove the project/category |
-| `--json` | — | Output the result as JSON |
+| `--project NAME` | | New project/category |
+| `--clear-priority` | | Remove the task priority |
+| `--clear-due` | | Remove the due date |
+| `--clear-tags` | | Remove all tags |
+| `--clear-project` | | Remove the project/category |
+| `--json` | | Output the result as JSON |
 
 Examples:
 
@@ -150,7 +150,7 @@ rt update 2 --priority L --json
 
 ---
 
-### `done` — Mark Task as Done or Undone
+### `done` Mark Task as Done or Undone
 
 Mark a task as completed, or revert it to pending with `--undo`.
 
@@ -173,7 +173,7 @@ rt done 3 --json
 
 ---
 
-### `remove` — Delete a Task
+### `remove` Delete a Task
 
 Delete a task by ID.
 
@@ -194,7 +194,7 @@ rt remove 5 --json
 
 ---
 
-### `search` — Search Tasks
+### `search` Search Tasks
 
 Search for tasks by keyword in title or description, with optional filters.
 
@@ -221,7 +221,7 @@ rt search "urgent" --tags important,work
 
 ---
 
-### `export` — Export Tasks
+### `export` Export Tasks
 
 Export all tasks to a JSON file.
 
@@ -242,7 +242,7 @@ rt export ~/backups/tasks_2024.json --json
 
 ---
 
-### `import` — Import Tasks
+### `import` Import Tasks
 
 Import tasks from a JSON file previously exported by RazTodo.
 
@@ -264,7 +264,7 @@ rt import ~/backups/tasks.json --upsert --json
 
 ---
 
-### `migrate` — Run Database Migration
+### `migrate` Run Database Migration
 
 Run the migration that deduplicates task titles and enforces the unique title index.
 
@@ -282,7 +282,7 @@ Run this when upgrading from an older version of RazTodo.
 
 ---
 
-### `clear` — Delete All Tasks
+### `clear` Delete All Tasks
 
 Delete all tasks from the database.
 
@@ -304,7 +304,7 @@ rt clear --confirm --json
 
 ---
 
-### `explain` — Explain a Task with AI
+### `explain` Explain a Task with AI
 
 Use a locally-running [Ollama](https://ollama.com) model to analyse or plan a task.
 The task's full data (title, description, priority, due date, tags, project) is passed
@@ -352,14 +352,14 @@ rt explain 7 --short --json
 #### Requirements
 
 `explain` requires Ollama to be running locally and a model to be configured.
-There is no default model — you must set one before first use.
+There is no default model, you must set one before first use.
 
 Install Ollama from [ollama.com](https://ollama.com), pull a model, then configure it:
 
 ```bash
-ollama serve                                    # start the server (or run the desktop app)
-ollama pull mistral                             # download a model
-rt explain --config --model mistral            # tell RazTodo which model to use
+ollama serve                                            # start the server (or run the desktop app)
+ollama pull qwen2.5-coder:3b                            # download a model
+rt explain --config --model qwen2.5-coder:3b            # tell RazTodo which model to use
 ```
 
 If you run `rt explain` without configuring a model first, you will see:
@@ -442,7 +442,7 @@ OLLAMA_MODEL=qwen2.5-coder:3b rt explain 5 --deep
 
 ---
 
-### `completion` — Output Shell Completion Script
+### `completion` Output Shell Completion Script
 
 Generate the shell snippet used to enable completions.
 
