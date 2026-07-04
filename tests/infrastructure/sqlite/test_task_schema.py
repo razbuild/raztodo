@@ -1,4 +1,6 @@
+import sqlite3
 from contextlib import closing
+from unittest.mock import MagicMock, patch
 
 from raztodo.infrastructure.sqlite.task_schema import ensure_schema
 
@@ -111,3 +113,112 @@ class TestSchema:
                 "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_tasks_title_unique'"
             )
             assert cursor.fetchone() is not None
+
+    def test_ensure_schema_unique_index_error_logged(self):
+        """Unique index creation failure should be logged but not raised."""
+        conn = MagicMock()
+        conn.__enter__.return_value = conn
+        conn.__exit__.return_value = None
+
+        conn.execute.side_effect = [
+            None,  # CREATE TABLE
+            sqlite3.Error("index error"),  # UNIQUE INDEX
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,  # INDEXES
+            None,
+            None,
+            None,  # TRIGGERS
+            None,  # FTS
+        ]
+
+        with patch("raztodo.infrastructure.sqlite.task_schema.logger.warning") as warning:
+            ensure_schema(conn)
+            warning.assert_called()
+
+    def test_ensure_schema_index_error_logged(self):
+        """Index creation failure should be logged."""
+        conn = MagicMock()
+        conn.__enter__.return_value = conn
+        conn.__exit__.return_value = None
+
+        side_effects = [
+            None,
+            None,  # TABLE + UNIQUE INDEX
+            sqlite3.Error("index"),  # first additional index
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+        ]
+
+        conn.execute.side_effect = side_effects
+
+        with patch("raztodo.infrastructure.sqlite.task_schema.logger.warning") as warning:
+            ensure_schema(conn)
+            warning.assert_called()
+
+    def test_ensure_schema_trigger_error_logged(self):
+        """Trigger creation failure should be logged."""
+        conn = MagicMock()
+        conn.__enter__.return_value = conn
+        conn.__exit__.return_value = None
+
+        side_effects = [
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            sqlite3.Error("trigger"),  # first trigger
+            None,
+            None,
+            None,
+        ]
+
+        conn.execute.side_effect = side_effects
+
+        with patch("raztodo.infrastructure.sqlite.task_schema.logger.warning") as warning:
+            ensure_schema(conn)
+            warning.assert_called()
+
+    def test_ensure_schema_fts_error_logged(self):
+        """FTS table creation failure should be logged."""
+        conn = MagicMock()
+        conn.__enter__.return_value = conn
+        conn.__exit__.return_value = None
+
+        side_effects = [None] * 11 + [sqlite3.Error("fts")]
+
+        conn.execute.side_effect = side_effects
+
+        with patch("raztodo.infrastructure.sqlite.task_schema.logger.warning") as warning:
+            ensure_schema(conn)
+            warning.assert_called()
+
+    def test_ensure_schema_table_creation_error_raises(self):
+        """Table creation failure should be logged and re-raised."""
+        conn = MagicMock()
+        conn.__enter__.return_value = conn
+        conn.__exit__.return_value = None
+
+        conn.execute.side_effect = sqlite3.Error("table error")
+
+        with patch("raztodo.infrastructure.sqlite.task_schema.logger.error") as error:
+            import pytest
+
+            with pytest.raises(sqlite3.Error):
+                ensure_schema(conn)
+
+            error.assert_called_once()
