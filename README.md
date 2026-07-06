@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/RazTodo.svg" alt="RazTodo" width="400" />
+  <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/RazTodo.svg" alt="RazTodo" width="400" />
   <br><br>
 
 [![PyPI Version](https://img.shields.io/pypi/v/raztodo)](https://pypi.org/project/raztodo/)
