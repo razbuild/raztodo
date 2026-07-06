@@ -252,5 +252,5 @@ See [CONTRIBUTING](https://github.com/razbuild/.github/blob/main/CONTRIBUTING.md
 [![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/master/LICENSE)
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/.github/main/profile/svg/badge.svg" alt="Made by RazBuild" width="160">
+  <img src="https://raw.githubusercontent.com/razbuild/.github/main/assets/badge.svg" alt="Made by RazBuild" width="160">
 </div>
