@@ -1,8 +1,17 @@
+import json
+import os
+import sqlite3
+import tempfile
+from pathlib import Path
+from sqlite3 import Error
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.infrastructure.sqlite.task_repository import (
     SQLiteTaskRepository,
+    ensure_writable_path,
 )
 
 
@@ -290,3 +299,216 @@ class TestSQLiteTaskRepository:
         # Verify search returns nothing
         search_results = task_repo.search_tasks("Task")
         assert len(search_results) == 0
+
+    # --- ensure_writable_path ---
+
+    def test_ensure_writable_path_creates_missing_directory(self, tmp_path):
+        """Lines 61-62: directory is created when it does not exist."""
+        new_dir = tmp_path / "nested" / "sub"
+        file_path = new_dir / "tasks.json"
+        result = ensure_writable_path(str(file_path))
+        assert new_dir.exists()
+        assert result == file_path.resolve()
+
+    def test_ensure_writable_path_oserror_raises(self, tmp_path):
+        """Lines 63-64: OSError while creating directory raises RazTodoException."""
+        target = tmp_path / "new_dir" / "file.json"
+        with patch("raztodo.infrastructure.sqlite.task_repository.Path.mkdir", side_effect=OSError("no space")):
+            with pytest.raises(RazTodoException, match="FileOperationError"):
+                ensure_writable_path(str(target))
+
+    # --- add_task: generic sqlite3.Error ---
+
+    def test_add_task_database_error(self, in_memory_db):
+        """Line 110: generic sqlite3.Error (not IntegrityError) wraps as DatabaseError."""
+        repo = SQLiteTaskRepository(connection_factory=in_memory_db)
+        repo._dao.insert = MagicMock(side_effect=Error("disk full"))
+        with pytest.raises(RazTodoException, match="DatabaseError during add_task"):
+            repo.add_task("Some Task")
+        repo.close()
+
+    # --- get_task: not found ---
+
+    def test_get_task_not_found(self, task_repo):
+        """Lines 137-138: get_task returns None when task_id does not exist."""
+        result = task_repo.get_task(99999)
+        assert result is None
+
+    def test_get_task_found(self, task_repo):
+        """Lines 137-138: get_task returns TaskEntity when task exists."""
+        task_id = task_repo.add_task("Findable Task")
+        result = task_repo.get_task(task_id)
+        assert result is not None
+        assert result.title == "Findable Task"
+
+    # --- update_task: priority cleared ---
+
+    def test_update_task_clear_priority(self, task_repo):
+        """Line 157: passing priority='' converts to __CLEAR__ and NULLs the column."""
+        task_id = task_repo.add_task("Task", priority="H")
+        task_repo.update_task(task_id, priority="")
+        updated = task_repo.get_task(task_id)
+        assert updated.priority == "" or updated.priority is None
+
+    # --- update_task: sqlite3.Error ---
+
+    def test_update_task_database_error(self, in_memory_db):
+        """Line 177: sqlite3.Error during update wraps as DatabaseError."""
+        repo = SQLiteTaskRepository(connection_factory=in_memory_db)
+        task_id = repo.add_task("Task to Update")
+        repo._dao.update = MagicMock(side_effect=Error("disk full"))
+        with pytest.raises(RazTodoException, match="DatabaseError during update_task"):
+            repo.update_task(task_id, title="New Title")
+        repo.close()
+
+    # --- export_tasks ---
+
+    def test_export_tasks_success(self, task_repo, tmp_path):
+        """Lines 214-238: export_tasks writes JSON and returns True."""
+        task_repo.add_task("Export Task", description="Exported", priority="H")
+        out = tmp_path / "out.json"
+        result = task_repo.export_tasks(str(out))
+        assert result is True
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["title"] == "Export Task"
+
+    def test_export_tasks_error_raises(self, task_repo, tmp_path):
+        """Line 239: any exception during export raises RazTodoException."""
+        out = tmp_path / "out.json"
+        with patch("builtins.open", side_effect=OSError("disk full")):
+            with pytest.raises(RazTodoException, match="FileOperationError during export_tasks"):
+                task_repo.export_tasks(str(out))
+
+    # --- import_tasks ---
+
+    def test_import_tasks_success(self, task_repo, tmp_path):
+        """Lines 243-291: basic successful import."""
+        data = [{"title": "Imported Task", "description": "desc", "done": False}]
+        p = tmp_path / "import.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        count = task_repo.import_tasks(str(p))
+        assert count == 1
+        tasks = task_repo.get_tasks()
+        assert tasks[0].title == "Imported Task"
+
+    def test_import_tasks_file_not_found(self, task_repo):
+        """Lines 244-245: missing file raises RazTodoException."""
+        with pytest.raises(RazTodoException, match="TaskFileNotFoundError"):
+            task_repo.import_tasks("/nonexistent/path/file.json")
+
+    def test_import_tasks_unreadable_file(self, task_repo, tmp_path, monkeypatch):
+        """Lines 246-247: unreadable file raises RazTodoException."""
+        p = tmp_path / "tasks.json"
+        p.write_text("[]", encoding="utf-8")
+        monkeypatch.setattr(
+            "raztodo.infrastructure.sqlite.task_repository.os.access", lambda *_: False
+        )
+        with pytest.raises(RazTodoException, match="FilePermissionError"):
+            task_repo.import_tasks(str(p))
+
+    def test_import_tasks_invalid_json(self, task_repo, tmp_path):
+        """Lines 250-252: invalid JSON raises RazTodoException."""
+        p = tmp_path / "bad.json"
+        p.write_text("not json", encoding="utf-8")
+        with pytest.raises(RazTodoException, match="InvalidFileFormatError"):
+            task_repo.import_tasks(str(p))
+
+    def test_import_tasks_not_array(self, task_repo, tmp_path):
+        """Lines 254-255: JSON object (not array) raises RazTodoException."""
+        p = tmp_path / "obj.json"
+        p.write_text(json.dumps({"key": "value"}), encoding="utf-8")
+        with pytest.raises(RazTodoException, match="InvalidFileFormatError"):
+            task_repo.import_tasks(str(p))
+
+    def test_import_tasks_skips_non_dict_items(self, task_repo, tmp_path):
+        """Lines 259-261: items that are not dicts or lack 'title' are skipped."""
+        data = ["not a dict", {"description": "no title"}, {"title": "Valid"}]
+        p = tmp_path / "mixed.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        count = task_repo.import_tasks(str(p))
+        assert count == 1
+        assert task_repo.get_tasks()[0].title == "Valid"
+
+    def test_import_tasks_done_flag_set(self, task_repo, tmp_path):
+        """Lines 274-279: done flag is applied after insert."""
+        data = [{"title": "Done Task", "done": True}]
+        p = tmp_path / "done.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        task_repo.import_tasks(str(p))
+        tasks = task_repo.get_tasks()
+        assert tasks[0].done is True
+
+    def test_import_tasks_done_flag_dao_error_is_logged_not_raised(self, task_repo, tmp_path):
+        """Lines 277-278: Error setting done flag is logged, not propagated; item still counts."""
+        data = [{"title": "Task With Done Error", "done": True}]
+        p = tmp_path / "done_err.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        original_update = task_repo._dao.update
+
+        call_count = {"n": 0}
+
+        def flaky_update(*args, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                raise Error("simulated done-flag error")
+            return original_update(*args, **kwargs)
+
+        task_repo._dao.update = flaky_update
+        count = task_repo.import_tasks(str(p))
+        # Item was still counted even though done-flag update failed
+        assert count == 1
+
+    def test_import_tasks_raztodo_exception_per_item_appended_to_errors(self, task_repo, tmp_path):
+        """Lines 280-282: RazTodoException for an item is collected in errors."""
+        # Two items with duplicate title → second raises DuplicateTaskError
+        data = [{"title": "Dup"}, {"title": "Dup"}]
+        p = tmp_path / "dup.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        # First succeeds (count=1), second fails — should still return 1 not raise
+        count = task_repo.import_tasks(str(p))
+        assert count == 1
+
+    def test_import_tasks_generic_exception_per_item(self, task_repo, tmp_path):
+        """Lines 283-285: Generic Exception for an item is collected in errors."""
+        data = [{"title": "Boom"}, {"title": "Fine"}]
+        p = tmp_path / "boom.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        original_add = task_repo.add_task
+        call_count = {"n": 0}
+
+        def explosive_add(title, *args, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                raise RuntimeError("unexpected boom")
+            return original_add(title, *args, **kwargs)
+
+        task_repo.add_task = explosive_add
+        count = task_repo.import_tasks(str(p))
+        assert count == 1
+
+    def test_import_tasks_all_fail_raises(self, task_repo, tmp_path):
+        """Line 287-288: if all items fail and count==0, raises RazTodoException."""
+        data = [{"title": ""}, {"title": ""}]
+        p = tmp_path / "allfail.json"
+        p.write_text(json.dumps(data), encoding="utf-8")
+        with pytest.raises(RazTodoException, match="Failed to import any tasks"):
+            task_repo.import_tasks(str(p))
+
+    # --- clear_all_tasks: sqlite3.Error ---
+
+    def test_clear_all_tasks_database_error(self, in_memory_db):
+        """Line 298: sqlite3.Error during clear_all wraps as DatabaseError."""
+        repo = SQLiteTaskRepository(connection_factory=in_memory_db)
+        repo._dao.clear_all = MagicMock(side_effect=Error("disk full"))
+        with pytest.raises(RazTodoException, match="DatabaseError during clear_all_tasks"):
+            repo.clear_all_tasks()
+        repo.close()
+
+    # --- close: idempotent ---
+
+    def test_close_is_idempotent(self, in_memory_db):
+        """Line 302->exit: calling close twice does not raise."""
+        repo = SQLiteTaskRepository(connection_factory=in_memory_db)
+        repo.close()
+        repo.close()  # _conn is None — must not raise

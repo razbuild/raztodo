@@ -54,7 +54,14 @@ requires = ["uv_build >= 0.11.24, < 0.12.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = ["pytest", "ruff", "ty", "coverage", "httpx2"]
+dev = [
+    "pytest",
+ "ruff",
+ "ty",
+ "coverage",
+ "httpx2",
+ "pytest-cov>=7.1.0",
+]
 test = ["pytest", "httpx2"]
 coverage = ["coverage"]
 
