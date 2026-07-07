@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
 from raztodo.presentation.web.app import app
+from raztodo.presentation.web.routes.tasks import _remove_file
 
 
 def make_task(
@@ -196,6 +197,13 @@ class TestCreateTask:
         res = c.post("/api/tasks", json={"title": "Dup"})
         assert res.status_code == 400
 
+    def test_returns_500_when_created_task_cannot_be_loaded(self, client):
+        c, uc = client
+        uc["create"].execute.return_value = 99
+        uc["list"].execute.return_value = []
+        res = c.post("/api/tasks", json={"title": "Missing after create"})
+        assert res.status_code == 500
+
 
 # ---------------------------------------------------------------------------
 # PUT /api/tasks/{id}
@@ -216,6 +224,12 @@ class TestUpdateTask:
         uc["update"].execute.side_effect = RazTodoException("not found")
         res = c.put("/api/tasks/99", json={"title": "X"})
         assert res.status_code == 400
+
+    def test_returns_404_when_updated_task_cannot_be_loaded(self, client):
+        c, uc = client
+        uc["list"].execute.return_value = []
+        res = c.put("/api/tasks/99", json={"title": "X"})
+        assert res.status_code == 404
 
 
 # ---------------------------------------------------------------------------
@@ -255,6 +269,12 @@ class TestClearTasks:
         c.post("/api/tasks/clear")
         uc["clear"].execute.assert_called_once_with(confirmed=True)
 
+    def test_domain_error_returns_400(self, client):
+        c, uc = client
+        uc["clear"].execute.side_effect = RazTodoException("clear failed")
+        res = c.post("/api/tasks/clear")
+        assert res.status_code == 400
+
 
 # ---------------------------------------------------------------------------
 # PATCH /api/tasks/{id}/done
@@ -287,6 +307,19 @@ class TestToggleDone:
         res = c.patch("/api/tasks/99/done")
         assert res.status_code == 404
 
+    def test_returns_404_when_task_disappears_after_marking_done(self, client):
+        c, uc = client
+        uc["list"].execute.side_effect = [[make_task(1, "Buy milk")], []]
+        res = c.patch("/api/tasks/1/done")
+        assert res.status_code == 404
+        uc["mark"].execute.assert_called_once_with(1, done=True)
+
+    def test_domain_error_returns_400(self, client):
+        c, uc = client
+        uc["mark"].execute.side_effect = RazTodoException("mark failed")
+        res = c.patch("/api/tasks/1/done")
+        assert res.status_code == 400
+
 
 # ---------------------------------------------------------------------------
 # GET /api/tasks/export
@@ -294,6 +327,9 @@ class TestToggleDone:
 
 
 class TestExportTasks:
+    def test_remove_file_ignores_missing_path(self, tmp_path):
+        _remove_file(str(tmp_path / "missing.json"))
+
     def test_export_returns_json_file(self, client, tmp_path):
         c, uc = client
         export_file = tmp_path / "tasks.json"
@@ -331,6 +367,13 @@ class TestImportTasks:
         assert res.status_code == 200
         assert res.json() == {"inserted": 2, "updated": 1}
 
+    def test_import_accepts_integer_result(self, client):
+        c, uc = client
+        uc["import"].execute.return_value = 2
+        res = c.post("/api/tasks/import", json=[{"title": "Task A"}])
+        assert res.status_code == 200
+        assert res.json() == {"inserted": 2, "updated": 0}
+
     def test_invalid_json_returns_422(self, client):
         c, _ = client
         res = c.post(
@@ -345,3 +388,10 @@ class TestImportTasks:
         uc["import"].execute.side_effect = RazTodoException("bad file")
         res = c.post("/api/tasks/import", json=[{"title": "X"}])
         assert res.status_code == 400
+
+    def test_unexpected_import_error_returns_422(self, client):
+        c, uc = client
+        uc["import"].execute.side_effect = ValueError("bad shape")
+        res = c.post("/api/tasks/import", json=[{"title": "X"}])
+        assert res.json()["detail"] == "Import failed: bad shape"
+        assert res.status_code == 422
