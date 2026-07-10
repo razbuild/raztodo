@@ -27,6 +27,10 @@
 </p>
 
 <p align="center">
+  <i>Local AI assistance powered by Ollama</i>
+</p>
+
+<p align="center">
   <b>Web UI</b>
 </p>
 
