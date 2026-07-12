@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, Mock
 import pytest
 
 import raztodo.presentation.web.dependencies as deps
-from raztodo.application.use_case_factory import DefaultUseCaseFactory
+from raztodo.application.factory import DefaultUseCaseFactory
 from raztodo.infrastructure.sqlite.task_repository import SQLiteTaskRepository
 
 

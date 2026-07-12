@@ -1,23 +1,23 @@
 import importlib
 from typing import Any, ClassVar
 
-from raztodo.application.use_case_factory import DefaultUseCaseFactory, UseCaseFactory
+from raztodo.application.factory import DefaultUseCaseFactory, UseCaseFactory
 from raztodo.presentation.cli.protocols import Command, HandlerProtocol
 
 
 class TaskRouter(HandlerProtocol):
     COMMAND_MAP: ClassVar[dict[str, str]] = {
-        "add": "create_task_cmd",
-        "remove": "delete_task_cmd",
-        "list": "list_tasks_cmd",
-        "update": "update_task_cmd",
-        "search": "search_tasks_cmd",
-        "export": "export_task_cmd",
-        "import": "import_task_cmd",
-        "done": "mark_task_done_cmd",
-        "migrate": "migrate_tasks_cmd",
-        "clear": "clear_tasks_cmd",
-        "explain": "explain_task_cmd",
+        "add": "create_task_handler",
+        "remove": "delete_task_handler",
+        "list": "list_tasks_handler",
+        "update": "update_task_handler",
+        "search": "search_tasks_handler",
+        "export": "export_task_handler",
+        "import": "import_task_handler",
+        "done": "mark_task_done_handler",
+        "migrate": "migrate_tasks_handler",
+        "clear": "clear_tasks_handler",
+        "explain": "explain_task_handler",
     }
 
     USECASE_MAP: ClassVar[dict[str, str]] = {
@@ -53,14 +53,14 @@ class TaskRouter(HandlerProtocol):
         if not module_name:
             raise ValueError(f"Unknown command: {command_name}")
 
-        module = importlib.import_module(f"raztodo.presentation.cli.commands.{module_name}")
+        module = importlib.import_module(f"raztodo.presentation.cli.handlers.{module_name}")
 
         class_name = "".join(part.capitalize() for part in module_name.split("_"))
         candidates = [
             getattr(module, class_name, None),
             getattr(
                 module,
-                f"{class_name[:-3]}CMD" if class_name.endswith("Cmd") else f"{class_name}CMD",
+                class_name[:-7] if class_name.endswith("Handler") else class_name,
                 None,
             ),
         ]
@@ -101,9 +101,6 @@ class TaskRouter(HandlerProtocol):
 
     def get_usecase(self, name: str) -> Any:
         """Get use case instance for the given command name."""
-
-        # Only commands present in USECASE_MAP have a use case; others raise.
-
         uc_key = self.USECASE_MAP.get(name)
         if uc_key is None:
             raise ValueError(f"No usecase mapping for command: {name}")

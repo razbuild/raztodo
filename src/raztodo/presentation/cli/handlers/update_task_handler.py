@@ -84,7 +84,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class UpdateTaskCMD:
+class UpdateTaskHandler:
     """Callable class that executes the 'update' command."""
 
     def __init__(self, uc: Any) -> None:

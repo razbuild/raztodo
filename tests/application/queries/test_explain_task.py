@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from raztodo.application.use_cases.explain_task import (
+from raztodo.application.queries.explain_task import (
     MODE_PROMPTS,
     SYSTEM_PROMPT,
     ExplainTaskUseCase,
@@ -131,7 +131,7 @@ class TestGetPrompt:
 class TestExecute:
     def test_returns_chat_response(self, use_case, task):
         with patch(
-            "raztodo.application.use_cases.explain_task.chat", return_value="Here is a summary."
+            "raztodo.application.queries.explain_task.chat", return_value="Here is a summary."
         ) as mock_chat:
             result = use_case.execute(task.id, mode="short")
 
@@ -139,18 +139,14 @@ class TestExecute:
         mock_chat.assert_called_once()
 
     def test_passes_system_prompt(self, use_case, task):
-        with patch(
-            "raztodo.application.use_cases.explain_task.chat", return_value="ok"
-        ) as mock_chat:
+        with patch("raztodo.application.queries.explain_task.chat", return_value="ok") as mock_chat:
             use_case.execute(task.id)
 
         _, kwargs = mock_chat.call_args
         assert kwargs.get("system") == SYSTEM_PROMPT
 
     def test_default_mode_is_short(self, use_case, task):
-        with patch(
-            "raztodo.application.use_cases.explain_task.chat", return_value="ok"
-        ) as mock_chat:
+        with patch("raztodo.application.queries.explain_task.chat", return_value="ok") as mock_chat:
             use_case.execute(task.id)
 
         prompt_arg = mock_chat.call_args[0][0]
@@ -161,7 +157,7 @@ class TestExecute:
 
         with (
             patch(
-                "raztodo.application.use_cases.explain_task.chat",
+                "raztodo.application.queries.explain_task.chat",
                 side_effect=OllamaClientError("conn refused"),
             ),
             pytest.raises(RazTodoException, match="OllamaError"),
@@ -170,7 +166,7 @@ class TestExecute:
 
     def test_unknown_mode_raises_before_calling_chat(self, use_case, task):
         with (
-            patch("raztodo.application.use_cases.explain_task.chat") as mock_chat,
+            patch("raztodo.application.queries.explain_task.chat") as mock_chat,
             pytest.raises(RazTodoException, match="Unknown explain mode"),
         ):
             use_case.execute(task.id, mode="invalid")
@@ -179,7 +175,7 @@ class TestExecute:
 
     def test_missing_task_raises_before_calling_chat(self, use_case):
         with (
-            patch("raztodo.application.use_cases.explain_task.chat") as mock_chat,
+            patch("raztodo.application.queries.explain_task.chat") as mock_chat,
             pytest.raises(RazTodoException, match="TaskNotFoundError"),
         ):
             use_case.execute(999)
@@ -195,21 +191,21 @@ class TestStream:
     def test_yields_tokens_from_stream_chat(self, use_case, task):
         tokens = ["Here", " is", " a", " plan."]
         with patch(
-            "raztodo.application.use_cases.explain_task.stream_chat", return_value=iter(tokens)
+            "raztodo.application.queries.explain_task.stream_chat", return_value=iter(tokens)
         ):
             result = list(use_case.stream(task.id, mode="plan"))
 
         assert result == tokens
 
     def test_returns_generator(self, use_case, task):
-        with patch("raztodo.application.use_cases.explain_task.stream_chat", return_value=iter([])):
+        with patch("raztodo.application.queries.explain_task.stream_chat", return_value=iter([])):
             result = use_case.stream(task.id)
 
         assert isinstance(result, Generator)
 
     def test_passes_system_prompt(self, use_case, task):
         with patch(
-            "raztodo.application.use_cases.explain_task.stream_chat", return_value=iter([])
+            "raztodo.application.queries.explain_task.stream_chat", return_value=iter([])
         ) as mock_stream:
             list(use_case.stream(task.id))
 
@@ -218,7 +214,7 @@ class TestStream:
 
     def test_default_mode_is_short(self, use_case, task):
         with patch(
-            "raztodo.application.use_cases.explain_task.stream_chat", return_value=iter([])
+            "raztodo.application.queries.explain_task.stream_chat", return_value=iter([])
         ) as mock_stream:
             list(use_case.stream(task.id))
 
@@ -233,7 +229,7 @@ class TestStream:
 
         with (
             patch(
-                "raztodo.application.use_cases.explain_task.stream_chat",
+                "raztodo.application.queries.explain_task.stream_chat",
                 side_effect=bad_stream,
             ),
             pytest.raises(RazTodoException, match="OllamaError"),
@@ -242,7 +238,7 @@ class TestStream:
 
     def test_unknown_mode_raises_before_streaming(self, use_case, task):
         with (
-            patch("raztodo.application.use_cases.explain_task.stream_chat") as mock_stream,
+            patch("raztodo.application.queries.explain_task.stream_chat") as mock_stream,
             pytest.raises(RazTodoException, match="Unknown explain mode"),
         ):
             list(use_case.stream(task.id, mode="bogus"))
@@ -252,7 +248,7 @@ class TestStream:
     def test_all_tokens_consumed(self, use_case, task):
         tokens = [f"token{i}" for i in range(50)]
         with patch(
-            "raztodo.application.use_cases.explain_task.stream_chat", return_value=iter(tokens)
+            "raztodo.application.queries.explain_task.stream_chat", return_value=iter(tokens)
         ):
             result = list(use_case.stream(task.id, mode="deep"))
 
@@ -274,10 +270,8 @@ class TestPromptConsistency:
             return iter([])
 
         with (
-            patch("raztodo.application.use_cases.explain_task.chat", side_effect=fake_chat),
-            patch(
-                "raztodo.application.use_cases.explain_task.stream_chat", side_effect=fake_stream
-            ),
+            patch("raztodo.application.queries.explain_task.chat", side_effect=fake_chat),
+            patch("raztodo.application.queries.explain_task.stream_chat", side_effect=fake_stream),
         ):
             use_case.execute(task.id, mode="deep")
             list(use_case.stream(task.id, mode="deep"))

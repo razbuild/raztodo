@@ -1,6 +1,6 @@
 [project]
 name = "raztodo"
-version = "0.7.1"
+version = "0.7.2"
 description = "Modular task manager with a shared core and optional CLI, web UI, and shell completion components."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
@@ -73,7 +73,7 @@ omit = [
     "*/__init__.py",
     "*/__main__.py",
     "*/presentation/cli/helpers.py",
-    "*/presentation/cli/commands/*",
+    "*/presentation/cli/handlers/*",
     "*/presentation/cli/entrypoint.py",
     "*/presentation/cli/parser.py",
 ]

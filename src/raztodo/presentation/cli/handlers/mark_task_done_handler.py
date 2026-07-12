@@ -37,7 +37,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class DoneTaskCMD:
+class DoneTaskHandler:
     """Callable class that executes the 'done' command."""
 
     def __init__(self, uc: Any) -> None:

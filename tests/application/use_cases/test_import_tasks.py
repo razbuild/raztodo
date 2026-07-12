@@ -3,7 +3,7 @@ from unittest.mock import mock_open
 
 import pytest
 
-from raztodo.application.use_cases.import_task import ImportTasksUseCase
+from raztodo.application.use_cases.import_tasks import ImportTasksUseCase
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_entity import TaskEntity
 
@@ -47,7 +47,9 @@ class TestImportTasksUseCase:
     def test_import_unreadable_file(self, task_repo, tmp_path, monkeypatch):
         """Test importing an unreadable file raises error before import starts."""
         file_path = self.create_json_file(tmp_path, [])
-        monkeypatch.setattr("raztodo.application.use_cases.import_task.os.access", lambda *_: False)
+        monkeypatch.setattr(
+            "raztodo.application.use_cases.import_tasks.os.access", lambda *_: False
+        )
 
         use_case = ImportTasksUseCase(task_repo)
 

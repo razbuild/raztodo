@@ -37,7 +37,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class ImportTasksCMD:
+class ImportTasksHandler:
     """Callable class that executes the 'import' command."""
 
     def __init__(self, uc: Any) -> None:

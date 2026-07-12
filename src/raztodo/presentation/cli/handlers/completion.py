@@ -4,7 +4,7 @@ import sys
 COMMANDS = "add list update done remove search export import migrate clear completion"
 
 
-class CompletionCMD:
+class CompletionHandler:
     def __init__(self, get_task_ids=None):
         # `get_task_ids` can be used later for dynamic task ID completions
         self.get_task_ids = get_task_ids

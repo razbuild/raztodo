@@ -84,7 +84,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class ListTasksCMD:
+class ListTasksHandler:
     """Callable class that executes the 'list' command."""
 
     def __init__(self, uc: Any) -> None:

@@ -1,16 +1,16 @@
 from unittest.mock import MagicMock
 
-from raztodo.application.use_case_factory import DefaultUseCaseFactory
+from raztodo.application.factory import DefaultUseCaseFactory
+from raztodo.application.queries.explain_task import ExplainTaskUseCase
+from raztodo.application.queries.export_tasks import ExportTasksUseCase
+from raztodo.application.queries.list_tasks import ListTasksUseCase
+from raztodo.application.queries.search_tasks import SearchTasksUseCase
 from raztodo.application.use_cases.clear_tasks import ClearTasksUseCase
 from raztodo.application.use_cases.create_task import CreateTaskUseCase
 from raztodo.application.use_cases.delete_task import DeleteTaskUseCase
-from raztodo.application.use_cases.explain_task import ExplainTaskUseCase
-from raztodo.application.use_cases.export_task import ExportTasksUseCase
-from raztodo.application.use_cases.import_task import ImportTasksUseCase
-from raztodo.application.use_cases.list_tasks import ListTasksUseCase
+from raztodo.application.use_cases.import_tasks import ImportTasksUseCase
 from raztodo.application.use_cases.mark_task_done import MarkDoneUseCase
 from raztodo.application.use_cases.migrate_tasks import MigrateUseCase
-from raztodo.application.use_cases.search_tasks import SearchTasksUseCase
 from raztodo.application.use_cases.update_task import UpdateTaskUseCase
 
 

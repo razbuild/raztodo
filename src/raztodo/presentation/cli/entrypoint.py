@@ -39,7 +39,7 @@ def run_cli(router_factory, argv: list[str] | None = None) -> int:
 
         # ---- COMPLETION SHORT-CIRCUIT ----
         if getattr(args, "command", None) == "completion":
-            from raztodo.presentation.cli.commands.completion_cmd import CompletionCMD
+            from raztodo.presentation.cli.handlers.completion import CompletionCMD
 
             shell = getattr(args, "shell", None) or "bash"
             return CompletionCMD()(shell)

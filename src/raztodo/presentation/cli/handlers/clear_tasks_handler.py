@@ -33,7 +33,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class ClearTasksCMD:
+class ClearTasksHandler:
     """Callable class that executes the 'clear' command."""
 
     def __init__(self, uc: Any) -> None:

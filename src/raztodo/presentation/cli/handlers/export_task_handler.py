@@ -6,47 +6,41 @@ from raztodo.presentation.cli.helpers import handle_command_error, output_succes
 
 
 def add_parser(sub: Any) -> None:
-    """Add the 'remove' subcommand to the CLI parser."""
-    remove = sub.add_parser(
-        "remove",
-        help="Delete a task",
+    """Add the 'export' subcommand to the CLI parser."""
+    export = sub.add_parser(
+        "export",
+        help="Export tasks to a JSON file",
         description=(
-            "Delete a task by its ID. This action cannot be undone.\n\n"
+            "Export all tasks to a JSON file for backup or transfer.\n\n"
             "Examples:\n"
-            "  rt remove 1\n"
-            "  rt remove 5 --json"
+            "  rt export tasks_backup.json\n"
+            "  rt export ~/backups/tasks_2024.json --json"
         ),
         formatter_class=CLIHelpFormatter,
     )
-
-    remove.add_argument(
-        "id",
-        type=int,
-        metavar="ID",
-        help="ID of the task to delete (required)",
-    )
-    remove.add_argument(
+    export.add_argument("filepath", metavar="FILE", help="Path to the output JSON file (required)")
+    export.add_argument(
         "--json",
         action="store_true",
         help="Output result as JSON instead of human-readable format",
     )
 
 
-class DeleteTaskCMD:
-    """Callable class that executes the 'remove' command."""
+class ExportTasksHandler:
+    """Callable class that executes the 'export' command."""
 
     def __init__(self, uc: Any) -> None:
         self.uc = uc
 
     def __call__(self, args: argparse.Namespace) -> int:
         try:
-            success: bool = self.uc.execute(args.id)
+            success: bool = self.uc.execute(args.filepath)
             if success:
                 output_success(
-                    f"Task deleted successfully (ID: {args.id})",
+                    f"Tasks exported successfully to {args.filepath}",
                     json_mode=getattr(args, "json", False),
-                    id=args.id,
+                    filepath=args.filepath,
                 )
             return 0
         except Exception as e:
-            return handle_command_error(e, args)
+            return handle_command_error(e, args, filepath=args.filepath)

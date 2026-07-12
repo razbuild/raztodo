@@ -55,7 +55,7 @@ class DefaultUseCaseFactory:
         return DeleteTaskUseCase(repo)
 
     def create_list_tasks(self, repo: TaskRepository) -> Any:
-        from raztodo.application.use_cases.list_tasks import ListTasksUseCase
+        from raztodo.application.queries.list_tasks import ListTasksUseCase
 
         return ListTasksUseCase(repo)
 
@@ -65,17 +65,17 @@ class DefaultUseCaseFactory:
         return UpdateTaskUseCase(repo)
 
     def create_search_tasks(self, repo: TaskRepository) -> Any:
-        from raztodo.application.use_cases.search_tasks import SearchTasksUseCase
+        from raztodo.application.queries.search_tasks import SearchTasksUseCase
 
         return SearchTasksUseCase(repo)
 
     def create_export_tasks(self, repo: TaskRepository) -> Any:
-        from raztodo.application.use_cases.export_task import ExportTasksUseCase
+        from raztodo.application.queries.export_tasks import ExportTasksUseCase
 
         return ExportTasksUseCase(repo)
 
     def create_import_tasks(self, repo: TaskRepository) -> Any:
-        from raztodo.application.use_cases.import_task import ImportTasksUseCase
+        from raztodo.application.use_cases.import_tasks import ImportTasksUseCase
 
         return ImportTasksUseCase(repo)
 
@@ -95,6 +95,6 @@ class DefaultUseCaseFactory:
         return ClearTasksUseCase(repo)
 
     def create_explain_task(self, repo: TaskRepository) -> Any:
-        from raztodo.application.use_cases.explain_task import ExplainTaskUseCase
+        from raztodo.application.queries.explain_task import ExplainTaskUseCase
 
         return ExplainTaskUseCase(repo)

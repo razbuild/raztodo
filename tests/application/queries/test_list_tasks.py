@@ -1,4 +1,4 @@
-from raztodo.application.use_cases.list_tasks import ListTasksUseCase
+from raztodo.application.queries.list_tasks import ListTasksUseCase
 from raztodo.domain.task_entity import TaskEntity
 
 

@@ -4,7 +4,7 @@ from typing import Annotated, Any
 
 from fastapi import Depends
 
-from raztodo.application.use_case_factory import DefaultUseCaseFactory
+from raztodo.application.factory import DefaultUseCaseFactory
 from raztodo.infrastructure.container import build_container
 from raztodo.infrastructure.sqlite.task_repository import SQLiteTaskRepository
 

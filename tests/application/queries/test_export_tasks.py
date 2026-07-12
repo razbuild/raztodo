@@ -4,7 +4,7 @@ import tempfile
 
 import pytest
 
-from raztodo.application.use_cases.export_task import ExportTasksUseCase
+from raztodo.application.queries.export_tasks import ExportTasksUseCase
 from raztodo.domain.exceptions import RazTodoException
 
 

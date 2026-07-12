@@ -108,7 +108,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class ExplainTaskCMD:
+class ExplainTaskHandler:
     """Callable class that executes the 'explain' command."""
 
     def __init__(self, uc: Any) -> None:

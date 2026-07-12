@@ -60,7 +60,7 @@ def add_parser(sub: Any) -> None:
     )
 
 
-class SearchTasksCMD:
+class SearchTasksHandler:
     """Callable class that executes the 'search' command."""
 
     def __init__(self, uc: Any) -> None:

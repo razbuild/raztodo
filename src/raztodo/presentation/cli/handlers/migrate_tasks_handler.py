@@ -23,7 +23,7 @@ def add_parser(
     return p
 
 
-class MigrateCMD:
+class MigrateHandler:
     """Callable class that executes the 'migrate' command."""
 
     def __init__(self, uc: Any) -> None:
