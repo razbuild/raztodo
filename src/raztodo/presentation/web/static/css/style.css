@@ -870,3 +870,25 @@ select option {
         opacity: 1;
     }
 }
+
+/* ── Light Theme ───────────────────────────────────── */
+[data-theme="light"] {
+    /* Surfaces */
+    --bg-app: #f5f5f5;
+    --bg-sidebar: #ffffff;
+    --bg-panel: #ffffff;
+    --bg-input: #f3f4f6;
+    --bg-hover: #e5e7eb;
+    --bg-elevated: #d1d5db;
+
+    /* Borders */
+    --border: rgba(0, 0, 0, 0.08);
+    --border-input: rgba(0, 0, 0, 0.12);
+    --border-focus: rgba(0, 0, 0, 0.25);
+
+    /* Text */
+    --text-primary: rgba(0, 0, 0, 0.92);
+    --text-secondary: rgba(0, 0, 0, 0.70);
+    --text-muted: rgba(0, 0, 0, 0.45);
+    --text-label: rgba(0, 0, 0, 0.60);
+}
