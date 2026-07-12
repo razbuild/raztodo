@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.2] - 2026-07-13
+
+### Tests
+- Added test coverage for task operations.
+- Added import task tests.
+- Added explain feature tests.
+- Added task schema tests.
+
+### Changed
+- Internal codebase refactoring and project reorganization with no user-facing changes
+
+---
+
 ## [0.7.1] - 2026-07-01
 
 ### Fixed
