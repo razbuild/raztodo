@@ -358,6 +358,7 @@ select option {
     margin-left: auto;
 }
 
+.theme-toggle,
 .filter-tab {
     padding: 5px 14px;
     border-radius: var(--r-sm);
@@ -372,6 +373,10 @@ select option {
         background var(--t),
         color var(--t),
         border-color var(--t);
+}
+.theme-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 .filter-tab:hover {
     background: var(--bg-hover);
