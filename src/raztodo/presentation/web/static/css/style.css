@@ -65,6 +65,8 @@ body {
 
     /* Transitions */
     --t: 150ms ease;
+
+    --task-hover-bg: #222222;
 }
 
 /* ── Base ──────────────────────────────────────────── */
@@ -219,7 +221,7 @@ select:focus {
 input.input-primary {
     font-size: 15px;
     padding: 11px 12px;
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: var(--border-input);
 }
 
 select option {
@@ -417,7 +419,7 @@ select option {
 }
 .task-item:hover {
     border-color: rgba(255, 255, 255, 0.13);
-    background: #222222;
+    background: var(--task-hover-bg);
 }
 .task-item.done {
     opacity: 0.55;
@@ -634,8 +636,8 @@ select option {
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(8px);
-    background: #2a2a2a;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
     color: var(--text-primary);
     padding: 10px 18px;
     border-radius: var(--r-md);
@@ -896,4 +898,6 @@ select option {
     --text-secondary: rgba(0, 0, 0, 0.70);
     --text-muted: rgba(0, 0, 0, 0.45);
     --text-label: rgba(0, 0, 0, 0.60);
+
+    --task-hover-bg: #f3f4f6;
 }
