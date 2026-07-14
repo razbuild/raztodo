@@ -65,6 +65,8 @@ body {
 
     /* Transitions */
     --t: 150ms ease;
+
+    --task-hover-bg: #222222;
 }
 
 /* ── Base ──────────────────────────────────────────── */
@@ -219,7 +221,7 @@ select:focus {
 input.input-primary {
     font-size: 15px;
     padding: 11px 12px;
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: var(--border-input);
 }
 
 select option {
@@ -358,6 +360,7 @@ select option {
     margin-left: auto;
 }
 
+.theme-toggle,
 .filter-tab {
     padding: 5px 14px;
     border-radius: var(--r-sm);
@@ -372,6 +375,10 @@ select option {
         background var(--t),
         color var(--t),
         border-color var(--t);
+}
+.theme-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 .filter-tab:hover {
     background: var(--bg-hover);
@@ -412,7 +419,7 @@ select option {
 }
 .task-item:hover {
     border-color: rgba(255, 255, 255, 0.13);
-    background: #222222;
+    background: var(--task-hover-bg);
 }
 .task-item.done {
     opacity: 0.55;
@@ -629,8 +636,8 @@ select option {
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(8px);
-    background: #2a2a2a;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
     color: var(--text-primary);
     padding: 10px 18px;
     border-radius: var(--r-md);
@@ -869,4 +876,28 @@ select option {
     .task-actions {
         opacity: 1;
     }
+}
+
+/* ── Light Theme ───────────────────────────────────── */
+[data-theme="light"] {
+    /* Surfaces */
+    --bg-app: #f5f5f5;
+    --bg-sidebar: #ffffff;
+    --bg-panel: #ffffff;
+    --bg-input: #f3f4f6;
+    --bg-hover: #e5e7eb;
+    --bg-elevated: #d1d5db;
+
+    /* Borders */
+    --border: rgba(0, 0, 0, 0.08);
+    --border-input: rgba(0, 0, 0, 0.12);
+    --border-focus: rgba(0, 0, 0, 0.25);
+
+    /* Text */
+    --text-primary: rgba(0, 0, 0, 0.92);
+    --text-secondary: rgba(0, 0, 0, 0.70);
+    --text-muted: rgba(0, 0, 0, 0.45);
+    --text-label: rgba(0, 0, 0, 0.60);
+
+    --task-hover-bg: #f3f4f6;
 }

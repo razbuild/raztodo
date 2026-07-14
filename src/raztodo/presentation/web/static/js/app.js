@@ -4,6 +4,28 @@ let editingTaskId = null;
 let lastTasks = [];
 let currentFilter = "all";
 
+const THEME_KEY = "theme";
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+
+  const button = document.getElementById("theme-toggle");
+  if (button) {
+    button.textContent = theme === "dark" ? "🌙" : "☀️";
+  }
+}
+
+function toggleTheme() {
+  const current =
+    document.documentElement.getAttribute("data-theme") || "dark";
+
+  const next = current === "dark" ? "light" : "dark";
+
+  applyTheme(next);
+
+  localStorage.setItem(THEME_KEY, next);
+}
+
 function setStatus(message, isError = false) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
@@ -246,7 +268,15 @@ async function addTask() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+  applyTheme(savedTheme);
+
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("click", toggleTheme);
+
   const titleInput = document.getElementById("new-title");
+
   if (titleInput) {
     titleInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") addTask();
@@ -501,3 +531,4 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeExplain();
   });
 });
+
