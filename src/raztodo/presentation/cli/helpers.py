@@ -2,7 +2,7 @@ import json
 from collections.abc import Callable
 from typing import Any
 
-from raztint import blue, cyan, err, gray, green, magenta, ok, yellow
+from raztint import paint
 
 from raztodo.domain.exceptions import ERROR_TYPE_MAP
 from raztodo.domain.task_entity import TaskEntity
@@ -42,7 +42,7 @@ def output_success(message: str, json_mode: bool = False, **json_data: Any) -> N
     if json_mode:
         output_json({"ok": True, **json_data})
     else:
-        print(f"{ok()} {message}")
+        print(paint(message, intent="success"))
 
 
 def output_error(
@@ -57,7 +57,7 @@ def output_error(
             error_data["type"] = error_type
         output_json(error_data)
     else:
-        print(f"{err()} {error}")
+        print(paint(str(error), intent="danger"))
 
 
 def handle_command_error(
@@ -88,8 +88,10 @@ def handle_command_error(
 
 def format_task(task: TaskEntity) -> None:
     done: bool = getattr(task, "done", False)
-    status_icon: str = ok() if done else err()
-    status_text: str = green("[Done]") if done else yellow("[Pending]")
+    status_icon: str = paint("", icon="ok") if done else paint("", icon="err")
+    status_text: str = (
+        paint("[Done]", color="green") if done else paint("[Pending]", color="yellow")
+    )
 
     created_raw: str = getattr(task, "created_at", "")
     created_date: str = created_raw.split(" ")[0] if created_raw else "N/A"
@@ -100,22 +102,25 @@ def format_task(task: TaskEntity) -> None:
     due_date: str = getattr(task, "due_date", None) or ""
 
     meta_fields: list[tuple[Any, Callable[[Any], str]]] = [
-        (priority, lambda v: f"Priority: {yellow(v)}"),
-        (project, lambda v: f"Project: {cyan(v)}"),
-        (tags, lambda v: f"Tags: {', '.join([magenta(t) for t in v])}"),
-        (due_date, lambda v: f"Due: {gray(v)}"),
+        (priority, lambda v: f"Priority: {paint(v, color='yellow')}"),
+        (project, lambda v: f"Project: {paint(v, color='cyan')}"),
+        (tags, lambda v: f"Tags: {', '.join([paint(t, color='magenta') for t in v])}"),
+        (due_date, lambda v: f"Due: {paint(v, color='gray')}"),
     ]
 
     metadata_parts: list[str] = [fmt(value) for value, fmt in meta_fields if value]
-    metadata_parts.append(f"Created: {gray(created_date)}")
+    metadata_parts.append(f"Created: {paint(created_date, color='gray')}")
 
-    print(f"{status_icon} {blue(f'#{task.id}')} {task.title} {gray(f'{status_text}')}")
+    print(
+        f"{status_icon} {paint(f'#{task.id}', color='blue')} {task.title} "
+        f"{paint(status_text, color='gray')}"
+    )
 
     description: str = getattr(task, "description", "") or ""
     if description:
-        print(f"   {gray(description)}")
+        print(f"   {paint(description, color='gray')}")
 
-    print(f"   {gray(' | '.join(metadata_parts))}")
+    print(f"   {paint(' | '.join(metadata_parts), color='gray')}")
     print()
 
 
