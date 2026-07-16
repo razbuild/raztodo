@@ -123,9 +123,7 @@ class ExplainTaskHandler:
 
             task_id: int | None = getattr(args, "id", None)
             if task_id is None:
-                args._parser.error(
-                    "the following arguments are required: id (or use --config)"
-                )
+                args._parser.error("the following arguments are required: id (or use --config)")
 
             mode: str = getattr(args, "mode", None) or "short"
             json_mode: bool = getattr(args, "json", False)
