@@ -107,6 +107,8 @@ def add_parser(sub: Any) -> None:
         help="Output result in JSON format",
     )
 
+    explain.set_defaults(_parser=explain)
+
 
 class ExplainTaskHandler:
     """Callable class that executes the 'explain' command."""
@@ -121,8 +123,9 @@ class ExplainTaskHandler:
 
             task_id: int | None = getattr(args, "id", None)
             if task_id is None:
-                print("task ID is required unless using --config", file=sys.stderr)
-                return 1
+                args._parser.error(
+                    "the following arguments are required: id (or use --config)"
+                )
 
             mode: str = getattr(args, "mode", None) or "short"
             json_mode: bool = getattr(args, "json", False)
