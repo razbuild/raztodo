@@ -205,6 +205,7 @@ Core:
   - 📦 [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
   - 📖 [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
   - ⚙️ [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
+  - 🤖 [Explain Guide](https://github.com/razbuild/raztodo/blob/master/docs/EXPLAIN.md)
 
 Advanced:
   - ⌨️ [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
