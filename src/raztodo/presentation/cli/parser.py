@@ -4,7 +4,7 @@ import os
 from raztodo.infrastructure.version import get_version
 from raztodo.presentation.cli.handlers import (
     clear_tasks_handler,
-    completion,
+    completion_handler,
     create_task_handler,
     delete_task_handler,
     explain_task_handler,
@@ -65,7 +65,7 @@ def get_parser() -> argparse.ArgumentParser:
     mark_task_done_handler.add_parser(sub)
     migrate_tasks_handler.add_parser(sub)
     clear_tasks_handler.add_parser(sub)
-    completion.add_parser(sub)
+    completion_handler.add_parser(sub)
     explain_task_handler.add_parser(sub)
 
     return parser
