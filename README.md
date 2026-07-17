@@ -65,9 +65,9 @@ Both the CLI and Web UI use the same core engine and SQLite database, so every i
 
 The architecture follows three design principles:
 
-- **Separation of concerns** — core logic is independent of the user interface.
-- **Local-first storage** — all data stays on your machine.
-- **Composable interfaces** — use only the interfaces you need.
+- **Separation of concerns** core logic is independent of the user interface.
+- **Local-first storage** all data stays on your machine.
+- **Composable interfaces** use only the interfaces you need.
 
 ---
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0] - 2026-07-18
+
+### Added
+- Added a Light Theme for the web UI, allowing users to switch between light and dark appearances
+
+### Fixed
+- Fixed CLI shell completion initialization to ensure completion works reliably across supported environments
+- Unified validation error handling for the `rt explain` command so it matches the behavior and formatting of other CLI commands
+
+### Changed
+- Improved and refined the project documentation
+
+---
+
 ## [0.7.2] - 2026-07-13
 
 ### Tests
