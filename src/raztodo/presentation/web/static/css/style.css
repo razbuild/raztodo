@@ -422,6 +422,7 @@ select option {
 .task-item:hover {
     border-color: rgba(255, 255, 255, 0.13);
     background: var(--task-hover-bg);
+    border: 1px solid var(--border);
 }
 .task-item.done {
     opacity: 0.55;
