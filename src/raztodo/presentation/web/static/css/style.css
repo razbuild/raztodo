@@ -57,6 +57,8 @@ body {
     --tag-text: #c4b5fd;
     --project-bg: rgba(34, 211, 238, 0.12);
     --project-text: #67e8f9;
+    --overdue-bg: rgba(239, 68, 68, 0.15);
+    --overdue-text: #fca5a5;
 
     /* Radii */
     --r-sm: 7px;
@@ -567,8 +569,8 @@ select option {
     color: var(--project-text);
 }
 .badge.overdue {
-    background: rgba(239, 68, 68, 0.15);
-    color: #fca5a5;
+    background: var(--overdue-bg);
+    color: var(--overdue-text);
 }
 
 /* ── Edit form (inline) ────────────────────────────── */
@@ -898,6 +900,20 @@ select option {
     --text-secondary: rgba(0, 0, 0, 0.70);
     --text-muted: rgba(0, 0, 0, 0.45);
     --text-label: rgba(0, 0, 0, 0.60);
+
+    /* Badges */
+    --ph-bg: #fee2e2;
+    --ph-text: #991b1b;
+    --pm-bg: #fef3c7;
+    --pm-text: #854d0e;
+    --pl-bg: #dcfce7;
+    --pl-text: #166534;
+    --tag-bg: #ede9fe;
+    --tag-text: #5b21b6;
+    --project-bg: #cffafe;
+    --project-text: #155e75;
+    --overdue-bg: #fee2e2;
+    --overdue-text: #991b1b;
 
     --task-hover-bg: #f3f4f6;
 }
