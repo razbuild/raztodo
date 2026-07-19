@@ -1,6 +1,6 @@
 [project]
 name = "raztodo"
-version = "0.8.0"
+version = "0.8.1"
 description = "A local-first task manager for developers with a native CLI, optional Web UI, and local AI assistance powered by Ollama."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"

@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.1] - 2026-07-19
+
+### Added
+- Added tests for `style.css`
+
+### Fixed
+- Improved the Light Theme across the web UI, including error colors, danger actions, task action buttons, hover effects, and badge contrast
+‍
+---
+
 ## [0.8.0] - 2026-07-18
 
 ### Added
