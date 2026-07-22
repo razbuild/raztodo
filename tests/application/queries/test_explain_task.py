@@ -6,7 +6,6 @@ import pytest
 
 from raztodo.application.queries.explain_task import (
     MODE_PROMPTS,
-    SYSTEM_PROMPT,
     ExplainTaskUseCase,
     _task_to_json,
 )
@@ -138,12 +137,13 @@ class TestExecute:
         assert result == "Here is a summary."
         mock_chat.assert_called_once()
 
-    def test_passes_system_prompt(self, use_case, task):
+    def test_does_not_override_system_prompt(self, use_case, task):
+        """execute() should not pass `system`, so client.chat() falls back to cfg.system_prompt."""
         with patch("raztodo.application.queries.explain_task.chat", return_value="ok") as mock_chat:
             use_case.execute(task.id)
 
         _, kwargs = mock_chat.call_args
-        assert kwargs.get("system") == SYSTEM_PROMPT
+        assert "system" not in kwargs
 
     def test_default_mode_is_short(self, use_case, task):
         with patch("raztodo.application.queries.explain_task.chat", return_value="ok") as mock_chat:
@@ -203,14 +203,14 @@ class TestStream:
 
         assert isinstance(result, Generator)
 
-    def test_passes_system_prompt(self, use_case, task):
+    def test_does_not_override_system_prompt(self, use_case, task):
         with patch(
             "raztodo.application.queries.explain_task.stream_chat", return_value=iter([])
         ) as mock_stream:
             list(use_case.stream(task.id))
 
         _, kwargs = mock_stream.call_args
-        assert kwargs.get("system") == SYSTEM_PROMPT
+        assert "system" not in kwargs
 
     def test_default_mode_is_short(self, use_case, task):
         with patch(
@@ -261,11 +261,11 @@ class TestPromptConsistency:
     def test_execute_and_stream_use_same_prompt(self, use_case, task):
         captured = {}
 
-        def fake_chat(prompt, *, system):
+        def fake_chat(prompt, system=None):
             captured["execute"] = prompt
             return "ok"
 
-        def fake_stream(prompt, *, system):
+        def fake_stream(prompt, system=None):
             captured["stream"] = prompt
             return iter([])
 
