@@ -36,7 +36,7 @@ def add_parser(sub: Any) -> None:
             "  rt explain 3 --plan\n"
             "  rt explain --config\n"
             "  rt explain --config --model mistral\n\n"
-            "Config file: ~/.local/share/raztodo/ollama.json\n"
+            "Config file: ~/.local/share/raztodo/llm.json\n"
             "Environment variables override config file:\n"
             "  OLLAMA_HOST     Ollama server URL\n"
             "  OLLAMA_MODEL    Model name\n"
@@ -134,10 +134,11 @@ class ExplainTaskHandler:
             if not json_mode:
                 _loading(label)
 
-            result: str = self.uc.execute(task_id, mode=mode)
-
-            if not json_mode:
-                _clear_loading(label)
+            try:
+                result: str = self.uc.execute(task_id, mode=mode)
+            finally:
+                if not json_mode:
+                    _clear_loading(label)
 
             if json_mode:
                 json.dump(

@@ -8,13 +8,6 @@ from raztodo.infrastructure.logger import get_logger
 
 logger = get_logger(__name__)
 
-SYSTEM_PROMPT = (
-    "You are a helpful productivity assistant. "
-    "The user will give you a task in JSON format. "
-    "Respond concisely and practically. "
-    "Never repeat the raw JSON back to the user."
-)
-
 MODE_PROMPTS: dict[str, str] = {
     "short": (
         "Give a 2 or 3 sentence plain-language summary of this task. "
@@ -52,7 +45,7 @@ class ExplainTaskUseCase:
         prompt = self._get_prompt(task_id, mode)
         logger.info("Explaining task id=%d mode=%s (blocking)", task_id, mode)
         try:
-            return chat(prompt, system=SYSTEM_PROMPT)
+            return chat(prompt)
         except OllamaClientError as exc:
             raise RazTodoException(f"OllamaError: {exc}") from exc
 
@@ -61,7 +54,7 @@ class ExplainTaskUseCase:
         prompt = self._get_prompt(task_id, mode)
         logger.info("Explaining task id=%d mode=%s (streaming)", task_id, mode)
         try:
-            yield from stream_chat(prompt, system=SYSTEM_PROMPT)
+            yield from stream_chat(prompt)
         except OllamaClientError as exc:
             raise RazTodoException(f"OllamaError: {exc}") from exc
 
