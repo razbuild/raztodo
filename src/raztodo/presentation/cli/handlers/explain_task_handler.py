@@ -131,16 +131,13 @@ class ExplainTaskHandler:
             mode_labels = {"short": "Summary", "deep": "Deep Analysis", "plan": "Action Plan"}
             label = mode_labels.get(mode, mode.capitalize())
 
-            if not json_mode:
+            if json_mode:
                 _loading(label)
-
-            try:
-                result: str = self.uc.execute(task_id, mode=mode)
-            finally:
-                if not json_mode:
+                try:
+                    result: str = self.uc.execute(task_id, mode=mode)
+                finally:
                     _clear_loading(label)
 
-            if json_mode:
                 json.dump(
                     {"id": task_id, "mode": mode, "explanation": result},
                     sys.stdout,
@@ -150,8 +147,9 @@ class ExplainTaskHandler:
                 print()
             else:
                 print(f"\n{label} for task #{task_id}\n")
-                print(result)
-                print()
+                for token in self.uc.stream(task_id, mode=mode):
+                    print(token, end="", flush=True)
+                print("\n")
 
             return 0
 
