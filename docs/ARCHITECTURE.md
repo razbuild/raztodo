@@ -114,7 +114,7 @@ src/
         │   ├── formatters.py
         │   ├── handlers
         │   │   ├── clear_tasks_handler.py
-        │   │   ├── completion.py
+        │   │   ├── completion_handler.py
         │   │   ├── create_task_handler.py
         │   │   ├── delete_task_handler.py
         │   │   ├── explain_task_handler.py
@@ -148,7 +148,20 @@ src/
             │   ├── img
             │   │   └── favicon.ico
             │   └── js
-            │       └── app.js
+            │       ├── app.js               # entrypoint: wires modules together, bootstraps the app
+            │       ├── explain
+            │       │   ├── index.js         # explain feature public surface
+            │       │   └── modal.js         # explain modal UI + SSE token rendering
+            │       ├── shared
+            │       │   ├── api.js           # fetch wrappers for the /api/tasks endpoints
+            │       │   ├── state.js         # shared client-side app state
+            │       │   ├── theme.js         # light/dark theme toggling
+            │       │   └── toast.js         # toast notification helper
+            │       └── tasks
+            │           ├── actions.js       # create/update/delete/mark-done action handlers
+            │           ├── edit.js          # inline task editing UI logic
+            │           ├── index.js         # tasks feature public surface
+            │           └── render.js        # task list/item DOM rendering
             └── templates
                 └── index.html
 ```
@@ -260,7 +273,7 @@ Important files:
 - `parser.py`: top-level `argparse` setup
 - `router.py`: maps command names to command handlers, which in turn call queries/use cases
 - `entrypoint.py`: runs the CLI flow
-- `handlers/`: command-specific parsers and handlers, including `explain_task_handler.py`. Each handler is named after the query/use case it invokes (e.g. `create_task_handler.py`), except `completion.py`, which implements shell completion and isn't tied to a single query/use case.
+- `handlers/`: command-specific parsers and handlers, all following the `<name>_handler.py` naming convention (e.g. `create_task_handler.py`, `completion_handler.py`). Each handler is named after the query/use case it invokes, except `completion_handler.py`, which implements shell completion and isn't tied to a single query/use case.
 
 ### Web UI / API
 
@@ -283,6 +296,26 @@ The web layer is split into two logical parts:
 - **Frontend layer**: static assets and HTML; the explain modal renders tokens progressively via `fetch` + `ReadableStream`
 
 The web UI is optional and only available when RazTodo is installed with the `web` extra.
+
+#### Frontend JS modules
+
+**Directory:** `src/raztodo/presentation/web/static/js/`
+
+The frontend JavaScript, previously a single monolithic `app.js`, is now split into focused ES modules grouped by feature:
+
+| Path | Purpose |
+|------|---------|
+| `app.js` | Entrypoint; wires feature modules together and bootstraps the page |
+| `shared/api.js` | Fetch wrappers around the `/api/tasks` endpoints |
+| `shared/state.js` | Shared client-side application state |
+| `shared/theme.js` | Light/dark theme toggling |
+| `shared/toast.js` | Toast notification helper |
+| `tasks/index.js` | Public surface of the tasks feature |
+| `tasks/actions.js` | Create/update/delete/mark-done action handlers |
+| `tasks/edit.js` | Inline task editing UI logic |
+| `tasks/render.js` | Task list/item DOM rendering |
+| `explain/index.js` | Public surface of the explain feature |
+| `explain/modal.js` | Explain modal UI and SSE token rendering |
 
 ---
 
@@ -352,4 +385,4 @@ RazTodo's architecture separates task logic from storage and interface concerns:
 - the domain models the problem space
 - the application layer orchestrates workflows, split into read-only **queries** and mutating **use cases**
 - the infrastructure layer handles persistence and LLM integration
-- the presentation layer handles CLI and HTTP/API + web UI rendering
+- the presentation layer handles CLI and HTTP/API + web UI rendering, with the web frontend now organized into focused `shared/`, `tasks/`, and `explain/` JS modules instead of a single monolithic file
