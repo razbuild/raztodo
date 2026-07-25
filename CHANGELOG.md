@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.0] - 2026-07-25
+
+### Added
+- Added streaming explanations for the `rt explain` command in interactive CLI mode, allowing responses to appear incrementally
+
+### Fixed
+- Simplified the explain flow by removing the custom system prompt
+- Improved loader behavior during explanation generation
+- Updated explain tests to match the new default system prompt behavior
+
+### Changed
+- Refactored the web UI into modular JavaScript feature modules for improved maintainability
+- Expanded the architecture documentation to reflect the new frontend module structure and project organization
+
+### Tests
+- Updated explain feature tests for the new explain behavior
+
+---
+
 ## [0.8.1] - 2026-07-19
 
 ### Added
