@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/RazTodo.svg" alt="RazTodo" width="400" />
+  <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/RazTodo.svg" alt="RazTodo" width="100" />
   <br><br>
 
 [![PyPI Version](https://img.shields.io/pypi/v/raztodo)](https://pypi.org/project/raztodo/)
@@ -7,7 +7,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/razbuild/raztodo/ci.yml)](https://github.com/razbuild/raztodo/actions/workflows/ci.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/razbuild/raztodo)](https://codecov.io/gh/razbuild/raztodo)
 
-  <p>A local-first task manager for developers with a native CLI, optional Web UI, and local AI assistance powered by Ollama.</p>
+  **A local-first task manager for developers with a native CLI, optional Web UI, and local AI assistance powered by Ollama.**
 </div>
 
 ---
