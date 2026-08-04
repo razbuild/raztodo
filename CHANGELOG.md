@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.1] - 2026-08-04
+
+### Changed
+
+* Refined dark and light theme colors across the web UI for improved contrast and readability
+* Improved borders, hover states, text contrast, badges, and semantic action styling
+* Refined task action button styling in the Light Theme
+* Updated the web UI favicon
+
+
+---
+
 ## [0.9.0] - 2026-07-25
 
 ### Added
