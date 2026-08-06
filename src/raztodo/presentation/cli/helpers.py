@@ -57,7 +57,7 @@ def output_error(
             error_data["type"] = error_type
         output_json(error_data)
     else:
-        print(paint(str(error), intent="danger"))
+        print(paint(str(error), intent="error"))
 
 
 def handle_command_error(
