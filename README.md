@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/razbuild/raztodo/master/assets/RazTodo.svg" alt="RazTodo" width="150" />
+  <img src="https://raw.githubusercontent.com/razbuild/raztodo/main/assets/RazTodo.svg" alt="RazTodo" width="150" />
 
 # RazTodo
 
@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/razbuild/raztodo/raw/master/assets/preview.gif" width="700">
+  <img src="https://github.com/razbuild/raztodo/raw/main/assets/preview.gif" width="700">
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/razbuild/raztodo/raw/master/assets/web-preview.png" width="700">
+  <img src="https://github.com/razbuild/raztodo/raw/main/assets/web-preview.png" width="700">
 </p>
 
 <p align="center">
@@ -124,7 +124,7 @@ Then open `http://127.0.0.1:8000`.
 eval "$(rt completion bash)"
 ```
 
-Supports bash, zsh, and fish. For permanent setup see the [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md).
+Supports bash, zsh, and fish. For permanent setup see the [Completion Guide](https://github.com/razbuild/raztodo/blob/main/docs/COMPLETION.md).
 
 ---
 
@@ -149,7 +149,7 @@ rt explain 1 --deep
 > [!NOTE]
 > Requires Ollama with a compatible local model. All AI processing is performed locally.
 
-📖 See the [Explain Guide](https://github.com/razbuild/raztodo/blob/master/docs/EXPLAIN.md) for installation, configuration, supported models, and usage examples.
+📖 See the [Explain Guide](https://github.com/razbuild/raztodo/blob/main/docs/EXPLAIN.md) for installation, configuration, supported models, and usage examples.
 
 ---
 
@@ -175,7 +175,7 @@ pip install "raztodo[completion]"
 pip install "raztodo[all]"
 ```
 
-For virtual environment and source installation, see the [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md).
+For virtual environment and source installation, see the [Installation Guide](https://github.com/razbuild/raztodo/blob/main/docs/INSTALLATION.md).
 
 ---
 
@@ -201,7 +201,7 @@ rt --help
 rt add --help
 ```
 
-📖 See the [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md) for full command documentation.
+📖 See the [Usage Guide](https://github.com/razbuild/raztodo/blob/main/docs/USAGE.md) for full command documentation.
 
 ---
 
@@ -218,7 +218,7 @@ export LOG_LEVEL="DEBUG"
 ```
 
 > [!TIP]
-> 📖 See the [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
+> 📖 See the [Configuration Guide](https://github.com/razbuild/raztodo/blob/main/docs/CONFIGURATION.md)
 
 ---
 
@@ -233,24 +233,24 @@ docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first ta
 > kept CLI-only to minimize image size and dependencies
 
 > [!TIP]
-> 📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
+> 📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md)
 
 ---
 
 ## Documentation
 
 **Core:**
-- 📦 [Installation Guide](https://github.com/razbuild/raztodo/blob/master/docs/INSTALLATION.md)
-- 📖 [Usage Guide](https://github.com/razbuild/raztodo/blob/master/docs/USAGE.md)
-- ⚙️ [Configuration Guide](https://github.com/razbuild/raztodo/blob/master/docs/CONFIGURATION.md)
-- 🤖 [Explain Guide](https://github.com/razbuild/raztodo/blob/master/docs/EXPLAIN.md)
+- 📦 [Installation Guide](https://github.com/razbuild/raztodo/blob/main/docs/INSTALLATION.md)
+- 📖 [Usage Guide](https://github.com/razbuild/raztodo/blob/main/docs/USAGE.md)
+- ⚙️ [Configuration Guide](https://github.com/razbuild/raztodo/blob/main/docs/CONFIGURATION.md)
+- 🤖 [Explain Guide](https://github.com/razbuild/raztodo/blob/main/docs/EXPLAIN.md)
 
 **Advanced:**
-- ⌨️ [Completion Guide](https://github.com/razbuild/raztodo/blob/master/docs/COMPLETION.md)
-- 🐳 [Docker Guide](https://github.com/razbuild/raztodo/blob/master/docs/DOCKER.md)
-- 🏗️ [Architecture](https://github.com/razbuild/raztodo/blob/master/docs/ARCHITECTURE.md)
-- 🧪 [Testing](https://github.com/razbuild/raztodo/blob/master/docs/TESTING.md)
-- 📝 [Changelog](https://github.com/razbuild/raztodo/blob/master/CHANGELOG.md)
+- ⌨️ [Completion Guide](https://github.com/razbuild/raztodo/blob/main/docs/COMPLETION.md)
+- 🐳 [Docker Guide](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md)
+- 🏗️ [Architecture](https://github.com/razbuild/raztodo/blob/main/docs/ARCHITECTURE.md)
+- 🧪 [Testing](https://github.com/razbuild/raztodo/blob/main/docs/TESTING.md)
+- 📝 [Changelog](https://github.com/razbuild/raztodo/blob/main/CHANGELOG.md)
 
 ---
 
@@ -294,7 +294,7 @@ See the [CONTRIBUTING](https://github.com/razbuild/.github/blob/main/CONTRIBUTIN
 
 ## License
 
-[![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/razbuild/raztodo)](https://github.com/razbuild/raztodo/blob/main/LICENSE)
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/razbuild/.github/main/assets/badge.svg" alt="Made by RazBuild" width="160">
