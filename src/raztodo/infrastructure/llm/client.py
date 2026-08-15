@@ -100,7 +100,9 @@ def chat(prompt: str, system: str = "", cfg: OllamaConfig | None = None) -> str:
         conn.close()
 
     try:
-        return json.loads(raw)["message"]["content"]
+        content = json.loads(raw)["message"]["content"]
+        assert isinstance(content, str)
+        return content
     except (json.JSONDecodeError, KeyError) as exc:
         raise OllamaClientError(f"Unexpected Ollama response format: {raw[:200]}") from exc
 
@@ -146,6 +148,7 @@ def stream_chat(
                 continue
 
             token = chunk.get("message", {}).get("content", "")
+            assert isinstance(token, str)
             if token:
                 yield token
 
