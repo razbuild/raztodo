@@ -218,3 +218,102 @@ class TestTaskDAO:
         """Test clearing when database is empty."""
         count = dao.clear_all()
         assert count == 0
+
+    def test_fetch_all_filter_due_before(self, dao):
+        """Test filtering by due_before date."""
+        dao.insert("Early Task", due_date="2025-01-15")
+        dao.insert("Late Task", due_date="2025-03-01")
+        dao.insert("No Due Date Task")
+
+        rows = list(dao.fetch_all(due_before="2025-02-01"))
+        assert len(rows) == 1
+        assert rows[0]["title"] == "Early Task"
+
+    def test_fetch_all_filter_due_after(self, dao):
+        """Test filtering by due_after date."""
+        dao.insert("Early Task", due_date="2025-01-15")
+        dao.insert("Late Task", due_date="2025-03-01")
+        dao.insert("No Due Date Task")
+
+        rows = list(dao.fetch_all(due_after="2025-02-01"))
+        assert len(rows) == 1
+        assert rows[0]["title"] == "Late Task"
+
+    def test_fetch_all_filter_due_range(self, dao):
+        """Test filtering with both due_before and due_after."""
+        dao.insert("Task 1", due_date="2025-01-01")
+        dao.insert("Task 2", due_date="2025-02-15")
+        dao.insert("Task 3", due_date="2025-03-30")
+
+        rows = list(dao.fetch_all(due_after="2025-02-01", due_before="2025-03-01"))
+        assert len(rows) == 1
+        assert rows[0]["title"] == "Task 2"
+
+    def test_fetch_all_filter_tags(self, dao):
+        """Test filtering by tags in fetch_all."""
+        dao.insert("Task 1", tags=["urgent", "bug"])
+        dao.insert("Task 2", tags=["feature"])
+
+        rows = list(dao.fetch_all(tags=["urgent"]))
+        assert len(rows) == 1
+        assert rows[0]["title"] == "Task 1"
+
+    def test_fetch_by_id_exists(self, dao):
+        """Test fetching an existing task by id."""
+        task_id = dao.insert("Existing Task", description="Some description")
+        row = dao.fetch_by_id(task_id)
+        assert row is not None
+        assert row["id"] == task_id
+        assert row["title"] == "Existing Task"
+        assert row["description"] == "Some description"
+
+    def test_fetch_by_id_not_found(self, dao):
+        """Test fetching a non-existent task by id returns None."""
+        row = dao.fetch_by_id(99999)
+        assert row is None
+
+    def test_update_task_done_false(self, dao):
+        """Test updating task done status to False."""
+        task_id = dao.insert("Task", description="Desc")
+        dao.update(task_id, done=True)
+        row = dao.fetch_by_id(task_id)
+        assert row["done"] == 1
+
+        dao.update(task_id, done=False)
+        row = dao.fetch_by_id(task_id)
+        assert row["done"] == 0
+
+    def test_update_task_tags(self, dao):
+        """Test updating tags to a new list and clearing tags."""
+        task_id = dao.insert("Task", tags=["old_tag"])
+
+        # Update with new tags
+        dao.update(task_id, tags=["new_tag1", "new_tag2"])
+        row = dao.fetch_by_id(task_id)
+        assert json.loads(row["tags"]) == ["new_tag1", "new_tag2"]
+
+        # Clear tags with empty list
+        dao.update(task_id, tags=[])
+        row = dao.fetch_by_id(task_id)
+        assert row["tags"] is None
+
+    def test_search_tasks_multiple_tags(self, dao):
+        """Test searching tasks with multiple tags filter."""
+        dao.insert("Task A", tags=["backend", "p1"])
+        dao.insert("Task B", tags=["frontend", "p2"])
+        dao.insert("Task C", tags=["ops"])
+
+        rows = list(dao.search("Task", tags=["backend", "frontend"]))
+        assert len(rows) == 2
+
+    def test_search_tasks_fts_fallback(self, dao):
+        """Test search fallback to LIKE when FTS query fails."""
+        dao.insert("Fallback Task", description="Testing fallback", priority="H")
+
+        # Corrupt FTS table to trigger exception and verify fallback path
+        dao._conn.execute("DROP TABLE IF EXISTS tasks_fts")
+
+        rows = list(dao.search("Fallback", priority="H"))
+        assert len(rows) == 1
+        assert rows[0]["title"] == "Fallback Task"
+
