@@ -1,4 +1,5 @@
 import json
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -117,6 +118,29 @@ class TestTaskDAO:
         work_rows = list(dao.fetch_all(project="Work"))
         assert len(work_rows) == 1
 
+    def test_fetch_all_filter_due_dates(self, dao):
+        """Test filtering by due_before and due_after dates."""
+        dao.insert("Task 1", due_date="2025-01-10")
+        dao.insert("Task 2", due_date="2025-01-20")
+        dao.insert("Task 3", due_date="2025-01-30")
+
+        before_rows = list(dao.fetch_all(due_before="2025-01-15"))
+        assert len(before_rows) == 1
+        assert before_rows[0]["title"] == "Task 1"
+
+        after_rows = list(dao.fetch_all(due_after="2025-01-25"))
+        assert len(after_rows) == 1
+        assert after_rows[0]["title"] == "Task 3"
+
+    def test_fetch_all_filter_tags(self, dao):
+        """Test filtering by tags."""
+        dao.insert("Task 1", tags=["home", "chores"])
+        dao.insert("Task 2", tags=["work"])
+
+        tag_rows = list(dao.fetch_all(tags=["home"]))
+        assert len(tag_rows) == 1
+        assert tag_rows[0]["title"] == "Task 1"
+
     def test_update_task_title(self, dao):
         """Test updating task title."""
         task_id = dao.insert("Old Title")
@@ -156,6 +180,22 @@ class TestTaskDAO:
         row = dao.fetch_by_id(task_id)
         assert row is not None
         assert row["project"] is None
+
+    def test_update_task_tags(self, dao):
+        """Test updating and clearing task tags."""
+        task_id = dao.insert("Task", tags=["tag1"])
+        result = dao.update(task_id, tags=["tag2", "tag3"])
+        assert result > 0
+
+        row = dao.fetch_by_id(task_id)
+        assert row is not None
+        assert json.loads(row["tags"]) == ["tag2", "tag3"]
+
+        # Clear tags
+        dao.update(task_id, tags=[])
+        row_cleared = dao.fetch_by_id(task_id)
+        assert row_cleared is not None
+        assert row_cleared["tags"] is None
 
     def test_update_task_no_changes(self, dao):
         """Test updating task with no changes returns 0."""
@@ -209,6 +249,27 @@ class TestTaskDAO:
 
         rows = list(dao.search("Task", tags=["urgent"]))
         assert len(rows) == 1
+
+    def test_search_tasks_fallback_like(self, db_and_dao, monkeypatch):
+        """Test searching tasks with fallback LIKE path when FTS5 query fails."""
+        conn, dao = db_and_dao
+        dao.insert("Fallback Python", description="Python query", priority="H", project="Work", tags=["tag1"])
+
+        real_execute = conn.execute
+        first_call = True
+
+        def mock_execute(query, params=()):
+            nonlocal first_call
+            if first_call and "MATCH" in query:
+                first_call = False
+                raise RuntimeError("FTS5 table unavailable")
+            return real_execute(query, params)
+
+        monkeypatch.setattr(conn, "execute", mock_execute)
+
+        rows = dao.search("Python", priority="H", project="Work", tags=["tag1"])
+        assert len(rows) == 1
+        assert "Fallback Python" in rows[0]["title"]
 
     def test_clear_all(self, dao):
         """Test clearing all tasks."""
