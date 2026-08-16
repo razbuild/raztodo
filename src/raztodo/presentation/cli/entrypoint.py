@@ -1,4 +1,5 @@
 import sys
+from collections.abc import Callable
 from typing import Any
 
 try:
@@ -23,7 +24,10 @@ def create_router(
     return TaskRouter(storage, connection_factory)
 
 
-def run_cli(router_factory, argv: list[str] | None = None) -> int:
+def run_cli(
+    router_factory: Callable[[], HandlerProtocol],
+    argv: list[str] | None = None,
+) -> int:
     from raztint import err, info
 
     argv = argv or sys.argv[1:]

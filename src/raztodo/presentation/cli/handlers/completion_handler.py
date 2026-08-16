@@ -9,7 +9,7 @@ class CompletionHandler:
         # `get_task_ids` can be used later for dynamic task ID completions
         self.get_task_ids = get_task_ids
 
-    def __call__(self, shell: str):
+    def __call__(self, shell: str) -> int:
         try:
             if shell in ["bash", "zsh"]:
                 # Minimal argcomplete shellcode; no router or use case initialization
