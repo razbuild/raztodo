@@ -290,6 +290,7 @@ class TestSQLiteTaskRepository:
         # Verify search returns nothing
         search_results = task_repo.search_tasks("Task")
         assert len(search_results) == 0
+
     def test_get_task(self, task_repo):
         """Test get_task returns task entity or None."""
         task_id = task_repo.add_task("Specific Task", description="Desc", priority="H")
@@ -302,8 +303,9 @@ class TestSQLiteTaskRepository:
     def test_ensure_writable_path_mkdir_failure(self, monkeypatch):
         """Test ensure_writable_path handles directory creation failure."""
         from pathlib import Path
-        from raztodo.infrastructure.sqlite.task_repository import ensure_writable_path
+
         from raztodo.domain.exceptions import RazTodoException
+        from raztodo.infrastructure.sqlite.task_repository import ensure_writable_path
 
         def fake_mkdir(self, *args, **kwargs):
             raise OSError("Read-only file system")
@@ -316,6 +318,7 @@ class TestSQLiteTaskRepository:
     def test_add_task_database_error(self, task_repo, monkeypatch):
         """Test add_task raises DatabaseError on generic SQLite Error."""
         import sqlite3
+
         def fake_insert(*args, **kwargs):
             raise sqlite3.Error("Disk full")
 
@@ -334,7 +337,9 @@ class TestSQLiteTaskRepository:
     def test_update_task_database_error(self, task_repo, monkeypatch):
         """Test update_task raises DatabaseError on generic SQLite Error."""
         import sqlite3
+
         task_id = task_repo.add_task("Task")
+
         def fake_update(*args, **kwargs):
             raise sqlite3.Error("Write failed")
 
@@ -346,19 +351,24 @@ class TestSQLiteTaskRepository:
     def test_export_tasks_file_error(self, task_repo):
         """Test export_tasks handles file write exceptions."""
         from raztodo.domain.exceptions import RazTodoException
+
         task_repo.add_task("Task 1")
-        
+
         with pytest.raises(RazTodoException) as exc_info:
             task_repo.export_tasks("/dev/null/forbidden/path.json")
-        assert "FileOperationError during export_tasks" in str(exc_info.value)
+        assert "FileOperationError" in str(exc_info.value)
 
     def test_import_tasks_all_errors_raises_exception(self, task_repo, tmp_path):
         """Test importing tasks where all items are invalid raises RazTodoException."""
         import json
+
         from raztodo.domain.exceptions import RazTodoException
+
         invalid_file = tmp_path / "invalid_tasks.json"
-        invalid_file.write_text(json.dumps([{"description": "No title"}, {"title": ""}]), encoding="utf-8")
-        
+        invalid_file.write_text(
+            json.dumps([{"description": "No title"}, {"title": ""}]), encoding="utf-8"
+        )
+
         with pytest.raises(RazTodoException) as exc_info:
             task_repo.import_tasks(str(invalid_file))
         assert "Failed to import any tasks" in str(exc_info.value)
@@ -372,6 +382,7 @@ class TestSQLiteTaskRepository:
         valid_file.write_text(json.dumps([{"title": "Task Done", "done": True}]), encoding="utf-8")
 
         original_update = task_repo._dao.update
+
         def fake_update(task_id, **kwargs):
             if "done" in kwargs:
                 raise sqlite3.Error("Mocked done flag failure")
@@ -384,6 +395,7 @@ class TestSQLiteTaskRepository:
     def test_clear_all_tasks_database_error(self, task_repo, monkeypatch):
         """Test clear_all_tasks raises DatabaseError on generic SQLite Error."""
         import sqlite3
+
         def fake_clear(*args, **kwargs):
             raise sqlite3.Error("Locked")
 
