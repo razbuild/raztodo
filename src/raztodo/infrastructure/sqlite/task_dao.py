@@ -1,7 +1,7 @@
 import json
 from collections.abc import Callable
-from sqlite3 import Connection, Row
-from typing import Any
+from sqlite3 import Connection, Cursor, Row
+from typing import Any, cast
 
 from raztodo.infrastructure.sqlite.task_schema import ensure_schema
 
@@ -88,7 +88,7 @@ class TaskDAO:
             params.append(offset)
 
         cur = self._conn.execute(query, params)
-        return cur.fetchall()
+        return self._rows(cur)
 
     def fetch_by_id(self, task_id: int) -> Row | None:
         cur = self._conn.execute(
@@ -96,7 +96,15 @@ class TaskDAO:
             "FROM tasks WHERE id = ?",
             (task_id,),
         )
-        return cur.fetchone()
+        return self._row(cur)
+
+    @staticmethod
+    def _rows(cur: Cursor) -> list[Row]:
+        return cast(list[Row], cur.fetchall())
+
+    @staticmethod
+    def _row(cur: Cursor) -> Row | None:
+        return cast(Row | None, cur.fetchone())
 
     def update(
         self,
@@ -200,7 +208,7 @@ class TaskDAO:
 
         try:
             cur = self._conn.execute(query, params)
-            return cur.fetchall()
+            return self._rows(cur)
         except Exception:
             # Fallback to LIKE if FTS5 is not available (backward compatibility)
             pattern = f"%{keyword}%"
@@ -215,4 +223,4 @@ class TaskDAO:
 
             query = " AND ".join(query_parts) + " ORDER BY id"
             cur = self._conn.execute(query, params)
-            return cur.fetchall()
+            return self._rows(cur)
