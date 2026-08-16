@@ -1,5 +1,4 @@
 import json
-from unittest.mock import MagicMock
 
 import pytest
 
@@ -250,24 +249,40 @@ class TestTaskDAO:
         rows = list(dao.search("Task", tags=["urgent"]))
         assert len(rows) == 1
 
-    def test_search_tasks_fallback_like(self, db_and_dao, monkeypatch):
+    def test_search_tasks_fallback_like(self, db_and_dao):
         """Test searching tasks with fallback LIKE path when FTS5 query fails."""
         conn, dao = db_and_dao
-        dao.insert("Fallback Python", description="Python query", priority="H", project="Work", tags=["tag1"])
+        dao.insert(
+            "Fallback Python",
+            description="Python query",
+            priority="H",
+            project="Work",
+            tags=["tag1"],
+        )
 
-        real_execute = conn.execute
-        first_call = True
+        class ProxyConnection:
+            def __init__(self, target):
+                self._target = target
+                self._first_call = True
 
-        def mock_execute(query, params=()):
-            nonlocal first_call
-            if first_call and "MATCH" in query:
-                first_call = False
-                raise RuntimeError("FTS5 table unavailable")
-            return real_execute(query, params)
+            def execute(self, query, params=()):
+                if self._first_call and "MATCH" in str(query):
+                    self._first_call = False
+                    raise RuntimeError("FTS5 table unavailable")
+                return self._target.execute(query, params)
 
-        monkeypatch.setattr(conn, "execute", mock_execute)
+            def __enter__(self):
+                return self._target.__enter__()
 
-        rows = dao.search("Python", priority="H", project="Work", tags=["tag1"])
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                return self._target.__exit__(exc_type, exc_val, exc_tb)
+
+            def __getattr__(self, name):
+                return getattr(self._target, name)
+
+        proxy_conn = ProxyConnection(conn)
+        fallback_dao = TaskDAO(proxy_conn)
+        rows = list(fallback_dao.search("Python", priority="H", project="Work", tags=["tag1"]))
         assert len(rows) == 1
         assert "Fallback Python" in rows[0]["title"]
 
