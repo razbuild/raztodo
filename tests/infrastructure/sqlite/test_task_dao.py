@@ -1,4 +1,5 @@
 import json
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -248,6 +249,20 @@ class TestTaskDAO:
 
         rows = list(dao.search("Task", tags=["urgent"]))
         assert len(rows) == 1
+
+    def test_search_tasks_fts_success_mock(self):
+        """Test search successfully returning via FTS5 path (line 211)."""
+        mock_conn = MagicMock()
+        mock_conn.__enter__.return_value = mock_conn
+        mock_conn.__exit__.return_value = None
+        mock_cursor = MagicMock()
+        mock_cursor.fetchall.return_value = [{"id": 1, "title": "Mock Task"}]
+        mock_conn.execute.return_value = mock_cursor
+
+        dao = TaskDAO(mock_conn)
+        rows = dao.search("Mock")
+        assert len(rows) == 1
+        assert rows[0]["id"] == 1
 
     def test_search_tasks_fallback_like(self, db_and_dao):
         """Test searching tasks with fallback LIKE path when FTS5 query fails."""
