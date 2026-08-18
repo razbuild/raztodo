@@ -117,6 +117,19 @@ class TestRowToTask:
 
             assert task.tags == []
 
+    def test_map_row_with_non_list_json_tags(self):
+        """Test mapping row where tags is valid JSON but not a list."""
+        with closing(sqlite3.connect(":memory:")) as conn:
+            conn.row_factory = sqlite3.Row
+            tags_json = json.dumps({"key": "value"})
+            conn.execute("CREATE TABLE test (id INTEGER, title TEXT, tags TEXT)")
+            conn.execute("INSERT INTO test VALUES (1, 'Task', ?)", (tags_json,))
+            row = conn.execute("SELECT * FROM test").fetchone()
+
+            task = row_to_task(row)
+
+            assert task.tags == []
+
     def test_map_row_with_missing_fields(self):
         """Test mapping row with missing optional fields."""
         with closing(sqlite3.connect(":memory:")) as conn:
