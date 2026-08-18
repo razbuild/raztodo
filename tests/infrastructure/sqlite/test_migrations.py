@@ -24,9 +24,13 @@ class TestMigrations:
             conn.execute("INSERT INTO tasks (title) VALUES ('Duplicate')")
             conn.execute("INSERT INTO tasks (title) VALUES ('Unique')")
 
+            # Test name collision
+            conn.execute("INSERT INTO tasks (title) VALUES ('Duplicate (4)')")
+            conn.execute("INSERT INTO tasks (title) VALUES ('Duplicate')")
+
             updated = deduplicate_titles(conn)
 
-            assert updated == 2  # Two duplicates should be renamed
+            assert updated == 3  # Three duplicates should be renamed
 
             # Verify titles are now unique
             rows = conn.execute("SELECT title FROM tasks ORDER BY id").fetchall()
@@ -35,6 +39,8 @@ class TestMigrations:
             assert "Duplicate" in titles
             assert "Duplicate (2)" in titles
             assert "Duplicate (3)" in titles
+            assert "Duplicate (4)" in titles
+            assert "Duplicate (5)" in titles
             assert "Unique" in titles
             assert len(set(titles)) == len(titles)  # All unique
         finally:
