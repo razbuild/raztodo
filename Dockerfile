@@ -1,13 +1,18 @@
-FROM python:3.13-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV RAZTODO_DB=/data/tasks.db
+FROM python:3.9-slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir raztodo
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=development
 
-VOLUME ["/data"]
+COPY . .
 
-ENTRYPOINT ["sh", "-c", "rt \"$@\"", "--"]
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -e .
+
+VOLUME /app/data
+
+EXPOSE 5000
+
+ENTRYPOINT ["python", "-m", "raztodo.cli"]
+CMD ["--help"]
