@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-_CSS_FILE = (
+_CSS_DIR = (
     Path(__file__).parents[3]
     / "src"
     / "raztodo"
@@ -13,8 +13,16 @@ _CSS_FILE = (
     / "web"
     / "static"
     / "css"
-    / "style.css"
 )
+
+# style.css is now a thin @import entrypoint; read all module files so
+# that selector-based tests can find blocks defined in any module.
+_CSS_FILE = _CSS_DIR / "style.css"
+
+
+def _read_all_css() -> str:
+    """Return the concatenated content of all CSS files in the stylesheet directory."""
+    return "\n".join(f.read_text() for f in sorted(_CSS_DIR.glob("*.css")))
 
 
 def _css_block(css: str, selector: str) -> str:
@@ -55,7 +63,7 @@ def _contrast_ratio(first: str, second: str) -> float:
     ],
 )
 def test_light_theme_badges_meet_text_contrast(background: str, foreground: str) -> None:
-    css = _CSS_FILE.read_text()
+    css = _read_all_css()
     light_variables = _variables(_css_block(css, '[data-theme="light"]'))
 
     assert background in light_variables
@@ -64,7 +72,7 @@ def test_light_theme_badges_meet_text_contrast(background: str, foreground: str)
 
 
 def test_overdue_badge_uses_theme_tokens() -> None:
-    css = _CSS_FILE.read_text()
+    css = _read_all_css()
     overdue = _css_block(css, ".badge.overdue")
 
     assert "background: var(--overdue-bg);" in overdue

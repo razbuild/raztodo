@@ -1,0 +1,22 @@
+/* ── Reset ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+html,
+body {
+    height: 100%;
+}
+
+/* ── Base ──────────────────────────────────────────── */
+body {
+    font-family: var(--font);
+    background: var(--bg-app);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}

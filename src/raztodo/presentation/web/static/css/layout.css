@@ -1,0 +1,79 @@
+/* ── App shell ─────────────────────────────────────── */
+.app-shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── Main content ──────────────────────────────────── */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+    min-height: 0;
+}
+
+.main-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding: 0 36px;
+    height: 68px;
+    min-height: 68px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.main-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.task-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    flex: 1;
+}
+
+/* ── Filter tabs ───────────────────────────────────── */
+.filter-tabs {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.theme-toggle,
+.filter-tab {
+    padding: 5px 14px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-input);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background var(--t),
+        color var(--t),
+        border-color var(--t);
+}
+.theme-toggle:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+.filter-tab:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+.filter-tab.active {
+    background: var(--accent-subtle);
+    border-color: rgba(231, 76, 60, 0.3);
+    color: var(--accent-hover);
+}

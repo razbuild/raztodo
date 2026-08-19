@@ -1,0 +1,59 @@
+/* ── Design Tokens ─────────────────────────────────── */
+:root {
+    --font: system-ui, sans-serif;
+
+    /* Surfaces */
+    --bg-app: #171717;
+    --bg-sidebar: #0d0d0d;
+    --bg-panel: #1e1e1e;
+    --bg-input: #2b2b2b;
+    --bg-hover: #323232;
+    --bg-elevated: #383838;
+
+    /* Borders */
+    --border: rgba(255, 255, 255, 0.12);
+    --border-input: rgba(255, 255, 255, 0.15);
+    --border-focus: rgba(255, 255, 255, 0.30);
+
+    /* Text */
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.68);
+    --text-muted: rgba(255, 255, 255, 0.46);
+    --text-label: rgba(255, 255, 255, 0.60);
+
+    /* Accent */
+    --accent: #b30000;
+    --accent-hover: #ef5350;
+    --accent-subtle: rgba(239, 83, 80, 0.18);
+
+    /* Status */
+    --green: #4ade80;
+    --red: #f87171;
+    --yellow: #fbbf24;
+
+    /* Priority */
+    --ph-bg: rgba(239, 68, 68, 0.15);
+    --ph-text: #fca5a5;
+    --pm-bg: rgba(251, 191, 36, 0.15);
+    --pm-text: #fde68a;
+    --pl-bg: rgba(74, 222, 128, 0.15);
+    --pl-text: #86efac;
+
+    /* Tags / Project */
+    --tag-bg: rgba(139, 92, 246, 0.18);
+    --tag-text: #c4b5fd;
+    --project-bg: rgba(34, 211, 238, 0.15);
+    --project-text: #67e8f9;
+    --overdue-bg: rgba(239, 68, 68, 0.18);
+    --overdue-text: #fca5a5;
+
+    /* Radii */
+    --r-sm: 7px;
+    --r-md: 11px;
+    --r-lg: 16px;
+
+    /* Transitions */
+    --t: 150ms ease;
+
+    --task-hover-bg: #252525;
+}

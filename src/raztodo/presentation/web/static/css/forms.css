@@ -1,0 +1,145 @@
+/* ── Form elements ─────────────────────────────────── */
+.form-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.field label {
+    font-size: 11px;
+    color: var(--text-label);
+    font-weight: 500;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border-input);
+    background: var(--bg-input);
+    color: var(--text-primary);
+    font-family: var(--font);
+    font-size: 14px;
+    transition:
+        border-color var(--t),
+        box-shadow var(--t);
+}
+
+input::placeholder {
+    color: var(--text-muted);
+}
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+}
+
+input.input-primary {
+    font-size: 15px;
+    padding: 11px 12px;
+    border-color: var(--border-input);
+}
+
+select option {
+    background: var(--bg-panel);
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+.btn-primary {
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: var(--r-sm);
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background var(--t),
+        transform var(--t);
+    letter-spacing: 0.01em;
+    margin-top: 4px;
+}
+.btn-primary:hover {
+    background: var(--accent-hover);
+}
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-ghost {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 9px 11px;
+    border-radius: var(--r-sm);
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font);
+    font-size: 14px;
+    cursor: pointer;
+    transition:
+        background var(--t),
+        color var(--t);
+    text-align: left;
+}
+.btn-ghost svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+.btn-ghost:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.btn-danger-ghost {
+    color: var(--accent-hover);
+}
+.btn-danger-ghost:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--accent-hover);
+}
+
+.tool-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* ── Search ────────────────────────────────────────── */
+.search-wrap {
+    position: relative;
+}
+.search-icon {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+.search-wrap input {
+    padding-left: 32px;
+    background: var(--bg-input);
+}

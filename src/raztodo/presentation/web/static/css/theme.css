@@ -1,0 +1,90 @@
+/* ── Light Theme ───────────────────────────────────── */
+[data-theme="light"] {
+    /* Surfaces */
+    --bg-app: #f3f4f6;
+    --bg-sidebar: #ffffff;
+    --bg-panel: #ffffff;
+    --bg-input: #eef0f3;
+    --bg-hover: #e1e4e8;
+    --bg-elevated: #d1d5db;
+
+    /* Borders */
+    --border: rgba(0, 0, 0, 0.13);
+    --border-input: rgba(0, 0, 0, 0.17);
+    --border-focus: rgba(0, 0, 0, 0.32);
+
+    /* Text */
+    --text-primary: rgba(0, 0, 0, 0.94);
+    --text-secondary: rgba(0, 0, 0, 0.76);
+    --text-muted: rgba(0, 0, 0, 0.56);
+    --text-label: rgba(0, 0, 0, 0.66);
+
+    --green: #15803d;
+    --red: #dc2626;
+    --yellow: #a16207;
+
+    /* Badges */
+    --ph-bg: #fee2e2;
+    --ph-text: #991b1b;
+    --pm-bg: #fef3c7;
+    --pm-text: #854d0e;
+    --pl-bg: #dcfce7;
+    --pl-text: #166534;
+    --tag-bg: #ede9fe;
+    --tag-text: #5b21b6;
+    --project-bg: #cffafe;
+    --project-text: #155e75;
+    --overdue-bg: #fee2e2;
+    --overdue-text: #991b1b;
+
+    --task-hover-bg: #e1e4e8;
+}
+
+[data-theme="light"] .task-item:hover .task-actions button {
+    border-color: rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="light"] .task-item:hover .task-actions button:hover,
+[data-theme="light"] .task-item:focus-within .task-actions button:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+}
+
+/* Semantic actions */
+[data-theme="light"] .task-item:hover .task-actions .btn-done {
+    color: #166534;
+    background: rgba(74, 222, 128, 0.13);
+    border-color: rgba(74, 222, 128, 0.38);
+}
+
+[data-theme="light"] .task-item:hover .task-actions .btn-delete {
+    background: rgba(248, 113, 113, 0.14);
+    color: #7f1d1d;
+    border-color: rgba(248, 113, 113, 0.32);
+}
+
+[data-theme="light"] .task-item:hover .task-actions .btn-edit {
+    background: rgba(96, 165, 250, 0.13);
+    color: #0b5ed7;
+    border-color: rgba(96, 165, 250, 0.36);
+}
+
+[data-theme="light"] .task-item:hover .task-actions .btn-explain {
+    background: rgba(168, 85, 247, 0.13);
+    color: #5b21b6;
+    border-color: rgba(168, 85, 247, 0.36);
+}
+
+/* Toast */
+[data-theme="light"] #toast.error {
+    background: #fef2f2;
+    border-color: rgba(220, 38, 38, 0.32);
+    color: #991b1b;
+}
+
+/* Explain error */
+[data-theme="light"] .explain-error {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.26);
+}

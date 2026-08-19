@@ -1,0 +1,44 @@
+/* ── Responsive ────────────────────────────────────── */
+@media (max-width: 900px) {
+    .app-shell {
+        flex-direction: column;
+        height: auto;
+        overflow: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-nav {
+        padding: 12px 0 8px;
+    }
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+    .edit-form .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .main-content {
+        overflow: auto;
+        height: auto;
+    }
+
+    .main-header {
+        padding: 14px 16px;
+        height: auto;
+        min-height: 0;
+    }
+
+    .task-list {
+        overflow: visible;
+        padding: 16px 16px 24px;
+    }
+
+    .task-actions {
+        opacity: 1;
+    }
+}
