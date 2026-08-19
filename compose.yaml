@@ -1,0 +1,31 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    image: raztodo:local
+    command: ["rt-web"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - raztodo-data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  cli:
+    build: .
+    image: raztodo:local
+    profiles: ["cli"]
+    volumes:
+      - raztodo-data:/data
+
+volumes:
+  raztodo-data:
