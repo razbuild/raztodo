@@ -1,5 +1,11 @@
 from __future__ import annotations
+import os
 
+def web_host() -> str:
+    return os.getenv("RAZTODO_WEB_HOST", "127.0.0.1")
+
+def web_port() -> int:
+    return int(os.getenv("RAZTODO_WEB_PORT", "8000"))
 
 def main() -> None:
     import importlib.util
@@ -13,8 +19,8 @@ def main() -> None:
 
     uvicorn.run(
         "raztodo.presentation.web.app:app",
-        host="127.0.0.1",
-        port=8000,
+        host=web_host(),
+        port=web_port(),
         reload=False,
     )
 
