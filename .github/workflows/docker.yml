@@ -23,9 +23,41 @@ jobs:
       - name: Build Docker image
         run: docker build -t raztodo:test .
 
-      - name: Test Docker container
+      - name: Test Docker CLI
         run: |
           mkdir -p ./raztodo-data
           docker run --rm -v $PWD/raztodo-data:/data raztodo:test add "CI test task"
           docker run --rm -v $PWD/raztodo-data:/data raztodo:test list
           ls ./raztodo-data
+
+      - name: Test Docker Web UI, shared DB and persistence
+        run: |
+          docker volume rm raztodo-ci-data || true
+
+          # Start Web UI on host port 18000
+          docker run -d --name raztodo-ci-web -p 18000:8000 -v raztodo-ci-data:/data raztodo:test rt-web
+
+          # Wait for the server to accept requests
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:18000/ >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:18000/ >/dev/null
+
+          # Add a task via CLI against the same volume, then verify via the Web API
+          docker run --rm -v raztodo-ci-data:/data raztodo:test add "Shared DB task"
+          docker run --rm -v raztodo-ci-data:/data raztodo:test list | grep "Shared DB task"
+          curl -fsS http://127.0.0.1:18000/api/tasks | grep "Shared DB task"
+
+          # Recreate the container and confirm the DB persisted
+          docker stop raztodo-ci-web
+          docker rm raztodo-ci-web
+          docker run -d --name raztodo-ci-web2 -p 18000:8000 -v raztodo-ci-data:/data raztodo:test rt-web
+          sleep 3
+          curl -fsS http://127.0.0.1:18000/api/tasks | grep "Shared DB task"
+
+          docker stop raztodo-ci-web2
+          docker rm raztodo-ci-web2
+          docker volume rm raztodo-ci-data
