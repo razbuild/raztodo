@@ -5,15 +5,7 @@ from pathlib import Path
 
 import pytest
 
-_CSS_DIR = (
-    Path(__file__).parents[3]
-    / "src"
-    / "raztodo"
-    / "presentation"
-    / "web"
-    / "static"
-    / "css"
-)
+_CSS_DIR = Path(__file__).parents[3] / "src" / "raztodo" / "presentation" / "web" / "static" / "css"
 
 # style.css is now a thin @import entrypoint; read all module files so
 # that selector-based tests can find blocks defined in any module.
