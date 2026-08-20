@@ -21,7 +21,7 @@ jobs:
         uses: docker/setup-buildx-action@v4.2.0
 
       - name: Build Docker image
-        run: docker build -t raztodo:test .
+        run: docker build --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) -t raztodo:test .
 
       - name: Test Docker CLI
         run: |

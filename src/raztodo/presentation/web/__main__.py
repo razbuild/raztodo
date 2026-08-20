@@ -6,8 +6,10 @@ import os
 def web_host() -> str:
     return os.getenv("RAZTODO_WEB_HOST", "127.0.0.1")
 
+
 def web_port() -> int:
     return int(os.getenv("RAZTODO_WEB_PORT", "8000"))
+
 
 def main() -> None:
     import importlib.util
