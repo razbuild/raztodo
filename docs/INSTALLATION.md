@@ -173,3 +173,7 @@ rt-web
 ```
 
 This starts the local web UI at `http://127.0.0.1:8000`. Press `Ctrl+C` to stop it.
+
+## Docker (optional)
+
+An alternative to native installation is the Docker image, which supports both the CLI and the Web UI. See the [Docker Guide](DOCKER.md) for build, run, Compose, and persistence instructions.

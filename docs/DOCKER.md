@@ -1,6 +1,8 @@
 # Docker Guide  
 
-This document describes how to provide an **optional** Docker experience for users of **RazTodo**. It contains a minimal, well-tested `Dockerfile`, recommended `README` snippet, and troubleshooting / testing steps so you (or contributors) can add Docker as an *opt-in* installation method.
+This document describes how to run **RazTodo** with Docker, covering both the **CLI** (`rt`) and the **Web UI** (`rt-web`), with persistent SQLite storage via a `/data` volume.
+
+Docker is **optional** and does not replace the native installation (see [INSTALLATION.md](INSTALLATION.md)).
 
 ---
 
@@ -12,109 +14,112 @@ This document describes how to provide an **optional** Docker experience for use
 
 ---
 
-## Dockerfile
+## Image overview
 
-This `Dockerfile` installs `raztodo` from PyPI and ensures the app uses `/data/tasks.db` as its database when the host mounts `~/raztodo-data` (or any host path you choose).
+* Base image: `python:3.13-slim`
+* Built from the repository source with `uv sync --frozen` (CLI + Web UI + shell completion via the `all` extra)
+* Runs as a **non-root user** (default UID/GID `1000`, configurable via build args)
+* Database at `/data/tasks.db` (`RAZTODO_DB`), persisted through a `/data` volume
+* Web UI listens on `0.0.0.0:8000` (`RAZTODO_WEB_HOST` / `RAZTODO_WEB_PORT`)
 
-```dockerfile
-FROM python:3.13-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV RAZTODO_DB=/data/tasks.db
-
-WORKDIR /app
-
-# Install raztodo from PyPI (no cache)
-RUN pip install --no-cache-dir raztodo
-
-# Persist data under /data (mount this from host)
-VOLUME ["/data"]
-
-# Use a shell wrapper to ensure environment variables are applied at runtime
-ENTRYPOINT ["sh", "-c", "rt \"$@\"", "--"]
-```
-
-**Notes:**
-
-* `RAZTODO_DB` is the environment variable that raztodo reads to determine the database path. Setting it to `/data/tasks.db` ensures the app writes to the mounted volume.
-* `VOLUME ["/data"]` declares the container mount point; when running, bind a host folder to `/data`.
-* The `sh -c` wrapper passes arguments safely and ensures environment variables are visible at runtime.
+CLI and Web UI share the same SQLite database whenever they use the same `/data` volume.
 
 ---
 
-## Installation
+## Build
 
-Build the image locally:
 ```bash
 docker build -t raztodo:local .
 ```
 
-Run raztodo and persist your tasks on the host (recommended):
+To create files on the host with your own user id:
 
 ```bash
-mkdir -p "$HOME/raztodo-data"
-# Add a task
-docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first docker task"
-# List tasks
-docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local list
+docker build --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) -t raztodo:local .
 ```
-
-Notes:
-
-* The database file will be created at `$HOME/raztodo-data/tasks.db` on your machine.
-* Without `-v` the container is ephemeral and tasks will not persist.
-* This is an **optional** convenience for users who prefer containers; keep the native install (pipx / pip) as the primary recommended path.
 
 ---
 
-## Local testing checklist (before commit / PR)
-1. Build image locally:
+## CLI
+
 ```bash
-docker build -t raztodo:test .
+mkdir -p "$HOME/raztodo-data"
+
+docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first docker task"
+docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local list
+docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local search "docker"
 ```
-2. Prepare host folder for database:
+
+The database is created at `$HOME/raztodo-data/tasks.db`. Without `-v`, the container is ephemeral.
+
+---
+
+## Web UI
+
+### With `docker run`
+
 ```bash
-mkdir -p ~/raztodo-data
+docker run -d --name raztodo-web -p 8000:8000 -v "$HOME/raztodo-data:/data" raztodo:local rt-web
 ```
-3. Add a task (ensure the container creates the DB in the mounted folder):
+
+Open `http://localhost:8000`.
+
+### With Docker Compose (recommended)
+
 ```bash
-docker run --rm -it -v ~/raztodo-data:/data raztodo:test add "Test task from Docker"
+docker compose up -d web
 ```
-4. List tasks (should show previously added item):
+
+Open `http://localhost:8000`. Data is stored in the named volume `raztodo-data`, which survives `docker compose down`.
+
+Stop the Web UI:
+
 ```bash
-docker run --rm -it -v ~/raztodo-data:/data raztodo:test list
+docker compose down
 ```
-5. Confirm `tasks.db` exists on host:
+
+---
+
+## CLI + Web UI sharing one database
+
+Compose ships a `cli` service that uses the same named volume:
+
 ```bash
-ls -la ~/raztodo-data
-# tasks.db should appear
+docker compose up -d web
+docker compose run --rm cli add "Task added from the CLI"
+# The task is immediately visible in the Web UI
 ```
-6. Optional: remove image and test building/publishing steps in CI.
+
+With `docker run`, mount the same host folder in both containers:
+
+```bash
+docker run --rm -v "$HOME/raztodo-data:/data" raztodo:local add "Via CLI"
+docker run -d -p 8000:8000 -v "$HOME/raztodo-data:/data" raztodo:local rt-web
+```
+
+---
+
+## Security notes
+
+* The image runs as a non-root user.
+* The Compose `web` service runs with a read-only root filesystem, no new privileges, and all capabilities dropped.
+
 ---
 
 ## Troubleshooting
 
-* **No tasks found after adding**: confirm you ran the container with `-v host_path:/data` and that `RAZTODO_DB` in the image points to `/data/tasks.db` (see `ENV RAZTODO_DB=/data/tasks.db`). Also make sure the ENTRYPOINT wrapper is present.
+* **Database file owned by root on the host**: the container runs as UID `1000` by default; build with `--build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g)` to match your user, or run with `docker run --user $(id -u):$(id -g)`.
+* **Web UI not reachable from the host**: ensure the container listens on `0.0.0.0` (`RAZTODO_WEB_HOST=0.0.0.0`, already set in the image) and that `-p 8000:8000` is used.
+* **pip fails to download while building**: build with `--network=host`, or set Docker daemon DNS in `/etc/docker/daemon.json`.
 
-* **DNS/network errors while building (`pip` fails to download)**: try building with network host mode:
+---
 
-```bash
-docker build --network=host -t raztodo:test .
-```
+## Local testing checklist (before commit / PR)
 
-Or set Docker daemon DNS in `/etc/docker/daemon.json`:
-
-```json
-{
-  "dns": ["8.8.8.8", "8.8.4.4"]
-}
-```
-
-Then restart Docker: `sudo systemctl restart docker`.
-
-* **File ownership/permission issues**: because `pip` runs as root inside image, created DB may be owned by `root` on the host. If you want files to be created with the same UID as the host user, consider (optionally) running the container with `--user $(id -u):$(id -g)` or adding a small non-root user in the Dockerfile. Example on `docker run`:
-
-```bash
-docker run --rm -it -u $(id -u):$(id -g) -v ~/raztodo-data:/data raztodo:test add "Task"
-```
+1. `docker build -t raztodo:test .`
+2. `mkdir -p ~/raztodo-data && docker run --rm -it -v ~/raztodo-data:/data raztodo:test add "Test task from Docker"`
+3. `docker run --rm -it -v ~/raztodo-data:/data raztodo:test list`
+4. `docker run -d --name rt-web-test -p 8000:8000 -v ~/raztodo-data:/data raztodo:test rt-web` and open `http://localhost:8000`
+5. `docker stop rt-web-test && docker rm rt-web-test` then run step 4 again — the tasks must still be listed (persistence).
+6. `docker compose up -d web && docker compose run --rm cli list` — same database for CLI and Web.
+7. `uv run pytest` — existing test suite must pass.

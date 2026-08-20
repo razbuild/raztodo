@@ -224,13 +224,28 @@ export LOG_LEVEL="DEBUG"
 
 ## Docker
 
+An optional Docker image covers the **CLI** and the **Web UI** with persistent SQLite storage.
+
 ```bash
 docker build -t raztodo:local .
-docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first task"
+```
+
+CLI:
+
+```bash
+docker run --rm -it -v "$HOME/raztodo-data:/data" raztodo:local add "My first docker task"
+```
+
+Web UI (via Compose):
+
+```bash
+docker compose up -d web
+# open http://localhost:8000
 ```
 
 > [!NOTE]
-> kept CLI-only to minimize image size and dependencies
+> The image stores the database in `/data`; mount a host folder or use the Compose named volume to persist data.
+> CLI and Web UI share the same database when they use the same `/data` volume.
 
 > [!TIP]
 > 📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md)
