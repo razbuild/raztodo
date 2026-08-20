@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import os
+
 
 def web_host() -> str:
     return os.getenv("RAZTODO_WEB_HOST", "127.0.0.1")
