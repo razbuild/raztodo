@@ -16,7 +16,7 @@ WORKDIR /app
 
 COPY . /app
 
-# Instala desde fuente con uv.lock (reproducible); --no-editable = instalación limpia
+# Install from source with uv.lock (reproducible); --no-editable = clean installation
 RUN uv sync --frozen --no-dev --no-editable --extra all
 
 # Non-root user; build with --build-arg USER_UID=$(id -u) to match host ownership

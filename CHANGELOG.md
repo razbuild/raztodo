@@ -1,15 +1,22 @@
 # Changelog
 
+## [0.10.0] - 2026-08-21
+
+### Added
+
+* Full Docker support: image now includes the Web UI (`rt-web`) alongside the CLI, with persistent SQLite via a `/data` volume
+* `compose.yaml` with `web` and `cli` services sharing a named volume
+* `docker-entrypoint.sh` dispatches `rt` and `rt-web` based on the container command
+* `RAZTODO_WEB_HOST` / `RAZTODO_WEB_PORT` environment variables to configure the Web UI bind address and port
+
+---
+
 ## [0.9.2] - 2026-08-18
 
 ### Added
 
 * Added a contributing guide
 * Expanded unit test coverage across task infrastructure and deduplication
-* Full Docker support: image now includes the Web UI (`rt-web`) alongside the CLI, with persistent SQLite via a `/data` volume
-* `compose.yaml` with `web` and `cli` services sharing a named volume
-* `docker-entrypoint.sh` dispatches `rt` and `rt-web` based on the container command
-* `RAZTODO_WEB_HOST` / `RAZTODO_WEB_PORT` environment variables to configure the Web UI bind address and port
 
 ### Fixed
 
