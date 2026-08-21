@@ -144,7 +144,17 @@ src/
             ├── schemas.py
             ├── static
             │   ├── css
-            │   │   └── style.css
+            │   │   ├── style.css        # entrypoint: @imports all modules in dependency order
+            │   │   ├── tokens.css       # CSS custom properties / design tokens
+            │   │   ├── base.css         # box-sizing reset and base body styles
+            │   │   ├── layout.css       # app shell, main content area, filter tabs
+            │   │   ├── sidebar.css      # sidebar, navigation sections, logo
+            │   │   ├── forms.css        # inputs, selects, buttons, search widget
+            │   │   ├── tasks.css        # task list, items, badges, inline edit, empty state
+            │   │   ├── toast.css        # toast notification
+            │   │   ├── modal.css        # explain modal (loading, result, error states)
+            │   │   ├── theme.css        # light theme token overrides
+            │   │   └── responsive.css   # media queries / responsive rules
             │   ├── img
             │   │   └── favicon.ico
             │   └── js
@@ -316,6 +326,26 @@ The frontend JavaScript, previously a single monolithic `app.js`, is now split i
 | `tasks/render.js` | Task list/item DOM rendering |
 | `explain/index.js` | Public surface of the explain feature |
 | `explain/modal.js` | Explain modal UI and SSE token rendering |
+
+#### Frontend CSS modules
+
+**Directory:** `src/raztodo/presentation/web/static/css/`
+
+The frontend CSS, previously a single monolithic `style.css` (968 lines), is now split into focused modules organized by responsibility. `style.css` acts as a thin entrypoint that `@import`s all modules in dependency order; no changes to HTML or JavaScript were required.
+
+| File | Responsibility |
+|------|----------------|
+| `style.css` | Entrypoint — `@import`s all modules in dependency order |
+| `tokens.css` | CSS custom properties (colours, radii, transitions, typography) |
+| `base.css` | Box-sizing reset and base `body` styles |
+| `layout.css` | App shell (`display: flex`), main content area, filter tabs |
+| `sidebar.css` | Sidebar panel, navigation sections, logo |
+| `forms.css` | Inputs, selects, buttons, search widget |
+| `tasks.css` | Task list, task items, priority/tag badges, inline edit form, empty state |
+| `toast.css` | Toast notification (show/hide animation, error variant) |
+| `modal.css` | Explain modal — all states: loading spinner, streamed result, error |
+| `theme.css` | Light-theme token overrides (`[data-theme="light"]`) |
+| `responsive.css` | `@media (max-width: 900px)` rules for narrow viewports |
 
 ---
 
