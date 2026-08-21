@@ -65,7 +65,8 @@ jobs:
       - name: Test Docker Compose setup
         run: |
           docker compose up -d
-          # Wait for Web UI
+
+          # Wait for the server to accept requests
           for i in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8000/ >/dev/null 2>&1; then
               break
@@ -73,12 +74,21 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:8000/ >/dev/null
-          # Verify CLI shares the same DB
-          docker compose run --rm cli list | grep -q "Shared DB task" || true
-          # Verify persistence: stop and restart
+
+          # Add a task via the compose CLI service and verify it through the Web API
+          docker compose run --rm cli add "Compose smoke task"
+          curl -fsS http://127.0.0.1:8000/api/tasks | grep "Compose smoke task"
+
+          # Restart the stack and confirm the data persisted
           docker compose stop
           docker compose up -d
-          sleep 3
-          curl -fsS http://127.0.0.1:8000/api/tasks | grep -q "Shared DB task"
-          # Down
-          docker compose down
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/api/tasks >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/api/tasks | grep "Compose smoke task"
+
+          # Tear down (including the named volume) to leave a clean state
+          docker compose down -v
