@@ -22,13 +22,13 @@ export function renderTask(task) {
         <input id="edit-desc-${task.id}"  type="text" value="${esc(task.description || "")}" placeholder="Description" />
         <div class="form-row">
             <div class="field">
-                <label>Priority</label>
-                <select id="edit-priority-${task.id}">
-                    <option value=""  ${!task.priority ? "selected" : ""}>None</option>
-                    <option value="H" ${task.priority === "H" ? "selected" : ""}>High</option>
-                    <option value="M" ${task.priority === "M" ? "selected" : ""}>Medium</option>
-                    <option value="L" ${task.priority === "L" ? "selected" : ""}>Low</option>
-                </select>
+                <label id="edit-priority-label-${task.id}">Priority</label>
+                <div class="priority-picker" role="group" aria-labelledby="edit-priority-label-${task.id}">
+                    <button type="button" class="priority-arrow" data-picker="edit-priority-${task.id}" data-dir="-1" aria-label="Lower priority">&#8249;</button>
+                    <span class="priority-label" data-picker-label="edit-priority-${task.id}">${task.priority === "H" ? "High" : task.priority === "M" ? "Medium" : task.priority === "L" ? "Low" : "None"}</span>
+                    <button type="button" class="priority-arrow" data-picker="edit-priority-${task.id}" data-dir="1" aria-label="Higher priority">&#8250;</button>
+                    <input type="hidden" id="edit-priority-${task.id}" value="${task.priority || ""}" />
+                </div>
             </div>
             <div class="field">
                 <label>Due date</label>

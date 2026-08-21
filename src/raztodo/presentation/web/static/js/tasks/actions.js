@@ -2,6 +2,7 @@ import { API, api } from "../shared/api.js";
 import { state } from "../shared/state.js";
 import { setStatus } from "../shared/toast.js";
 import { renderTasks } from "./render.js";
+import { resetPicker } from "../shared/priority.js";
 
 function getCreatePayload() {
   return {
@@ -24,7 +25,7 @@ function resetCreateForm() {
       document.getElementById(id).value = "";
     },
   );
-  document.getElementById("new-priority").value = "";
+  resetPicker("new-priority");
 }
 
 export async function loadTasks() {

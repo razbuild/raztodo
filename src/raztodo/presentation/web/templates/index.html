@@ -47,13 +47,33 @@
 
                             <div class="form-row">
                                 <div class="field">
-                                    <label for="new-priority">Priority</label>
-                                    <select id="new-priority">
-                                        <option value="">None</option>
-                                        <option value="H">High</option>
-                                        <option value="M">Medium</option>
-                                        <option value="L">Low</option>
-                                    </select>
+                                    <label id="new-priority-label">Priority</label>
+                                    <div
+                                        class="priority-picker"
+                                        role="group"
+                                        aria-labelledby="new-priority-label"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="priority-arrow"
+                                            data-picker="new-priority"
+                                            data-dir="-1"
+                                            aria-label="Lower priority"
+                                        >&#8249;</button>
+                                        <span class="priority-label" data-picker-label="new-priority">None</span>
+                                        <button
+                                            type="button"
+                                            class="priority-arrow"
+                                            data-picker="new-priority"
+                                            data-dir="1"
+                                            aria-label="Higher priority"
+                                        >&#8250;</button>
+                                        <input
+                                            type="hidden"
+                                            id="new-priority"
+                                            value=""
+                                        />
+                                    </div>
                                 </div>
                                 <div class="field">
                                     <label for="new-due">Due date</label>
