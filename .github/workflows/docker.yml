@@ -61,3 +61,24 @@ jobs:
           docker stop raztodo-ci-web2
           docker rm raztodo-ci-web2
           docker volume rm raztodo-ci-data
+
+      - name: Test Docker Compose setup
+        run: |
+          docker compose up -d
+          # Wait for Web UI
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/ >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/ >/dev/null
+          # Verify CLI shares the same DB
+          docker compose run --rm cli list | grep -q "Shared DB task" || true
+          # Verify persistence: stop and restart
+          docker compose stop
+          docker compose up -d
+          sleep 3
+          curl -fsS http://127.0.0.1:8000/api/tasks | grep -q "Shared DB task"
+          # Down
+          docker compose down
