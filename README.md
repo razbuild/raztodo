@@ -35,7 +35,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/razbuild/raztodo/raw/main/assets/web-preview.png" width="700">
+  <img src="https://github.com/razbuild/raztodo/raw/main/assets/web-preview.gif" width="700">
 </p>
 
 <p align="center">
