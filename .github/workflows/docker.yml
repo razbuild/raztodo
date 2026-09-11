@@ -68,3 +68,7 @@ jobs:
             --entrypoint sh \
             raztodo:test \
             -c 'touch /data/permission-test && test -f /data/permission-test'
+
+      - name: Test Docker wrapper lifecycle
+        run: |
+          bash docker/test_wrapper.sh

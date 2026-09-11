@@ -59,6 +59,93 @@ docker run --rm raztodo:local search "docker"
 
 ---
 
+## ⚡ Seamless `rt` usage with a wrapper
+
+Instead of typing `docker exec` / `docker run` every time, you can set up a
+**wrapper** that delegates local `rt ...` commands to a persistent Docker
+container automatically (starting it on demand). This works on **Linux**,
+**macOS**, and **Windows**.
+
+### How it works
+
+The wrapper runs a single long-lived container (named `raztodo`) with your
+host's `$HOME/raztodo-data` directory mounted at `/data`. When you type
+`rt <command>`, it:
+
+1. Starts the container if it is not already running;
+2. Executes `docker exec raztodo rt <command>` and returns the output.
+
+> [!TIP]
+> When the wrapper is sourced/imported, `rt` always runs inside the Docker
+> container. If you prefer the native CLI, install raztodo directly and do
+> **not** source the wrapper (see [INSTALLATION.md](INSTALLATION.md)).
+
+The database is persisted at `$HOME/raztodo-data/tasks.db`.
+
+### Build the image once
+
+```bash
+docker build \
+  --build-arg USER_UID=$(id -u) \
+  --build-arg USER_GID=$(id -g) \
+  -t raztodo:local .
+```
+
+### Linux / macOS
+
+Add the wrapper to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.):
+
+```bash
+source /path/to/raztodo/docker/rt-docker.sh
+```
+
+Then use `rt` normally:
+
+```bash
+rt add "Prepare weekly groceries" --priority H
+rt list
+rt done 1
+rt search "groceries"
+```
+
+Manage the container with:
+
+```bash
+rt-docker status   # is it running?
+rt-docker start    # create (if needed) and start it
+rt-docker stop     # stop and remove it
+rt-docker rebuild  # rebuild the image and restart
+```
+
+### Windows
+
+Add the wrapper to your PowerShell profile:
+
+```powershell
+Import-Module /path/to/raztodo/docker/rt-docker.ps1
+```
+
+Then use `rt` exactly as above. Manage the container with:
+
+```powershell
+Invoke-RtDocker status
+Invoke-RtDocker start
+Invoke-RtDocker stop
+Invoke-RtDocker rebuild
+```
+
+### Configuration
+
+All wrappers honor these environment variables (set before sourcing/importing):
+
+| Variable | Description | Default |
+|---|---|---|
+| `RAZTODO_DOCKER_IMAGE` | Docker image to run | `raztodo:local` |
+| `RAZTODO_DOCKER_CONTAINER` | Container name | `raztodo` |
+| `RAZTODO_DATA_DIR` | Host data directory mounted at `/data` | `$HOME/raztodo-data` |
+
+---
+
 ## 💾 Persistent database
 
 ### Bind mount

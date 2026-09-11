@@ -200,6 +200,8 @@ docker run --rm \
 
 > [!NOTE]
 > The container stores its SQLite database in `/data` (`RAZTODO_DB=/data/tasks.db`). Mount a named volume or host folder there to persist data between runs. The image runs as a non-root user.
+>
+> 💡 To use plain `rt` commands that are forwarded to the container automatically (on Linux, macOS, and Windows), see the [seamless wrapper setup](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md#-seamless-rt-usage-with-a-wrapper).
 
 📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md).
 
