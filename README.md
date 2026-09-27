@@ -203,7 +203,7 @@ docker run --rm \
 >
 > 💡 To use plain `rt` commands that are forwarded to the container automatically (on Linux, macOS, and Windows), see the [seamless wrapper setup](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md#-seamless-rt-usage-with-a-wrapper).
 
-📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md).
+📖 See the [Docker Guide](https://github.com/razbuild/raztodo/blob/main/docs/DOCKER.md) · [Podman Guide](https://github.com/razbuild/raztodo/blob/main/docs/PODMAN.md).
 
 ---
 

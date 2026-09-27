@@ -105,7 +105,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
@@ -139,8 +138,8 @@ cython_debug/
 
 # IDEs and Editors
 ## VS Code
-.vscode/
 *.code-workspace
+temp_auto_push.bat
 
 ## PyCharm
 .idea/
@@ -169,7 +168,6 @@ tramp
 .\#*
 
 ## VSCodium
-.vscode-oss/
 
 ## JetBrains
 .idea/
@@ -247,7 +245,6 @@ scratch.txt
 *.orig
 
 # Configuration files with sensitive data
-.env.local
 .env.*.local
 config.local.py
 settings.local.py
@@ -285,3 +282,7 @@ test-output/
 # Distribution files
 *.whl
 *.tar.gz
+.gitignore
+branch_structure.json
+config.bat
+node_modules

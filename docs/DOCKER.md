@@ -2,6 +2,8 @@
 
 This document describes how to run **RazTodo** with Docker.
 
+> Looking for **Podman**? The same image and workflows work unchanged — see the [Podman Guide](PODMAN.md).
+
 Docker is optional and does not replace the native installation (see [INSTALLATION.md](INSTALLATION.md)).
 
 > The Docker image contains the **RazTodo CLI only**. The Web UI is maintained separately in the [`raztodo-web`](https://github.com/razbuild/raztodo-web) project.
@@ -143,6 +145,7 @@ All wrappers honor these environment variables (set before sourcing/importing):
 | `RAZTODO_DOCKER_IMAGE` | Docker image to run | `raztodo:local` |
 | `RAZTODO_DOCKER_CONTAINER` | Container name | `raztodo` |
 | `RAZTODO_DATA_DIR` | Host data directory mounted at `/data` | `$HOME/raztodo-data` |
+| `RAZTODO_CONTAINER_RUNTIME` | Container CLI used by the wrappers: `docker` or `podman` | auto (`docker`, falling back to `podman`) |
 
 ---
 
