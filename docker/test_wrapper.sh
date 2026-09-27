@@ -2,8 +2,9 @@
 
 # test_wrapper.sh
 #
-# Integration tests for docker/rt-docker.sh. Requires Docker and the project
-# Dockerfile. Uses a dedicated image/container/data-dir so it never touches
+# Integration tests for docker/rt-docker.sh. Requires a container runtime
+# (docker by default, podman via RAZTODO_CONTAINER_RUNTIME=podman) and the
+# project Dockerfile. Uses a dedicated image/container/data-dir so it never touches
 # a user's real "raztodo" setup.
 #
 # Usage:
@@ -18,13 +19,23 @@ TEST_CONTAINER="raztodo-test-wrapper"
 TEST_DATA_DIR="$(mktemp -d)"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_tw_runtime="${RAZTODO_CONTAINER_RUNTIME:-}"
+if [ -z "$_tw_runtime" ] || [ "$_tw_runtime" = "auto" ]; then
+    if command -v docker >/dev/null 2>&1; then
+        _tw_runtime="docker"
+    elif command -v podman >/dev/null 2>&1; then
+        _tw_runtime="podman"
+    else
+        _tw_runtime="docker"
+    fi
+fi
 
 PASSED=0
 FAILED=0
 
 cleanup() {
-    docker rm -f "$TEST_CONTAINER" >/dev/null 2>&1 || true
-    docker image rm "$TEST_IMAGE" >/dev/null 2>&1 || true
+    "$_tw_runtime" rm -f "$TEST_CONTAINER" >/dev/null 2>&1 || true
+    "$_tw_runtime" image rm "$TEST_IMAGE" >/dev/null 2>&1 || true
     rm -rf "$TEST_DATA_DIR"
     [ -n "${TEST_REBUILD_DIR:-}" ] && rm -rf "$TEST_REBUILD_DIR"
 }
@@ -68,10 +79,10 @@ test_start_creates_container() {
 test_start_is_idempotent() {
     printf '\n[test] start is idempotent\n'
     local before
-    before="$(docker ps -a --format '{{.Names}}' | grep -c "$TEST_CONTAINER")"
+    before="$($_tw_runtime ps -a --format '{{.Names}}' | grep -c "$TEST_CONTAINER")"
     _rt_docker_start
     local after
-    after="$(docker ps -a --format '{{.Names}}' | grep -c "$TEST_CONTAINER")"
+    after="$($_tw_runtime ps -a --format '{{.Names}}' | grep -c "$TEST_CONTAINER")"
     if [ "$after" -ne "$before" ] || [ "$after" -ne 1 ]; then
         fail "start duplicated the container (before=$before after=$after)"
     else
@@ -82,7 +93,7 @@ test_start_is_idempotent() {
 test_container_runs_as_nonroot() {
     printf '\n[test] container runs as non-root\n'
     local user_id
-    user_id="$(docker exec "$TEST_CONTAINER" id -u)"
+    user_id="$($_tw_runtime exec "$TEST_CONTAINER" id -u)"
     if [ "$user_id" != "0" ]; then
         ok "container user id is non-root ($user_id)"
     else
@@ -172,13 +183,13 @@ test_rebuild_from_subdirectory() {
 }
 
 main() {
-    if ! command -v docker >/dev/null 2>&1; then
-        printf 'Docker is required to run this test script.\n' >&2
+    if ! command -v "$_tw_runtime" >/dev/null 2>&1; then
+        printf 'A container runtime (docker or podman) is required to run this test script.\n' >&2
         return 1
     fi
 
     printf 'Building test image "%s" (this may take a while)...\n' "$TEST_IMAGE"
-    docker build \
+    "$_tw_runtime" build \
         --build-arg USER_UID="$(id -u)" \
         --build-arg USER_GID="$(id -g)" \
         -t "$TEST_IMAGE" \

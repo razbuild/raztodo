@@ -30,6 +30,8 @@
 #   RAZTODO_DOCKER_IMAGE       Image name (default: raztodo:local)
 #   RAZTODO_DOCKER_CONTAINER   Container name (default: raztodo)
 #   RAZTODO_DATA_DIR           Host data directory mounted at /data (default: $HOME/raztodo-data)
+#   RAZTODO_CONTAINER_RUNTIME  Container CLI: docker or podman
+#                              (default: auto - docker, falling back to podman)
 
 set -u
 
@@ -39,19 +41,27 @@ RT_DOCKER_PROJECT_DIR="$(dirname "$_RT_DOCKER_SCRIPT_DIR")"
 RAZTODO_DOCKER_IMAGE="${RAZTODO_DOCKER_IMAGE:-raztodo:local}"
 RAZTODO_DOCKER_CONTAINER="${RAZTODO_DOCKER_CONTAINER:-raztodo}"
 RAZTODO_DATA_DIR="${RAZTODO_DATA_DIR:-$HOME/raztodo-data}"
+_rt_container_runtime="${RAZTODO_CONTAINER_RUNTIME:-}"
+if [ -z "$_rt_container_runtime" ] || [ "$_rt_container_runtime" = "auto" ]; then
+    if command -v docker >/dev/null 2>&1; then
+        _rt_container_runtime="docker"
+    else
+        _rt_container_runtime="podman"
+    fi
+fi
 
 _rt_docker_container_running() {
-    docker ps --format '{{.Names}}' | grep -Fxq "$RAZTODO_DOCKER_CONTAINER"
+    "$_rt_container_runtime" ps --format '{{.Names}}' | grep -Fxq "$RAZTODO_DOCKER_CONTAINER"
 }
 
 _rt_docker_container_exists() {
-    docker ps -a --format '{{.Names}}' | grep -Fxq "$RAZTODO_DOCKER_CONTAINER"
+    "$_rt_container_runtime" ps -a --format '{{.Names}}' | grep -Fxq "$RAZTODO_DOCKER_CONTAINER"
 }
 
 _rt_docker_create() {
     mkdir -p "$RAZTODO_DATA_DIR"
     local rc=0
-    docker run -d \
+    "$_rt_container_runtime" run -d \
         --name "$RAZTODO_DOCKER_CONTAINER" \
         -v "$RAZTODO_DATA_DIR:/data" \
         --entrypoint sleep \
@@ -66,15 +76,15 @@ _rt_docker_start() {
         return 0
     fi
 
-    if ! docker image inspect "$RAZTODO_DOCKER_IMAGE" >/dev/null 2>&1; then
+    if ! "$_rt_container_runtime" image inspect "$RAZTODO_DOCKER_IMAGE" >/dev/null 2>&1; then
         printf 'Image "%s" not found. Build it first:\n' "$RAZTODO_DOCKER_IMAGE" >&2
-        printf '  docker build --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) -t %s %s\n' \
-            "$RAZTODO_DOCKER_IMAGE" "$RT_DOCKER_PROJECT_DIR" >&2
+        printf '  %s build --build-arg USER_UID=$(id -u) --build-arg USER_GID=$(id -g) -t %s %s\n' \
+            "$_rt_container_runtime" "$RAZTODO_DOCKER_IMAGE" "$RT_DOCKER_PROJECT_DIR" >&2
         return 1
     fi
 
     if _rt_docker_container_exists; then
-        docker start "$RAZTODO_DOCKER_CONTAINER" >/dev/null 2>&1 || {
+        "$_rt_container_runtime" start "$RAZTODO_DOCKER_CONTAINER" >/dev/null 2>&1 || {
             printf 'Failed to start container "%s".\n' "$RAZTODO_DOCKER_CONTAINER" >&2
             return 1
         }
@@ -92,7 +102,7 @@ _rt_docker_start() {
 
 _rt_docker_stop() {
     if _rt_docker_container_exists; then
-        docker rm -f "$RAZTODO_DOCKER_CONTAINER" >/dev/null
+        "$_rt_container_runtime" rm -f "$RAZTODO_DOCKER_CONTAINER" >/dev/null
         printf 'Stopped and removed RazTodo container "%s".\n' "$RAZTODO_DOCKER_CONTAINER"
     else
         printf 'RazTodo container "%s" does not exist.\n' "$RAZTODO_DOCKER_CONTAINER"
@@ -110,7 +120,7 @@ _rt_docker_status() {
 
 _rt_docker_rebuild() {
     _rt_docker_stop
-    docker build \
+    "$_rt_container_runtime" build \
         --build-arg USER_UID="$(id -u)" \
         --build-arg USER_GID="$(id -g)" \
         -t "$RAZTODO_DOCKER_IMAGE" \
@@ -119,9 +129,9 @@ _rt_docker_rebuild() {
 }
 
 rt() {
-    if ! command -v docker >/dev/null 2>&1; then
-        printf 'Docker is required to run raztodo via the %s container but was not found.\n' "$RAZTODO_DOCKER_IMAGE" >&2
-        printf 'Install Docker first, or install raztodo natively (pipx install raztodo).\n' >&2
+    if ! command -v "$_rt_container_runtime" >/dev/null 2>&1; then
+        printf '%s is required to run raztodo via the %s container but was not found.\n' "$_rt_container_runtime" "$RAZTODO_DOCKER_IMAGE" >&2
+        printf 'Install Docker or Podman first, or install raztodo natively (pipx install raztodo).\n' >&2
         return 1
     fi
 
@@ -131,7 +141,7 @@ rt() {
 
     local -a exec_opts=(-i)
     [[ -t 1 ]] && exec_opts+=(-t)
-    docker exec "${exec_opts[@]}" "$RAZTODO_DOCKER_CONTAINER" rt "$@"
+    "$_rt_container_runtime" exec "${exec_opts[@]}" "$RAZTODO_DOCKER_CONTAINER" rt "$@"
 }
 
 rt-docker() {
