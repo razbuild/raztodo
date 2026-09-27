@@ -139,8 +139,8 @@ cython_debug/
 
 # IDEs and Editors
 ## VS Code
-.vscode/
 *.code-workspace
+temp_auto_push.bat
 
 ## PyCharm
 .idea/
@@ -169,7 +169,6 @@ tramp
 .\#*
 
 ## VSCodium
-.vscode-oss/
 
 ## JetBrains
 .idea/
@@ -285,3 +284,5 @@ test-output/
 # Distribution files
 *.whl
 *.tar.gz
+.gitignore
+branch_structure.json
