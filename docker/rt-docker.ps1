@@ -28,19 +28,25 @@
 #   RAZTODO_DOCKER_IMAGE       Image name (default: raztodo:local)
 #   RAZTODO_DOCKER_CONTAINER   Container name (default: raztodo)
 #   RAZTODO_DATA_DIR           Host data directory mounted at /data (default: $HOME\raztodo-data)
+#   RAZTODO_CONTAINER_RUNTIME  Container CLI: docker or podman
+#                              (default: auto - docker, falling back to podman)
 
 $script:RtDockerProjectDir = Split-Path (Split-Path $PSCommandPath -Parent) -Parent
 $script:RtDockerImage = if ($env:RAZTODO_DOCKER_IMAGE)   { $env:RAZTODO_DOCKER_IMAGE }   else { "raztodo:local" }
 $script:RtDockerContainer = if ($env:RAZTODO_DOCKER_CONTAINER) { $env:RAZTODO_DOCKER_CONTAINER } else { "raztodo" }
 $script:RtDataDir = if ($env:RAZTODO_DATA_DIR) { $env:RAZTODO_DATA_DIR } else { Join-Path $HOME "raztodo-data" }
+$script:RtContainerRuntime = if ($env:RAZTODO_CONTAINER_RUNTIME) { $env:RAZTODO_CONTAINER_RUNTIME } else { "auto" }
+if ($script:RtContainerRuntime -eq "auto") {
+    if (Get-Command docker -ErrorAction SilentlyContinue) { $script:RtContainerRuntime = "docker" } else { $script:RtContainerRuntime = "podman" }
+}
 
 function Get-RtDockerRunning {
-    $names = docker ps --format "{{.Names}}"
+    $names = & $script:RtContainerRuntime ps --format "{{.Names}}"
     $names -contains $script:RtDockerContainer
 }
 
 function Get-RtDockerExists {
-    $names = docker ps -a --format "{{.Names}}"
+    $names = & $script:RtContainerRuntime ps -a --format "{{.Names}}"
     $names -contains $script:RtDockerContainer
 }
 
@@ -50,15 +56,15 @@ function Start-RtDocker {
         return 0
     }
 
-    $imageExists = docker image inspect $script:RtDockerImage 2>$null
+    $imageExists = & $script:RtContainerRuntime image inspect $script:RtDockerImage 2>$null
     if (-not $imageExists) {
         Write-Error "Image `"$($script:RtDockerImage)`" not found. Build it first:"
-        Write-Error "  docker build -t $($script:RtDockerImage) $($script:RtDockerProjectDir)"
+        Write-Error "  $($script:RtContainerRuntime) build -t $($script:RtDockerImage) $($script:RtDockerProjectDir)"
         return 1
     }
 
     if (Get-RtDockerExists) {
-        docker start $script:RtDockerContainer | Out-Null
+        & $script:RtContainerRuntime start $script:RtDockerContainer | Out-Null
         if ($LASTEXITCODE -ne 0) {
             Write-Error "Failed to start container `"$($script:RtDockerContainer)`"."
             return 1
@@ -68,7 +74,7 @@ function Start-RtDocker {
     }
 
     New-Item -ItemType Directory -Force -Path $script:RtDataDir | Out-Null
-    docker run -d `
+    & $script:RtContainerRuntime run -d `
         --name $script:RtDockerContainer `
         -v "$($script:RtDataDir):/data" `
         --entrypoint sleep `
@@ -86,7 +92,7 @@ function Start-RtDocker {
 
 function Stop-RtDocker {
     if (Get-RtDockerExists) {
-        docker rm -f $script:RtDockerContainer | Out-Null
+        & $script:RtContainerRuntime rm -f $script:RtDockerContainer | Out-Null
         if ($LASTEXITCODE -ne 0) {
             Write-Error "Failed to remove container `"$($script:RtDockerContainer)`"."
             return 1
@@ -108,7 +114,7 @@ function Get-RtDockerStatus {
 
 function Invoke-RtDockerRebuild {
     Stop-RtDocker | Out-Host
-    docker build `
+    & $script:RtContainerRuntime build `
         -t $script:RtDockerImage `
         $script:RtDockerProjectDir
     if ($LASTEXITCODE -ne 0) { return 1 }
@@ -130,9 +136,9 @@ function Invoke-RtDocker {
 }
 
 function rt {
-    if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
-        Write-Error "Docker is required to run raztodo via the $($script:RtDockerImage) container but was not found."
-        Write-Error "Install Docker first, or install raztodo natively (pipx install raztodo)."
+    if (-not (Get-Command $script:RtContainerRuntime -ErrorAction SilentlyContinue)) {
+        Write-Error "$($script:RtContainerRuntime) is required to run raztodo via the $($script:RtDockerImage) container but was not found."
+        Write-Error "Install Docker or Podman first, or install raztodo natively (pipx install raztodo)."
         return 1
     }
 
@@ -144,7 +150,7 @@ function rt {
     $execArgs = @("exec", "-i")
     if ([Console]::IsOutputRedirected -eq $false) { $execArgs += "-t" }
     $execArgs += @($script:RtDockerContainer, "rt") + @args
-    docker exec @execArgs
+    & $script:RtContainerRuntime exec @execArgs
     return $LASTEXITCODE
 }
 

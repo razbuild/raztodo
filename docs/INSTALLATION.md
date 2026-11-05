@@ -173,3 +173,4 @@ This starts the local web UI at `http://127.0.0.1:8000`. Press `Ctrl+C` to stop 
 ## Docker (optional)
 
 An alternative to native installation is the Docker image, which runs the RazTodo CLI (`rt`) directly. See the [Docker Guide](DOCKER.md) for build, run, and persistence instructions.
+[Podman](PODMAN.md) is a drop-in alternative to Docker for the same image.
