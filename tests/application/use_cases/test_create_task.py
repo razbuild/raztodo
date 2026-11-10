@@ -74,6 +74,25 @@ class TestCreateTaskUseCase:
 
         mock_repo.add_task.assert_called_once_with("Test Task", "", "", None, None, None)
 
+    def test_create_task_invalid_due_date(self, mock_repo):
+        """Test creating a task with a malformed due date raises error."""
+        use_case = CreateTaskUseCase(mock_repo)
+
+        with pytest.raises(RazTodoException) as exc_info:
+            use_case.execute("Test Task", due_date="not-a-date")
+
+        assert "due date" in str(exc_info.value).lower()
+        mock_repo.add_task.assert_not_called()
+
+    def test_create_task_impossible_due_date(self, mock_repo):
+        """Test creating a task with a nonexistent calendar date raises error."""
+        use_case = CreateTaskUseCase(mock_repo)
+
+        with pytest.raises(RazTodoException):
+            use_case.execute("Test Task", due_date="2026-02-30")
+
+        mock_repo.add_task.assert_not_called()
+
     def test_create_task_duplicate_raises_error(self, mock_repo):
         """Test creating duplicate task raises error."""
         mock_repo.add_task.return_value = None

@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from raztodo.domain.exceptions import RazTodoException
 from raztodo.domain.task_repository import TaskRepository
 
 MAX_TITLE_LENGTH = 60
+DUE_DATE_FORMAT = "%Y-%m-%d"
 
 
 class CreateTaskUseCase:
@@ -28,7 +31,7 @@ class CreateTaskUseCase:
             title: Task title (required, max 60 chars).
             description: Optional task description.
             priority: Optional task priority.
-            due_date: Optional due date in string format.
+            due_date: Optional due date as YYYY-MM-DD.
             tags: Optional list of tags.
             project: Optional project name.
 
@@ -48,6 +51,14 @@ class CreateTaskUseCase:
                 f"Task title too long. Maximum {MAX_TITLE_LENGTH} characters, "
                 f"provided {len(title_stripped)}"
             )
+
+        if due_date is not None:
+            try:
+                datetime.strptime(due_date, DUE_DATE_FORMAT)
+            except (ValueError, TypeError):
+                raise RazTodoException(
+                    f"Invalid due date '{due_date}'. Use YYYY-MM-DD format."
+                )
 
         task_id: int | None = self.repo.add_task(
             title_stripped, description, priority, due_date, tags, project
